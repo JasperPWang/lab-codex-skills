@@ -1,0 +1,4 @@
+interface:
+  display_name: "Daily Research Review"
+  short_description: "每日科研经营复盘、项目判断与明日三项关键 Todo"
+  default_prompt: "Use $daily-research-review to run today’s 科研经营复盘 and prepare tomorrow’s three key TODOs."

@@ -1,0 +1,214 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1180" viewBox="0 0 1800 1180" role="img" aria-labelledby="title desc">
+  <title id="title">Detailed LLM Wiki Skill Architecture</title>
+  <desc id="desc">A detailed architecture diagram for a custom LLM Wiki showing input pools, curated raw sources, LLM maintenance operations, compiled wiki pages, review and research queues, query feedback, and execution boundaries.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7f9fb"/>
+      <stop offset="1" stop-color="#edf4ef"/>
+    </linearGradient>
+    <filter id="shadow" x="-16%" y="-16%" width="132%" height="132%">
+      <feDropShadow dx="0" dy="8" stdDeviation="11" flood-color="#182536" flood-opacity="0.13"/>
+    </filter>
+    <marker id="arrow" markerWidth="13" markerHeight="13" refX="11" refY="6.5" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L11,6.5 L2,11 Z" fill="#38576b"/>
+    </marker>
+    <marker id="arrow-soft" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#7a8e9b"/>
+    </marker>
+    <style>
+      .page-title { font: 800 44px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #102033; }
+      .subtitle { font: 400 19px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #566774; }
+      .section { font: 800 25px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #102033; }
+      .h { font: 750 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #142333; }
+      .body { font: 500 15px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #52616c; }
+      .small { font: 500 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #63727d; }
+      .tiny { font: 500 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #66737d; }
+      .pill { font: 700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #254255; }
+      .line { stroke: #38576b; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .soft { stroke: #7a8e9b; stroke-width: 2.4; fill: none; stroke-dasharray: 8 7; marker-end: url(#arrow-soft); }
+      .thin { stroke: #9aaab4; stroke-width: 1.8; fill: none; marker-end: url(#arrow-soft); }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1180" rx="38" fill="url(#bg)"/>
+
+  <text x="900" y="58" text-anchor="middle" class="page-title">LLM Wiki Skill: From Raw Evidence to Compounding Knowledge</text>
+  <text x="900" y="90" text-anchor="middle" class="subtitle">The LLM is not just a retrieval layer. It is the maintainer that compiles, links, audits, and updates a persistent Markdown wiki.</text>
+
+  <!-- Outer input pool -->
+  <g filter="url(#shadow)">
+    <rect x="50" y="140" width="320" height="520" rx="24" fill="#ffffff" stroke="#d7e0e6"/>
+    <text x="210" y="180" text-anchor="middle" class="section">Outer Input Pool</text>
+    <text x="210" y="206" text-anchor="middle" class="small">wide, noisy, not automatically ingested</text>
+
+    <rect x="82" y="235" width="256" height="78" rx="17" fill="#eaf1f6" stroke="#d3e1e9"/>
+    <text x="210" y="263" text-anchor="middle" class="h">Papers</text>
+    <text x="210" y="288" text-anchor="middle" class="body">PDFs · abstracts · reading notes</text>
+
+    <rect x="82" y="335" width="256" height="112" rx="17" fill="#edf6f1" stroke="#d4e7dc"/>
+    <text x="210" y="362" text-anchor="middle" class="h">Daily</text>
+    <text x="210" y="388" text-anchor="middle" class="body">text notes · AI chats</text>
+    <text x="210" y="412" text-anchor="middle" class="body">screenshots · sparks</text>
+
+    <rect x="82" y="470" width="256" height="118" rx="17" fill="#fff6e8" stroke="#eadbbb"/>
+    <text x="210" y="498" text-anchor="middle" class="h">Meetings</text>
+    <text x="210" y="524" text-anchor="middle" class="body">Doubao summaries</text>
+    <text x="210" y="548" text-anchor="middle" class="body">photos · links · slides</text>
+
+    <text x="210" y="625" text-anchor="middle" class="small">Question before importing:</text>
+    <text x="210" y="646" text-anchor="middle" class="small">is this worth becoming evidence?</text>
+  </g>
+
+  <!-- Selection gate -->
+  <g filter="url(#shadow)">
+    <rect x="430" y="270" width="260" height="250" rx="24" fill="#fffdf8" stroke="#ead8af"/>
+    <text x="560" y="310" text-anchor="middle" class="section">Selection Gate</text>
+    <text x="560" y="338" text-anchor="middle" class="body">distill before compiling</text>
+    <rect x="468" y="370" width="184" height="32" rx="16" fill="#f5e6c6"/>
+    <text x="560" y="391" text-anchor="middle" class="pill">relevance</text>
+    <rect x="468" y="412" width="184" height="32" rx="16" fill="#f5e6c6"/>
+    <text x="560" y="433" text-anchor="middle" class="pill">evidence value</text>
+    <rect x="468" y="454" width="184" height="32" rx="16" fill="#f5e6c6"/>
+    <text x="560" y="475" text-anchor="middle" class="pill">can update wiki?</text>
+  </g>
+
+  <!-- Raw evidence layer -->
+  <g filter="url(#shadow)">
+    <rect x="750" y="140" width="350" height="520" rx="24" fill="#ffffff" stroke="#d7e0e6"/>
+    <text x="925" y="180" text-anchor="middle" class="section">Research-Wiki/raw</text>
+    <text x="925" y="206" text-anchor="middle" class="small">curated evidence layer · source of truth</text>
+
+    <rect x="785" y="236" width="280" height="46" rx="15" fill="#e8f0f4"/>
+    <text x="925" y="265" text-anchor="middle" class="pill">raw/sources/papers/</text>
+
+    <rect x="785" y="296" width="280" height="46" rx="15" fill="#e8f0f4"/>
+    <text x="925" y="325" text-anchor="middle" class="pill">raw/sources/study-notes/</text>
+
+    <rect x="785" y="356" width="280" height="46" rx="15" fill="#e8f0f4"/>
+    <text x="925" y="385" text-anchor="middle" class="pill">raw/sources/meeting-extracts/</text>
+
+    <rect x="785" y="416" width="280" height="46" rx="15" fill="#e8f0f4"/>
+    <text x="925" y="445" text-anchor="middle" class="pill">raw/sources/daily-distillations/</text>
+
+    <rect x="785" y="490" width="280" height="94" rx="16" fill="#f4f7f9" stroke="#d8e1e6"/>
+    <text x="925" y="520" text-anchor="middle" class="body">immutable by default</text>
+    <text x="925" y="545" text-anchor="middle" class="body">traceable source paths</text>
+    <text x="925" y="570" text-anchor="middle" class="body">hash manifest for changes</text>
+  </g>
+
+  <!-- LLM maintainer -->
+  <g filter="url(#shadow)">
+    <rect x="650" y="745" width="550" height="300" rx="28" fill="#fffdf8" stroke="#ead8af"/>
+    <text x="925" y="790" text-anchor="middle" class="section">LLM Maintainer</text>
+    <text x="925" y="817" text-anchor="middle" class="body">Codex reads sources and maintains the wiki as a codebase</text>
+
+    <rect x="692" y="850" width="125" height="52" rx="16" fill="#f5e6c6"/>
+    <text x="754" y="881" text-anchor="middle" class="pill">Ingest</text>
+    <rect x="835" y="850" width="125" height="52" rx="16" fill="#f5e6c6"/>
+    <text x="897" y="881" text-anchor="middle" class="pill">Query</text>
+    <rect x="978" y="850" width="125" height="52" rx="16" fill="#f5e6c6"/>
+    <text x="1040" y="881" text-anchor="middle" class="pill">Lint</text>
+
+    <rect x="692" y="928" width="192" height="52" rx="16" fill="#f8edcf"/>
+    <text x="788" y="959" text-anchor="middle" class="pill">summarize + cite</text>
+    <rect x="902" y="928" width="192" height="52" rx="16" fill="#f8edcf"/>
+    <text x="998" y="959" text-anchor="middle" class="pill">link + reconcile</text>
+
+    <text x="925" y="1012" text-anchor="middle" class="small">two-step ingest: analyze first, then generate/update pages</text>
+  </g>
+
+  <!-- Schema/Purpose -->
+  <g filter="url(#shadow)">
+    <rect x="430" y="585" width="260" height="145" rx="22" fill="#ffffff" stroke="#d7e0e6"/>
+    <text x="560" y="626" text-anchor="middle" class="section">Schema + Purpose</text>
+    <text x="560" y="658" text-anchor="middle" class="body">scope · page types</text>
+    <text x="560" y="682" text-anchor="middle" class="body">citation rules · status</text>
+    <text x="560" y="706" text-anchor="middle" class="body">what the wiki is for</text>
+  </g>
+
+  <!-- Wiki layer -->
+  <g filter="url(#shadow)">
+    <rect x="1250" y="140" width="500" height="520" rx="24" fill="#ffffff" stroke="#d7e0e6"/>
+    <text x="1500" y="180" text-anchor="middle" class="section">Research-Wiki/wiki</text>
+    <text x="1500" y="206" text-anchor="middle" class="small">compiled understanding layer · LLM-maintained</text>
+
+    <rect x="1288" y="235" width="165" height="52" rx="15" fill="#e7f4ed"/>
+    <text x="1370" y="267" text-anchor="middle" class="pill">sources</text>
+    <rect x="1472" y="235" width="165" height="52" rx="15" fill="#e7f4ed"/>
+    <text x="1555" y="267" text-anchor="middle" class="pill">concepts</text>
+
+    <rect x="1288" y="305" width="165" height="52" rx="15" fill="#e7f4ed"/>
+    <text x="1370" y="337" text-anchor="middle" class="pill">entities</text>
+    <rect x="1472" y="305" width="165" height="52" rx="15" fill="#e7f4ed"/>
+    <text x="1555" y="337" text-anchor="middle" class="pill">claims</text>
+
+    <rect x="1288" y="375" width="165" height="52" rx="15" fill="#e7f4ed"/>
+    <text x="1370" y="407" text-anchor="middle" class="pill">questions</text>
+    <rect x="1472" y="375" width="165" height="52" rx="15" fill="#e7f4ed"/>
+    <text x="1555" y="407" text-anchor="middle" class="pill">synthesis</text>
+
+    <rect x="1288" y="445" width="165" height="52" rx="15" fill="#e7f4ed"/>
+    <text x="1370" y="477" text-anchor="middle" class="pill">comparisons</text>
+    <rect x="1472" y="445" width="165" height="52" rx="15" fill="#e7f4ed"/>
+    <text x="1555" y="477" text-anchor="middle" class="pill">research practices</text>
+
+    <rect x="1290" y="530" width="150" height="48" rx="15" fill="#f4f7f9" stroke="#d8e1e6"/>
+    <text x="1365" y="559" text-anchor="middle" class="pill">index.md</text>
+    <rect x="1455" y="530" width="150" height="48" rx="15" fill="#f4f7f9" stroke="#d8e1e6"/>
+    <text x="1530" y="559" text-anchor="middle" class="pill">overview.md</text>
+    <rect x="1620" y="530" width="90" height="48" rx="15" fill="#f4f7f9" stroke="#d8e1e6"/>
+    <text x="1665" y="559" text-anchor="middle" class="pill">log.md</text>
+
+    <text x="1500" y="615" text-anchor="middle" class="small">every page has frontmatter, sources, status, and wikilinks</text>
+  </g>
+
+  <!-- Review/research queues -->
+  <g filter="url(#shadow)">
+    <rect x="1250" y="720" width="500" height="160" rx="24" fill="#ffffff" stroke="#d7e0e6"/>
+    <text x="1500" y="760" text-anchor="middle" class="section">Human-in-the-loop Queues</text>
+    <rect x="1290" y="794" width="190" height="52" rx="15" fill="#f9e8e8"/>
+    <text x="1385" y="826" text-anchor="middle" class="pill">reviews.md</text>
+    <rect x="1520" y="794" width="190" height="52" rx="15" fill="#e9eef9"/>
+    <text x="1615" y="826" text-anchor="middle" class="pill">research.md</text>
+    <text x="1500" y="864" text-anchor="middle" class="small">uncertain claims, conflicts, gaps, papers to verify</text>
+  </g>
+
+  <!-- Query feedback -->
+  <g filter="url(#shadow)">
+    <rect x="1250" y="925" width="500" height="120" rx="24" fill="#ffffff" stroke="#d7e0e6"/>
+    <text x="1500" y="966" text-anchor="middle" class="section">Queries Compound</text>
+    <text x="1500" y="1000" text-anchor="middle" class="body">valuable answers are saved back into</text>
+    <text x="1500" y="1026" text-anchor="middle" class="body">wiki/queries, synthesis, comparisons</text>
+  </g>
+
+  <!-- Outside boundary -->
+  <g filter="url(#shadow)">
+    <rect x="50" y="735" width="320" height="210" rx="24" fill="#fbfbfb" stroke="#d4dbe0" stroke-dasharray="9 7"/>
+    <text x="210" y="778" text-anchor="middle" class="section">Execution Layer</text>
+    <text x="210" y="812" text-anchor="middle" class="body">experiments · code · paper drafts</text>
+    <text x="210" y="840" text-anchor="middle" class="body">stay outside the vault/wiki</text>
+    <text x="210" y="888" text-anchor="middle" class="small">Only distilled lessons, claims,</text>
+    <text x="210" y="910" text-anchor="middle" class="small">or research practices return.</text>
+  </g>
+
+  <!-- Arrows main flow -->
+  <path class="line" d="M370 400 C395 400, 405 400, 430 400"/>
+  <path class="line" d="M690 400 C715 400, 725 400, 750 400"/>
+  <path class="line" d="M925 660 L925 742"/>
+  <path class="line" d="M1200 865 C1230 770, 1240 620, 1250 485"/>
+  <path class="line" d="M1100 400 C1160 400, 1195 400, 1250 400"/>
+
+  <!-- Supporting arrows -->
+  <path class="soft" d="M560 585 L650 875"/>
+  <path class="soft" d="M1250 810 C1165 855, 1100 880, 1200 925"/>
+  <path class="soft" d="M1250 985 C1110 1075, 760 1100, 650 985"/>
+  <path class="soft" d="M210 735 C270 680, 365 620, 430 505"/>
+  <path class="thin" d="M1500 660 L1500 718"/>
+  <path class="thin" d="M1500 880 L1500 923"/>
+
+  <!-- Process chips bottom -->
+  <g>
+    <rect x="510" y="1090" width="780" height="54" rx="27" fill="#ffffff" stroke="#d9e2e8"/>
+    <text x="900" y="1123" text-anchor="middle" class="body">Core invariant: raw evidence is selected, wiki knowledge is compiled, and uncertain claims are reviewed before becoming stable.</text>
+  </g>
+</svg>

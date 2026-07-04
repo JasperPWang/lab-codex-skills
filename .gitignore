@@ -1,0 +1,30 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+node_modules/
+
+# Machine-local migration residue. Keep these in iCloud for recovery, but do
+# not publish them as part of the lab skill bundle.
+.machine-local-archives/
+.archive-before-consolidation-*/
+.archive-before-vault-consolidation-*/
+.archive-before-vault-link-*/
+
+# Nested Git metadata from vendored or previously cloned sources should not be
+# committed inside the lab bundle repository.
+**/.git/
+
+# Local credentials or runtime state should never be published.
+.env
+.env.*
+*token*
+*secret*
+*credential*
+*.pem
+*.key
+

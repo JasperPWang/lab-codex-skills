@@ -1,0 +1,6 @@
+interface:
+  display_name: "LLM Wiki Skill"
+  short_description: "用 Codex 维护 Markdown 知识库"
+  default_prompt: "使用 $llm-wiki 把我的资料摄入到 Obsidian 兼容的 LLM Wiki。"
+policy:
+  allow_implicit_invocation: true

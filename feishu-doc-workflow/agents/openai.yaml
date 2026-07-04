@@ -1,0 +1,4 @@
+interface:
+  display_name: "Feishu Doc Workflow"
+  short_description: "Maintain Feishu/Lark docs and wiki pages with lark-cli plus hierarchy, image, formula, and verification rules."
+  default_prompt: "Use the Feishu document workflow to read or edit the Feishu/Lark document, preserving hierarchy, images, formulas, and existing content unless a specific write is requested."
