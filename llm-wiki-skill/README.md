@@ -12,7 +12,7 @@ knowledge graph, and manage review or deep-research queues.
 Clone this repository and link the skill into Codex:
 
 ```bash
-git clone --recurse-submodules https://github.com/WangPu1999/llm-wiki-skill.git
+git clone --recurse-submodules https://github.com/JasperPWang/llm-wiki-skill.git
 mkdir -p ~/.codex/skills
 ln -sfn "$PWD/llm-wiki-skill" ~/.codex/skills/llm-wiki
 ```

@@ -76,7 +76,7 @@ Included active skill:
 
 Recorded source:
 
-- `https://github.com/WangPu1999/feynman-learning-skills.git`
+- `https://github.com/JasperPWang/feynman-learning-skills.git`
 - archived upstream container commit: `1faca50`
 - references `https://github.com/pengsida/learning_research`.
 
@@ -92,7 +92,7 @@ Included active skill:
 
 Recorded source:
 
-- `https://github.com/WangPu1999/llm-wiki-skill.git`
+- `https://github.com/JasperPWang/llm-wiki-skill.git`
 - active local Git HEAD observed before bundling: `05c8fb6`
 
 License evidence:
@@ -112,4 +112,3 @@ This repository does not vendor OpenAI bundled/runtime/plugin-cache skills such
 as browser, Chrome, computer-use, Gmail, Google Drive, GitHub, Hugging Face,
 Notion, Zotero, Data Analytics, documents, presentations, or spreadsheets.
 Those remain managed by Codex/plugin installation.
-
