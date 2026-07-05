@@ -3,7 +3,7 @@
 ## 创作 Workflow
 
 > 此 workflow 用于**独立创作一个画板**。
-> 需要在文档中批量创建多个画板时，由 lark-doc 负责调度，见 `lark-doc` 技能的 `references/lark-doc-whiteboard.md`。
+> 需要在文档中批量创建多个画板时，由 [`feishu-doc-workflow`](../../feishu-doc-workflow/SKILL.md) 负责文档层调度；本 skill 只负责画板 token 级别的查询、更新和预览验证。
 
 **Step 1：获取 board_token**
 
@@ -11,7 +11,7 @@
 |---|---|
 | 直接给了 whiteboard token（`wbcnXXX`）| 直接使用 |
 | 文档 URL 或 doc_id，文档中已有画板 | `lark-cli docs +fetch --api-version v2 --doc <URL> --as user`，从返回的 `<whiteboard token="xxx"/>` 提取 |
-| 文档 URL 或 doc_id，需要新建画板 | `lark-cli docs +update --api-version v2 --doc <doc_id> --command append --content '<whiteboard type="blank"></whiteboard>' --as user`，从响应 `data.new_blocks[0].block_token` 取得（`block_type == "whiteboard"` 的那条；参数详见 lark-doc SKILL.md）|
+| 文档 URL 或 doc_id，需要新建画板 | `lark-cli docs +update --api-version v2 --doc <doc_id> --command append --content '<whiteboard type="blank"></whiteboard>' --as user`，从响应 `data.new_blocks[0].block_token` 取得（`block_type == "whiteboard"` 的那条；文档层操作按 `feishu-doc-workflow` 执行）|
 
 **Step 2：渲染 & 写入**
 

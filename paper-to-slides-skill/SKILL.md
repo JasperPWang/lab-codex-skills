@@ -2,12 +2,11 @@
 name: paper-to-slides
 description: >-
   从论文 PDF Workflow：本地 MinerU 提取 Markdown，在 Cursor/Codex 会话内生成 Marp 幻灯（不使用额外 LLM/生图 API），再本地导出 pptx/PDF。Use when the user wants paper-to-slides, paper to PPT, thesis deck, or Marp export without OpenAI/Gemini/OpenRouter keys.
-metadata:
-  short-description: 论文 PDF → Marp（零额外交互 API）
-  disable-model-invocation: true
 ---
 
 # Paper → Slides（本地工具 + 会话内模型）
+
+Short description: 论文 PDF → Marp（零额外交互 API）。Do not invoke or configure any additional external model API for this workflow.
 
 ## 目标与硬约束
 

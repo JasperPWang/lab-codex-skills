@@ -1,14 +1,21 @@
 ---
 name: paper-deep-dive
 description: Use to turn a research paper PDF or extracted Markdown into a Feishu-first deep reading packet with source extraction, English original manuscript, complete faithful Chinese translation, Chinese close-reading notes, paper card, figures/assets, and sync-ready outputs.
-metadata:
-  short-description: PDF to deep paper notes workflow
-  source: Feishu wiki AI Research Skills
 ---
 
 # Paper Deep Dive
 
+Short description: PDF to deep paper notes workflow. Source: Feishu wiki AI Research Skills.
+
 Use this skill when the user wants a complete paper reading workflow from PDF to stable notes, paper card, assets, and shareable summaries.
+
+## Canonical Paper Card Gate
+
+When this workflow creates or modifies a paper card, also use [`paper-card-delivery`](../paper-card-delivery/SKILL.md). That skill is the canonical standard for official-source verification, fixed card format, figure/caption selection, and structural validation. Do not finalize the card from this deep-dive skill alone.
+
+## Canonical Chinese Technical Writing Gate
+
+For `原文译稿`, `完整中文译稿`, `中文精读稿`, Chinese figure captions, parent-page summaries, and Chinese paper-card prose, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Preserve official English source text in `英文原文稿`, formulas, method/model/dataset names, and symbols, but do not leave ordinary technical concepts as raw English phrase islands in Chinese prose.
 
 ## When To Use
 
@@ -28,15 +35,11 @@ If the user says `deep dive`, `深读`, `详细解析`, `dive into`, or asks to 
 5. Create the complete faithful Chinese translation (`原文译稿` / `完整中文译稿`) from the verified English manuscript in source order. It must preserve section hierarchy, paragraph correspondence, formulas, figure/table positions, citations, captions, references, and layout structure as much as the target editor allows.
 6. Check terminology in the Chinese translation. Technical terms should be translated accurately; important terms and proper nouns should appear as `中文（English term）` on first use or where clarity is needed. Avoid leaving large runs of English technical terms untranslated in Chinese prose.
 7. Create the Chinese close-reading notes (`中文精读稿`) with problem, motivation, method, experiments, results, limitations, next questions, and research implications. This is interpretation and learning material; do not present it as the complete translation.
-8. Create a paper card with metadata, one-sentence contribution, key claims, method summary, datasets, metrics, figures, related work, limitations, and follow-up actions.
+8. Create a paper card using [`paper-card-delivery`](../paper-card-delivery/SKILL.md), then run its validator on the Markdown draft when a local draft exists.
 9. Store figures and assets in a stable assets folder.
 10. Mark source says, inference, citation needed, and unresolved questions separately.
 
-A formal paper card is only allowed after reading or searching through the official full-paper source end to end, including abstract, method, experiment/evaluation, conclusion/discussion, limitations if present, and figure captions relevant to selected figures. If only abstracts, project pages, README files, search snippets, screenshots, or secondary summaries were inspected, label the card as `candidate / 待核验` and keep claims conservative.
-
-For the paper-card main image, choose the paper's core method/process figure when available: method, pipeline, framework, system overview, architecture, data flow, benchmark construction, or score/loss/computation flow. Do not use a teaser, qualitative showcase, result collage, demo gallery, or visual example grid as the only card image when a core method/process figure exists in the official paper HTML/PDF or project page. A teaser can be a second supplementary image only when it adds distinct context and is clearly captioned as teaser / result showcase. If no core method/process figure exists after checking official sources, state that explicitly and use the most structurally informative fallback figure.
-
-For every selected paper-card figure, translate the complete official source figure caption into Chinese. Preserve the figure number, subfigure labels, symbols, method names, dataset names, and important technical terms. Do not use a short label such as `图｜GS-IR overview`, `图｜pipeline`, `图｜teaser`, or a self-written summary as the caption. If the official caption cannot be located, write `图注待补：需要从官方论文 HTML/PDF 或项目页核验并完整翻译原始 caption。` and do not mark the paper card as finished.
+Paper-card content standards live in [`paper-card-delivery`](../paper-card-delivery/SKILL.md). This deep-dive skill must not duplicate or override paper-card source verification, metadata, image/caption selection, fixed bullet slots, sorting, or structural validation.
 
 ## Local MinerU Extraction
 
@@ -74,7 +77,7 @@ For paper deep dives and complete manuscript pages, formulas are source-fidelity
 
 For Feishu deliverables, use this fixed hierarchy by default:
 
-- Parent page: paper card and summary only. Include metadata, core method/process figure(s), one-sentence conclusion, core problem, method/pipeline summary, experiments, limitations, and implications.
+- Parent page: paper card and summary only. Include metadata, source-verified pipeline / process / computation-flow figure(s), one-sentence conclusion, core problem, method/pipeline summary, experiments, limitations, and implications.
 - Child page 1: `英文原文稿`, the complete original English manuscript from official PDF/HTML/LaTeX/MinerU extraction. It is a temporary translation source and can be deleted after translation if the user requests cleanup.
 - Child page 2: `原文译稿`, the complete faithful Chinese translation.
 - Child page 3: `中文精读稿`, the Chinese close-reading / learning notes.

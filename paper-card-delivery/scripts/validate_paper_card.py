@@ -1,0 +1,189 @@
+#!/usr/bin/env python3
+"""Validate the user's compact paper-card Markdown structure.
+
+This is a structural lint only. It cannot verify whether the official paper was
+actually read; agents must still report source-verification evidence.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+from urllib.parse import unquote
+
+
+REQUIRED_BULLETS = ["定义", "问题", "方法", "实现", "结论", "边界 / 启发"]
+CJK_RE = re.compile(r"[\u3400-\u9fff]")
+RESIDUE_PATTERNS = [
+    r"!\[\[",
+    r"\bassets/",
+    r"\bEW_IMG",
+    r"图像：",
+    r"Image:\s",
+    r"/Users/",
+    r"WorldModelVault",
+]
+BAD_IMAGE_HINTS = [
+    "first page",
+    "first-page",
+    "title page",
+    "paper page",
+    "abstract page",
+]
+TRANSLATABLE_ENGLISH_TERMS = {
+    "parametric human estimation": "参数化人体估计",
+    "perspective distortion": "透视畸变/透视失真",
+    "scene geometry": "场景几何",
+    "camera pose": "相机位姿",
+    "body pose": "人体姿态",
+    "mesh reconstruction": "网格重建",
+    "3d human reconstruction": "三维人体重建",
+    "motion-dependent cloth dynamics": "运动相关布料动力学",
+    "physically plausible deformation": "物理合理形变",
+    "simulation-ready asset": "仿真就绪资产",
+}
+
+
+def normalize_title(value: str) -> str:
+    value = value.lower()
+    value = value.replace("ω", "ohm").replace("Ω", "ohm").replace("Ω", "ohm")
+    value = re.sub(r"\\omega|\\Omega", "ohm", value)
+    return re.sub(r"[^a-z0-9]+", " ", value).strip()
+
+
+def token_count(value: str) -> int:
+    return len(re.findall(r"[A-Za-z0-9]+", normalize_title(value)))
+
+
+def cvf_slug_title(pdf_url: str) -> str | None:
+    match = re.search(r"/papers/([^/]+?)(?:_paper)?\.pdf$", pdf_url)
+    if not match:
+        return None
+    stem = unquote(match.group(1))
+    stem = re.sub(r"_CVPR_\d{4}$", "", stem)
+    parts = stem.split("_")
+    if len(parts) >= 2:
+        parts = parts[1:]
+    title = " ".join(parts).strip()
+    return title or None
+
+
+def find_pdf_url(text: str) -> str | None:
+    match = re.search(r"\[PDF\]\((https?://[^)]+\.pdf)\)", text)
+    return match.group(1) if match else None
+
+
+def split_cards(text: str) -> list[tuple[int, str, str]]:
+    matches = list(re.finditer(r"^####\s+(.+?)\s*$", text, flags=re.M))
+    cards: list[tuple[int, str, str]] = []
+    for i, m in enumerate(matches):
+        start = m.start()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        line_no = text[: start].count("\n") + 1
+        cards.append((line_no, m.group(1).strip(), text[start:end].strip()))
+    return cards
+
+
+def metadata_lines_after_heading(card: str) -> tuple[list[str], bool]:
+    """Return the physical four-line metadata block after a card heading.
+
+    Feishu paper-card metadata is intentionally compact: four consecutive
+    non-empty physical lines immediately after the heading. Do not skip a
+    blank line after the title; that would make the metadata visually loose.
+    """
+
+    lines = [ln.rstrip() for ln in card.splitlines()]
+    metadata = lines[1:5]
+    compact = len(metadata) == 4 and all(ln.strip() for ln in metadata)
+    return metadata, compact
+
+
+def check_card(line_no: int, title: str, card: str) -> list[dict[str, object]]:
+    issues: list[dict[str, object]] = []
+    metadata_lines, compact_metadata = metadata_lines_after_heading(card)
+
+    def issue(code: str, msg: str) -> None:
+        issues.append({"line": line_no, "title": title, "code": code, "message": msg})
+
+    if len(metadata_lines) < 4:
+        issue("metadata_missing", "Expected short-title, Venue｜Institution, PDF｜Project｜Code, and Dataset metadata lines.")
+    else:
+        if not compact_metadata:
+            issue("metadata_spacing", "Metadata must be four consecutive non-empty lines with no blank lines inside the metadata block.")
+        if "｜" not in metadata_lines[0]:
+            issue("takeaway_line", "Second line should be `短译名｜核心创新点 / takeaway 短语`.")
+        if "｜" not in metadata_lines[1]:
+            issue("venue_institution", "Venue｜Institution metadata line is missing `｜`.")
+        link_line = metadata_lines[2]
+        if not any(token in link_line for token in ["PDF", "w/o. PDF"]):
+            issue("pdf_slot", "PDF slot missing or not using compact PDF/w/o. PDF status.")
+        if not any(token in link_line for token in ["Project", "w/o. project page"]):
+            issue("project_slot", "Project slot missing or not using compact Project/w/o. project page status.")
+        if not any(token in link_line for token in ["Code", "w/o. verified code", "w/o. code"]):
+            issue("code_slot", "Code slot missing or not using compact Code/w/o. code status.")
+        if not metadata_lines[3].startswith("Dataset:"):
+            issue("dataset", "Fourth metadata line must start with `Dataset:`.")
+        pdf_url = find_pdf_url(card)
+        slug_title = cvf_slug_title(pdf_url or "")
+        if slug_title and token_count(slug_title) > token_count(title) + 2:
+            issue("title_incomplete", "Card heading appears shorter than the official CVF PDF title slug; use the complete official paper title, not only the method acronym.")
+
+    for bullet in REQUIRED_BULLETS:
+        if not re.search(rf"^\s*[-*]\s+{re.escape(bullet)}\s*[:：]", card, flags=re.M):
+            issue("required_bullet", f"Missing fixed bullet slot `{bullet}`.")
+
+    if not re.search(r"^\s*[-*]\s+核心创新\s*1\s*[:：]", card, flags=re.M):
+        issue("method_innovation", "Missing nested `核心创新 1` bullet under 方法.")
+    if not re.search(r"^\s*[-*]\s+核心创新\s*2\s*[:：]", card, flags=re.M):
+        issue("method_innovation", "Missing nested `核心创新 2` bullet under 方法.")
+
+    for pattern in RESIDUE_PATTERNS:
+        if re.search(pattern, card):
+            issue("local_residue", f"Reader-facing text contains local/Obsidian residue matching `{pattern}`.")
+
+    lowered = card.lower()
+    for hint in BAD_IMAGE_HINTS:
+        if hint in lowered:
+            issue("bad_image_hint", f"Possible forbidden paper-card image/source hint: `{hint}`.")
+
+    for line in card.splitlines():
+        if not CJK_RE.search(line):
+            continue
+        line_lowered = line.lower()
+        for term, chinese in TRANSLATABLE_ENGLISH_TERMS.items():
+            if term in line_lowered:
+                gloss_pattern = rf"[（(]\s*{re.escape(term)}\s*[）)]"
+                if re.search(gloss_pattern, line_lowered):
+                    continue
+                issue("language_mixing", f"Use Chinese-first wording for `{term}` -> `{chinese}`.")
+
+    return issues
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Validate compact paper-card Markdown structure.")
+    parser.add_argument("path", nargs="?", help="Markdown file. Reads stdin if omitted or `-`.")
+    args = parser.parse_args()
+
+    if not args.path or args.path == "-":
+        text = sys.stdin.read()
+    else:
+        text = Path(args.path).read_text(encoding="utf-8")
+
+    cards = split_cards(text)
+    issues: list[dict[str, object]] = []
+    if not cards:
+        issues.append({"line": 1, "title": None, "code": "no_cards", "message": "No `#### Paper English Title` card headings found."})
+    for card in cards:
+        issues.extend(check_card(*card))
+
+    result = {"cards": len(cards), "issues": len(issues), "details": issues}
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    return 1 if issues else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

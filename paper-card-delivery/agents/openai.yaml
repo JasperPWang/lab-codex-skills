@@ -1,0 +1,4 @@
+interface:
+  display_name: "Paper Card Delivery"
+  short_description: "Strict source-grounded paper card workflow"
+  default_prompt: "Use $paper-card-delivery to create source-grounded Feishu paper cards with verification gates."

@@ -8,21 +8,27 @@ description: Orchestrates AI research agent workflows (paper deep-dive, survey b
 基于飞书 Wiki 调研报告组织的科研工作流入口。源文档：
 <FEISHU_OR_LARK_URL>
 
+## Canonical Paper Card Gate
+
+Whenever a workflow will create, normalize, audit, or sync paper cards, first use [`paper-card-delivery`](../paper-card-delivery/SKILL.md). That skill is the canonical source for paper-card verification, fixed format, image/caption rules, and validation. This router must not finalize a paper card from its local summary rules alone.
+
+## Canonical Chinese Technical Writing Gate
+
+Whenever a workflow will produce Chinese reader-facing research notes, Feishu pages, wiki pages, paper-card prose, deep-dive notes, survey summaries, or meeting/daily-review text, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Keep English for names, acronyms, code, formulas, datasets, and exact source text; translate ordinary technical concepts into Chinese.
+
 ## 何时用哪个 skill
 
 | 用户意图 | Skill |
 |----------|-------|
+| 中文科研文档、飞书页面、wiki 笔记、中文技术说明的语言规范 | [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md) plus the task-specific skill below |
+| 任意 paper card / 论文卡片生成、补全、审核、同步 | [`paper-card-delivery`](../paper-card-delivery/SKILL.md) plus the task-specific skill below |
 | 精读 PDF、MinerU、中英笔记、paper card | [`paper-deep-dive`](../paper-deep-dive/SKILL.md) |
 | 领域综述、taxonomy、文献树、challenge-insight | [`survey-builder`](../survey-builder/SKILL.md) |
 | 引用核验、claim-citation 对齐 | [`cite-verify`](../cite-verify/SKILL.md) |
 | 实验复现包、artifact、config/commit 归档 | [`repro-pack`](../repro-pack/SKILL.md) |
 | 本仓库训练/实验代码与记录 | [`research-dev-standards`](../research-dev-standards/SKILL.md) |
 
-Paper-card gate: whenever this router leads to a Feishu paper card, survey card, meeting paper card, or deep-dive card, a finished card requires official full-paper verification first. Do not promote cards based only on abstracts, project pages, README files, slides, screenshots, snippets, or secondary summaries. Use `candidate / 待核验`, `Not reported`, or an explicit verification TODO until the official paper has been read or searched end to end.
-
-Paper-card image gate: the main image should be the official core method/process figure when available, such as method, pipeline, framework, system overview, architecture, data flow, benchmark construction, or score/loss/computation flow. Do not let a teaser, qualitative showcase, result collage, demo gallery, or visual example grid be the only card image when a core method/process figure exists. Teasers may only be supplementary second images with explicit teaser/result captions.
-
-Paper-card caption gate: every selected figure needs the complete Chinese translation of the official source figure caption. A caption such as `图｜GS-IR overview`, `图｜pipeline`, `图｜teaser`, a local filename, or a self-written summary is incomplete. If the original caption has not been found and translated in full, leave `图注待补` and keep the card incomplete.
+Paper-card gate: this router only summarizes the gate. The binding contract lives in [`paper-card-delivery`](../paper-card-delivery/SKILL.md). Do not duplicate or override its source-verification, metadata, image, caption, bullet-slot, sorting, or validator rules here.
 
 ## 推荐主线（不要孤立使用）
 
@@ -45,7 +51,7 @@ Deep-dive  Builder   Pack    Stats    Nature/LaTeX
 
 - 实验与训练：始终叠加 `research-dev-standards`（`Experiment.md`、`RoadMap.md`、小步验证）
 - `repro-pack` 产物应能支撑 `Experiment.md` 中的「可复制命令 + 产物路径」
-- 飞书同步：用 `lark-doc` / `lark-drive`；创建文档优先 `--as user` 放入用户云文档
+- 飞书同步：使用 `feishu-doc-workflow` 和本地 `lark-cli`；创建或更新文档优先 `--as user` 放入用户云文档
 
 ## 阶段门（大型任务前自检）
 

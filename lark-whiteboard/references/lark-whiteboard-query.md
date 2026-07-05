@@ -1,6 +1,6 @@
 # whiteboard +query（查询画板）
 
-> **前置条件：** 先阅读 [`../../lark-shared/SKILL.md`](../../lark-shared/SKILL.md) 了解认证、全局参数和安全规则。
+> **前置条件：** 使用本机 `lark-cli` 认证，默认 `--as user`。若输入是飞书文档/知识库 URL 而不是画板 token，先按 [`feishu-doc-workflow`](../../feishu-doc-workflow/SKILL.md) fetch 文档并提取画板 token。
 
 查询画板内容，支持导出为预览图片、提取 PlantUML/Mermaid 代码，或获取飞书 OpenAPI 原生画板节点格式。
 

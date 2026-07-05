@@ -21,6 +21,10 @@ not scoring, completionism, or running every checklist. The goal is to satisfy a
 master's student's curiosity and practical goals across learning, research,
 English, and career preparation.
 
+## Canonical Chinese Technical Writing Gate
+
+When producing Chinese explanations, Obsidian-ready notes, research learning notes, field maps, or paper/method explanations, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Keep names, acronyms, formulas, code, datasets, and English-learning examples intact, but translate ordinary technical concepts into Chinese prose instead of leaving raw English phrase islands.
+
 ## First Move
 
 Before deepening, identify:

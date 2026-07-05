@@ -5,6 +5,18 @@ description: 用 Codex 直接维护客制化 LLM Wiki / Markdown 知识库。Use
 
 # LLM Wiki Skill
 
+## Canonical Chinese Technical Writing Gate
+
+For any generated Chinese wiki page, query answer, clipping distillation, source summary, synthesis, comparison, or Obsidian-ready note, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Keep this skill's wiki structure and citation rules, but do not leave avoidable English phrase islands in Chinese prose.
+
+## Canonical Paper Card Gate
+
+For any paper card / 论文卡片 work, also use [`paper-card-delivery`](../paper-card-delivery/SKILL.md). That skill is the canonical source for official-source verification, fixed format, figure/caption requirements, sorting, and validation. Keep this skill's wiki-specific placement rules, but do not finalize paper cards from this skill alone.
+
+## Canonical Paper Deep Dive Gate
+
+For any single-paper deep dive / 深读 / 详细解析 work, also use [`paper-deep-dive`](../paper-deep-dive/SKILL.md). That skill is the canonical workflow for PDF/HTML extraction, `英文原文稿`, `原文译稿`, `中文精读稿`, paper-card creation, and fidelity checks. Keep this skill's Research-Wiki placement rules, but do not finalize deep-dive deliverables from this skill alone.
+
 这个 skill 用来让 Codex 直接维护一个可长期积累的 Markdown wiki：原始资料保持不可变，Codex 增量生成和更新 wiki，Obsidian 只是可选的浏览器。
 
 ## 核心约定
@@ -70,6 +82,8 @@ Daily 输入层包括：
 - 手机截图：主要来自微信/公众号和小红书。它们默认上下文不完整、来源质量不稳定，需要更强筛选。截图原图放入 `0-Daily/Screenshots/assets/`；整理稿（`0-Daily/Screenshots/YYYY-MM-DD-简短主题.md`）**不放内嵌原图**，结构固定为：**上半「总结」**（主题、要点、与 vault 的衔接、待核验），**下半「全部原文（OCR）」**——将截图中**可见文字尽数转写**（含标题、副标题、段落、列表、小标题、按钮文案、评论等版面文字），并标 `ocr.status`；不是「摘录」或大幅删节。**写作前须校验原图**：若宽高异常（例如宽度仅数十像素的长条），说明导出损坏或误选文件，须请用户重导原图后再 OCR，**禁止**仅凭多模态「读图描述」编造正文。论文线索与判断写在「总结」中即可。B 站内容通常不走截图主流程，更适合以链接或剪藏进入 `0-Daily/Clippings/`。
 - Clippings / 剪藏：网页文章、公众号网页、访谈、博客、平台内容等网页剪藏。它们属于 Daily 日常摄取，不等同于已进入 Research-Wiki 的证据；不要把截图整理稿默认放进 `0-Daily/Clippings/`。
 
+如果用户对 clipping / 网页文章 / pasted text 明确要求 `原文`、`提取原文`、`英文原文与中文译文`、English original plus Chinese translation，或强调 `不要总结`，不要进入本 skill 的蒸馏/原子笔记流程。先使用 [`bilingual-source-archive`](../bilingual-source-archive/SKILL.md) 生成 Feishu-first 原文与中文译文页；只有后续用户要求沉淀长期知识时，再从该 Feishu source archive 蒸馏进 Research-Wiki。
+
 处理 Daily 时：
 
 - 不直接把 daily 全量摄入 wiki。
@@ -91,53 +105,18 @@ Daily 输入层包括：
 - 普通平台内容的事实主张不能直接写成 stable claim；未验证时进入 `reviews.md` 或以 `status: review` 保存。
 - 论文资源总结可进入 `raw/sources/papers/`；普通文章截图的蒸馏结果进入 `raw/sources/daily-distillations/`。
 
-论文卡片格式：
+论文卡片处理：
 
-```markdown
-#### 论文英文名
-论文中文名或简译｜**核心创新短语**
-录用信息｜机构
-PDF 链接 或 w/o. PDF
-Project page 链接 或 w/o. project page
-Code 链接 或 w/o. code
-![流程图或关键图](assets/日期/xxx.png)
-图 N｜完整中文图注：完整翻译论文原始 figure caption，保留子图标号、符号、方法名、数据集名和关键英文术语
-- 问题：现有方法的问题、作者核心洞察/分析/假设。
-- 方法：精简总结方法。
-  - 核心创新 1：本质性创新点。
-  - 核心创新 2：本质性创新点。
-- 实现：数据集、评估指标、训练/推理 GPU 时或运行开销。
-- 边界：依赖假设、可能失效场景、未解决问题。
-- 启发：对 world model 研究的启发。
-```
+- 本 skill 不再定义 paper card 的正文格式、metadata 字段、图像选择、图注标准、排序或验证门槛；这些统一以 [`paper-card-delivery`](../paper-card-delivery/SKILL.md) 为准。
+- 无论论文来自 `0-Daily` 截图、clipping、`1-Meetings` 链接、Zotero、`2-Learnings/EmbodiedWorld/` 还是 `3-Projects/`，只要要生成、补全、审核或同步 paper card，都必须先使用 `paper-card-delivery` 的六槽位格式与 source-grounded 验证流程。
+- 本 skill 只补充 Research-Wiki / local vault 归档边界；本地 Markdown 图片资产、文件命名、相对路径、缺图状态、候选状态等 paper-card 规则也统一按 `paper-card-delivery` 执行。
+- 同步到飞书时，必须同时使用 `feishu-doc-workflow`；paper-card 的图片位置、图注、布局验证和迁移残留检查按 `paper-card-delivery` 执行。
 
-放在 **`3-Projects/<项目名>/`** 的 paper cards 与 `2-Learnings/EmbodiedWorld/` 使用**同一套**字段顺序、链接行、`w/o.` 规则、五条 bullet、排序与截图标准。区别在资产位置：配图放在该项目下的 **`assets/YYYY-MM-DD/`**，文件名为 **`YYYY-MM-DD-简短主题-图像用途.扩展名`**，Markdown 内用**相对于该 `.md` 文件**的路径；`alt` 用与文件名一致的**短语义名**。需要完整图注时，优先保存**带 caption 的裁图**或从 PDF/HTML 导出时保留 figure+figcaption；避免仅用裸图又在 `alt` 里粘贴长段 caption。
-
-无论论文来自 `0-Daily` 截图、clipping、`1-Meetings` 链接还是 Zotero，都优先使用这个紧凑 **普通 Markdown** paper card 格式（`####` 四级标题 + 元数据行 + 配图 + 五条 bullet），**不使用** Obsidian `[!paper]` callout。
-
-正式 paper card 必须是基于原文的 source-grounded 总结，不是摘要改写、网页片段拼接或相关资料联想。写正式 card 前必须阅读或检索官方全文来源的 abstract、method、experiment/evaluation、conclusion/discussion、limitations（如有）以及所选图的 figure caption；arXiv 论文优先使用 arXiv HTML / PDF，非 arXiv 使用 CVF、OpenReview、出版社或会议官方 PDF。只看 abstract、project page、README、搜索片段、截图或二手总结时，只能生成 `candidate / 待核验` card，不能写成正式 paper card。`问题`、`方法`、`实现`、`边界`、`启发`必须可回溯到原文；推断必须明确标注为推断。
-
-每张正式 paper card 必须包含一张本地图片；缺图的 card 只能临时标记为候选，不算整理完成。图片行引用本地语义化命名的流程图或关键图。卡片内部尽量不要空行。核心创新短语放在中文标题右侧，用 `｜**核心创新短语**` 连接；它必须是一个可扫读的短语，不写成长句，作用是极简标明论文的核心创新、核心抓手或最值得记住的机制。录用信息和机构写在同一行，用 `｜` 分隔，例如 `CVPR 2025｜清华大学 / 上海交通大学`；如果没有正式录用信息，写 `arXiv 2025｜机构` 或 `未找到｜机构`。**不要罗列长串作者名**；同一行只写 **1–2 个重点单位**（用 `/` 连接）与 **至多 1–2 位重点作者**（用 `·` 与机构分隔，其余用 `等`），例如 `NeurIPS 2025｜UC Berkeley / Meta FAIR · LeCun, Bar`。专题索引页（如某学者 WM 子索引）以该路线核心单位与核心导师为准，勿抄全作者栏。PDF、project page、code 链接没有找到时分别写 `w/o. PDF`、`w/o. project page`、`w/o. code`，不要留空，也不要写泛化的 `未找到`。流程图优先选择 overview、pipeline、architecture、method、framework、score computation 等能概括方法流程的图；如果没有标准流程图，选择最能表达方法结构、benchmark 设计、系统架构或能力分解的关键图。截图只保留图本体和图注，不要截入上下文正文。图注必须是论文原始 figure caption 的完整中文翻译，保留 figure number、子图标号、符号、方法名、数据集名和关键英文术语；不能只写 `图｜GS-IR overview`、`图｜pipeline`、`图｜teaser`、本地文件名或自己概括的短标题。同步到飞书时，图片应变成 Feishu 原生 image block，并放在 `PDF / Project page / Code` 元信息之后、五个 bullet 之前；不要把图片直接放在四级标题下面。读者可见正文里不要残留 `图像： EW_IMG_...png`、`Image: assets/...`、`![[...]]`、本地文件名或本地 vault 路径。bullet 总结固定 5 条，语义槽位固定如下：1. 问题，写现有方法的问题、作者核心洞察/分析/假设；2. 方法，精简总结方法并用两条子 bullet 写核心创新点，尤其是本质性创新；3. 实现，写数据集、评估指标、训练/推理 GPU 时或运行开销，不展开过细 baseline 和实验结果；4. 边界，写依赖假设、可能失效场景、未解决问题；5. 启发，必须写对 world model 研究的启发，并作为最后一条。启发应面向世界模型的表示、预测、规划、因果、泛化、数据、评估或科研方法论，不默认绑定 avatar / 3DGS。
-
-论文卡片在同一文档或同一小节中，必须按日期从新到旧排列。优先使用正式录用年份和会议时间；没有会议信息时使用 arXiv 首发/最新版本年份；如果同年有多篇，按月份或 arXiv 编号近似排序。综述、路线图或总览性质条目只有在小节名明确为 `Survey`、`Overview` 或 `Roadmap` 时才可以放在该小节顶部；常规论文 card 必须保持新到旧。整理完成前必须检查排序，不能只依赖写作时的主观顺序。
-
-Meeting 论文处理完成后，`1-Meetings/assets/` 只保留最终会被 meeting 文档引用的流程图或必要图像。下载的 PDF、整页渲染截图、临时裁图和其他中间文件必须删除。图片文件名必须可读且稳定，不使用 `image.png`、`image 1.png`、`figure.png` 这类无意义名称；统一使用 `YYYY-MM-DD-简短主题-图像用途.png`，例如 `2025-10-18-coadaptation-score-flow-with-caption.png`、`2025-11-11-genpriv-st-vae-overview.png`。Markdown 引用和 alt text 也要同步使用语义化名称。
-
-论文截图标准：
-
-- 每张正式 paper card 通常保留一张主图，自动整理默认只放一张；必要时最多可以放两张图。第二张图只在它补充了主图无法表达的关键信息时使用，例如核心 benchmark construction、重要结果矩阵、状态/数据流和方法图分离、或论文核心贡献本来由两张图共同表达。teaser / 结果展示图只能作为第二张补充图，不能在存在核心方法流程图时单独作为主图。
-- 主图优先级为：方法 overview / pipeline / architecture / framework / system overview / data flow / score computation / loss or computation flow / benchmark construction；没有这些时，再选择最能表达核心机制的关键图。第二张图优先选择与主图互补的 benchmark / data construction / result schema / task setup，不重复展示相同信息。
-- paper card 配图优先级：1. arXiv HTML / 论文 HTML / project page 中的原始 figure 图片，并在 card 内紧跟一行 caption；2. MinerU / Docling 等结构化解析输出的 referenced image 与 figure caption；3. 只有前两者不可用时，才从 PDF 手工裁图。不要在可直接提取 HTML figure 的情况下默认截图。
-- 截图必须包含图本体和对应图注；正式 paper card 的文字图注必须完整翻译原始 figure caption。图注很长时也不能只保留标题或第一段；若 Feishu 原生 caption 太长，就在图下紧接一个普通段落放完整中文图注，并在 native caption 写 `图 N｜完整图注见下方`。
-- 截图边界要紧：不能截入大段正文、页眉页脚、参考文献、无关段落或相邻图；上下只保留必要留白和图注。
-- 不优先使用 teaser、纯效果图、结果拼图或定性案例；只要官方全文或项目页存在核心方法 / pipeline / architecture / framework / data-flow / benchmark-construction 图，就必须以该类图为主图。只有论文确实没有方法流程图，或 teaser 本身就是论文核心贡献机制的唯一结构化表达时，才可作为主图，并需要在 caption / note 中说明这个判断。
-- 如果自动截图包含过多正文、图注缺失、图太小、图和 caption 不对应，不能算完成，必须重新裁切或换图。
-- 如果论文没有 PDF，但项目页有官方 overview 图，可以使用项目页图；若只有视频，则截取能代表方法或系统的关键帧，并在 alt text 中标明是 key visual。
-- `1-Meetings/assets/YYYY-MM-DD/` 只保存最终图；PDF、整页截图、临时裁切、中间渲染图必须清理。`2-Learnings/EmbodiedWorld/assets/` 同理只保存最终卡片图和必要长期资产。
+Meeting 论文处理完成后，`1-Meetings/assets/` 只保留最终会被 meeting 文档引用的流程图或必要图像；下载的 PDF、整页渲染截图、临时裁图和其他中间文件必须删除。具体 paper-card 图片资产命名和清理规则按 `paper-card-delivery` 执行。
 
 论文处理分层：
 
-- Paper card 阶段是**阅读全文后的轻量索引**：只需要元信息、1-2 张关键图、核心创新短语和 5 条固定 bullet。目标是快速建立可扫读入口，不展开全文结构；但它仍必须基于官方全文核验，不能由摘要、网页片段、项目页或二手总结直接生成。
+- Paper card 和 deep dive 的边界统一以 `paper-card-delivery` 为准：paper card 是阅读全文后的轻量索引，不是全文结构化解析或完整翻译。
 - Dive into paper / 深入论文阶段才进行 PDF-to-Markdown 解析。当用户说“深入读这篇论文”“详细解析”“dive into”“转成 md”“逐节分析”“做深读笔记”时，优先把 PDF 转为结构化 Markdown，再基于 Markdown 深读。
 - PDF-to-Markdown 优先考虑 MinerU、Docling、Marker、Unstructured、PDFFigures2 这类结构化解析工具；若本机未安装，先用轻量 PyMuPDF / pdfplumber 作为 fallback，不把缺工具作为停止理由。
 - 当前 vault **默认**本地主工具为 **MinerU**：便捷脚本 **`.tools/mineru-md.sh INPUT.pdf OUTPUT_DIR`**（默认 `pipeline` 后端，纯 CPU 可跑）。脚本保存在 vault 内，MinerU Python 环境默认保存在本机 `~/Library/Application Support/WorldModelVault/envs/mineru-env/`，不随 iCloud vault 同步。做深读解析时优先使用该脚本；输出目录结构与 MinerU 版本相关，以生成物为准。若仍需 Docling，使用 `.tools/setup-docling-mac.sh` 与 `.tools/docling-md.sh`。
@@ -182,7 +161,7 @@ Feishu / Lark wiki or docs page, organized by meeting date
 - 不直接把整场会议记录编译进 wiki，只提取高价值科研片段。
 - 默认先写飞书 meeting 页面；只有当 meeting 中的内容需要长期进入 Research-Wiki 时，再从飞书纪要蒸馏 `raw/sources/meeting-extracts/YYYY-MM-DD.md`，不要把完整会议纪要复制进 Research-Wiki。
 - 豆包总结中的关键信息需要和图像、论文链接或原论文互相校验。
-- 如果图像或链接中识别到论文线索，自动进入论文追踪流程：搜索论文资源，总结论文，判断与世界模型研究的相关性；正式 meeting 文档中的论文应优先补成 paper card，含本地关键图、元信息、链接和五条固定 bullet。
+- 如果图像或链接中识别到论文线索，自动进入论文追踪流程：搜索论文资源，总结论文，判断与世界模型研究的相关性；正式 meeting 文档中的论文应优先按 `paper-card-delivery` 补成 source-grounded paper card。
 - 与世界模型高度相关的论文资源总结可进入 `raw/sources/papers/`；组会启发、科研通法、问题意识进入 `raw/sources/meeting-extracts/`。
 - 未验证事实主张进入 `reviews.md` 或以 `status: review` 保存。
 - 推荐 meeting 文档结构：frontmatter、简述、论文列表、Paper Cards、保守纪要/讨论脉络、横向结论、会后头脑风暴、待办。

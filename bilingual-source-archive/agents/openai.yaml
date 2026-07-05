@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bilingual Source Archive"
+  short_description: "Feishu-first English original plus Chinese translation archive"
+  default_prompt: "Use $bilingual-source-archive to archive source text as English original plus Chinese translation in Feishu without summary-first formatting."

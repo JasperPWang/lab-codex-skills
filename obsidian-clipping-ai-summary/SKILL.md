@@ -7,6 +7,14 @@ description: Use when summarizing or revising AI总结 sections in Obsidian clip
 
 Use this skill when the user asks to整理、补充、重写、精简、归纳 `AI总结` for an Obsidian clipping, Bilibili note, transcript note, meeting clipping, or subtitle-derived note.
 
+## Bilingual Source Archive Routing
+
+If the user asks for `原文`, `提取原文`, `英文原文与中文译文`, English original plus Chinese translation, or says `不要总结` / `不要乱总结`, do not use this skill's summary workflow as the final deliverable. Use [`bilingual-source-archive`](../bilingual-source-archive/SKILL.md) instead, and use this skill only as a source-reading helper if needed.
+
+## Canonical Chinese Technical Writing Gate
+
+For `AI总结`, Feishu investigation pages, Mermaid labels, Chinese captions, and Chinese clipping summaries, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Keep source titles, method names, acronyms, datasets, and code names unchanged, but translate ordinary technical concepts into Chinese.
+
 ## Output Style
 
 - Write in Chinese-first prose.

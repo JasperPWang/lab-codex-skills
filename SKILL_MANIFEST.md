@@ -16,11 +16,14 @@ copies.
 ## User-Maintained Lab Skills
 
 - `ai-research-workflow`
+- `bilingual-source-archive`
+- `chinese-technical-writing`
 - `daily-research-review`
 - `feishu-doc-workflow`
 - `intern-interview-intake`
 - `lark-whiteboard`
 - `obsidian-clipping-ai-summary`
+- `paper-card-delivery`
 - `paper-deep-dive`
 - `paper-rag`
 - `paper-to-slides-skill`
@@ -95,4 +98,3 @@ Hidden migration archives are kept locally for recovery but excluded from Git:
 - `.archive-before-consolidation-*/`
 - `.archive-before-vault-consolidation-*/`
 - `.archive-before-vault-link-*/`
-

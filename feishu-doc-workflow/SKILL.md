@@ -9,6 +9,22 @@ description: Feishu/Lark document and wiki workflow for reading, editing, struct
 
 Use the local `lark-cli` for Feishu/Lark document work. This skill is a document workflow, not just a CLI wrapper: preserve hierarchy, content structure, image dimensions, and post-write verification. Prefer CLI reads and writes over browser automation for Feishu links because this machine already has CLI auth configured.
 
+## Canonical Chinese Technical Writing Gate
+
+For any Feishu task that creates or revises Chinese reader-facing research/technical prose, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). This includes summaries, paper cards, deep-dive notes, meeting pages, daily reviews, investigation pages, figure captions, TODOs, and Chinese translations. This Feishu workflow remains authoritative for live-document safety, hierarchy, image/layout preservation, native media, and fetch-back verification, but it must not leave avoidable English phrase islands in Chinese prose.
+
+## Canonical Paper Card Gate
+
+For any Feishu task that creates, normalizes, audits, or syncs paper cards, also use [`paper-card-delivery`](../paper-card-delivery/SKILL.md). That skill is the canonical paper-card standard. This Feishu workflow remains authoritative for live-document safety, native image insertion, image/layout preservation, and post-write verification, but it must not be the only source of card content rules.
+
+## Canonical Bilingual Source Archive Gate
+
+For any Feishu task where the user asks for `原文`, `提取原文`, `英文原文与中文译文`, English original plus Chinese translation, or says not to summarize, also use [`bilingual-source-archive`](../bilingual-source-archive/SKILL.md). That skill is the canonical source-preservation standard. This Feishu workflow remains authoritative for page hierarchy, `lark-cli` writes, and fetch-back verification, but it must not turn a source-archive request into a summary or interpretation page.
+
+## Canonical Paper Deep Dive Gate
+
+For any Feishu single-paper deep dive, 深读, detailed-read, or 详细解析 task, also use [`paper-deep-dive`](../paper-deep-dive/SKILL.md). That skill is the canonical workflow for source extraction, `英文原文稿`, `原文译稿`, `中文精读稿`, paper-card creation, and fidelity checks. This Feishu workflow remains authoritative for live page creation, hierarchy, native images, formulas after writeback, and fetch-back verification.
+
 ## Quick Start
 
 Use the installed command:
@@ -88,32 +104,42 @@ If either title is `Untitled`, immediately run the Drive PATCH above with the `o
 
 ## Paper Card Images
 
-When syncing paper cards to Feishu, use only reliable paper figures as card images:
+When syncing paper cards to Feishu, use [`paper-card-delivery`](../paper-card-delivery/SKILL.md) for all paper-card content standards. This Feishu workflow only owns document-safe image operations:
 
-- Prefer the paper's core method/process figure with matching captions: method, pipeline, framework, system overview, architecture, data flow, benchmark construction, score/loss/computation flow, or other figures that explain how the work operates.
-- Do not use a teaser, qualitative showcase, result collage, demo gallery, or visual example grid as the only paper-card image when a core method/process figure exists in the official paper HTML/PDF or project page. A teaser may be kept only as a second supplementary image when it adds distinct context, and its caption must label it as `teaser` / `结果展示` rather than presenting it as the method figure.
-- When auditing or repairing existing paper cards, if the only image is a teaser/result showcase and a core method/process figure is available, insert or replace with the core figure first. Preserve the teaser only when the card can support a second image without clutter and it adds information the core figure does not.
-- If no core method/process figure exists after checking the official paper HTML/PDF/project page, state that explicitly in the caption or note and use the most structurally informative fallback figure; do not silently present a teaser as the method image.
-- Reject paper first pages, title pages, abstract pages, arXiv page screenshots, and generic PDF page renders as card images.
-- Do not fall back to the largest raster image when no credible figure is found.
-- When the user provides a paper figure image or screenshot, especially a manually captured image with the original caption visible, treat the visible caption as source text for the Feishu image caption. Translate the complete original caption into Chinese, preserve the figure number, subfigure labels, symbols, method names, dataset names, and important English technical terms when needed, and write it into the native image caption / description, e.g. `图 2｜完整中文图注：...`.
-- Official HTML is also a valid caption source. For arXiv HTML, publisher / conference HTML, and official project pages, search the page's `figure` / `figcaption`, nearby figure labels, image alt text, and visible figure descriptions before using the PDF. Translate the verified original figure caption fully into Chinese for the Feishu native image caption. Do not shorten it to a title such as `图｜GS-IR overview`, `图｜pipeline`, `图｜teaser`, or a self-written summary. Do not use unrelated page prose as a figure caption unless it is clearly tied to that exact figure.
-- A finished paper-card image caption must be the complete Chinese translation of the source figure caption. It is incomplete if it only contains a figure title, method name, local filename, English overview phrase, or a brief label without the caption content. If Feishu native caption length becomes a real limitation, keep the native caption as `图 N｜完整图注见下方` and place the full Chinese translated caption in the immediately following paragraph.
-- Do not invent caption content that is not visible in the provided image or verified from the official paper / project page. If the screenshot has no readable caption and no official caption has been checked, write `图注待补：需要从论文或项目页核验并完整翻译原始 caption。`.
+- For new images inserted with `docs +media-insert`, pass `--caption '<Chinese caption>'`; this writes the native Feishu image caption, not just a normal paragraph.
+- For paper-card figures, the complete Chinese figure caption belongs in the native image caption field. Do not leave `图 N｜完整中文图注：...` as a separate ordinary paragraph under the image unless native captions are unavailable and the fallback is explicitly reported.
+- Select paper-card figure sources according to `paper-card-delivery` before any Feishu upload: user-provided or user-approved manual screenshots/crops first, official HTML / arXiv HTML / publisher HTML and project-page assets next, MinerU structured PDF extraction next, and agent manual PDF/browser screenshots only as a last resort after visual QA. This order is mandatory. Do not upload an agent PDF crop when a usable user-approved screenshot or HTML/project figure asset with a matching caption exists; do not use ad hoc PDF crops as the default Feishu paper-card image source.
+- If a Feishu paper-card figure comes from an agent manual PDF crop/screenshot, treat it as incomplete until the task notes record why user-approved screenshots, HTML/project assets, and MinerU extraction were unavailable or unusable. Prefer `配图待补` over filling the card with an unverified or mismatched agent PDF crop.
+- Last-resort agent PDF crops must satisfy the `paper-card-delivery` crop quality standard before upload: render from the source PDF at high DPI rather than screenshotting a viewer, crop tightly to the figure, preserve labels/arrows/legends, use lossless PNG when possible, and visually inspect readability and caption match. After upload, fetch with full detail and verify original aspect ratio, dimensions, no `512 x 512` fallback, and no obvious blur.
 - Reuse user-captured or previously verified paper-card figures for the same paper before extracting or cropping a new one. Match by stable paper identity such as English title, arXiv ID / DOI, method name, and figure number or caption; do not rely on local filenames alone.
 - When the same paper card is used on multiple Feishu pages, preserve the already approved image and Chinese caption unless a page-specific reason requires a different figure. If copying from an existing Feishu card, fetch with full detail when needed and preserve the native image block / caption rather than rebuilding the figure from the paper.
 - If a user-provided screenshot should be reused across pages, keep a reusable copy under an explicit non-root library such as `.tools/outputs/paper-card-figures/<paper-id-or-normalized-title>/`. These retained user-captured figure assets are not disposable extraction intermediates, but OCR text files, processing outputs, and task-local duplicates must still be deleted after Feishu verification.
-- For new images inserted with `docs +media-insert`, pass `--caption '<Chinese caption>'`; this writes the native Feishu image caption, not just a normal paragraph.
 - Insert or preserve paper-card figures using the image's original pixel width and height. If the figure is copied from an existing Feishu page, carry over the full-detail image metadata; if it is inserted from a local/user-provided file, inspect the local file dimensions before upload and verify the resulting Feishu block keeps the same aspect ratio. Do not allow automatic square placeholders such as `512 × 512` to become the final card image size.
 - If an existing paper card has multiple images in one visual row, grid, or adjacent group, preserve that relationship exactly. Do not rebuild the group, equalize image widths, alter grid ratios, or split/merge rows while normalizing text, metadata, captions, or bullet content. A same-row two-image layout is user-authored layout state, not disposable formatting.
 - For existing image blocks, prefer an in-place Docx API update instead of re-uploading or reinserting the image: call `PATCH /open-apis/docx/v1/documents/<docx_token>/blocks/batch_update` with `replace_image.token` set to the existing image `src` / file token and `replace_image.caption.content` set to the Chinese caption. Fetch with `--detail full` first to get the image block id, token, width, height, scale, and current caption; include the existing `scale` in `replace_image` so adding a caption does not resize the image.
 - Only if the native caption / description API is unavailable or fails, insert a normal Chinese caption paragraph immediately below the image and keep it visually tied to that image; mention this fallback to the user.
 - If OCR or visual extraction is used to read a screenshot caption, delete OCR text files, image-processing intermediates, and temporary figure assets after the Feishu write has been fetched back and verified.
 - In a Feishu paper card, place the native image block after the metadata paragraph link line (`PDF｜Project｜Code`) and `Dataset`, before the fixed bullet slots. Do not leave the image directly under the `####` title.
-- If no reliable core method/process figure is available, write `配图待补：需要从论文 HTML/PDF 或项目页补充可信方法流程图；teaser / 结果展示图不能单独作为主图。` instead of inserting a questionable image.
+- For paper-card metadata compactness, verify the native Docx block structure, not only fetched Markdown. Feishu Markdown export may show blank lines even when a single text block contains hard line breaks. After writing, fetch `/open-apis/docx/v1/documents/<docx_token>/blocks` and run `paper-card-delivery/scripts/validate_feishu_paper_card_blocks.py`; each card heading should be followed by one text block containing the four hard-break metadata lines.
+- For paper-card titles, keep the `####` heading as the exact official English paper title from the official paper page, arXiv/OpenReview/CVF/publisher metadata, or first page of the official PDF. Do not replace a full title with a method acronym or topic label, but also do not invent a longer subtitle when the official title itself is short. The block-level validator should be used to catch CVF acronym-only headings by comparing the heading to the PDF filename slug.
 - Do not leave Obsidian migration residue such as `图像： EW_IMG_...png`, `Image: assets/...`, local file names, or local vault paths in the reader-facing Feishu page. After inserting the actual figure as a native Feishu image block, keep only the Chinese figure caption or explanation that helps the reader; remove local filename labels.
 - Before syncing a paper-card source file, run a text check for `first page`, `first-page`, `title page`, and `paper page`; after syncing, fetch the Feishu page and verify those strings are absent unless they are part of normal prose.
 - After syncing a paper-card page, fetch it and verify that visible body text contains no `图像：`, `EW_IMG`, `assets/`, `![[`, or local filesystem paths. Image block `name` attributes may still contain source filenames; those are acceptable if they are not visible body text.
+
+## Lab Watchlist Teacher Pages
+
+When editing teacher / lab profile pages under the user's `Lab Watchlist` Feishu wiki, keep every teacher page in a consistent academic-homepage style:
+
+- Use one page per teacher or lab. Do not create a nested `Paper Cards` child page under a teacher page unless the user explicitly asks; put paper cards directly in the teacher page.
+- Keep the top-level structure compact and consistent:
+  - `个人信息`: institution, position, homepage / scholar / GitHub / lab links, and one short route-positioning paragraph.
+  - `路线总览`: one route-level summary sentence plus a route overview table. The table should usually use columns such as `研究路线`, `核心问题`, `代表工作`, and `阅读价值 / 关注点`.
+  - `Paper Cards`: direct paper cards, optionally grouped by year, theme, or route.
+  - Optional `Source Links` only when it contains durable official links; avoid generic note dumps.
+- Use [`paper-card-delivery`](../paper-card-delivery/SKILL.md) for paper-card verification-status placement and missing-field labels. This section only controls teacher/lab page layout.
+- The `路线总览` table is a navigation aid, not a second paper-card index. Keep it route-level and concise: list method families / research lines, their core problems, representative papers, and why that line matters for the user's avatar / world-model / 3D foundation interests.
+- Preserve user-edited page wording. If a user has already adjusted headings or route prose, insert the route table under the existing `路线总览` heading instead of overwriting the section.
+- When normalizing an existing page, fetch first, use block-level insertion or text replacement, and verify after writing that paper-card counts, image counts, table counts, and the absence of local-path / Obsidian residue are as expected.
 
 ## Meeting Notes
 
@@ -124,7 +150,7 @@ When organizing dated research-group meeting pages in Feishu, use the user's dat
 - If the personal notes and transcript conflict, trust the personal notes first. Mark transcript-only or uncertain claims as `转写疑似` / `待核验` rather than turning them into facts.
 - Preserve both raw materials in the Feishu page. Write the organized report above or before the raw sections, and keep clear source sections such as `原始材料：个人笔记` and `原始材料：豆包转写`. Do not delete or overwrite the user's raw notes or transcript.
 - Use this default report structure: `组会整理报告`, `Paper Cards`, `保守纪要`, `讨论脉络 / 老师反馈`, `会后头脑风暴`, `TODO`, `原始材料：个人笔记`, `原始材料：豆包转写`.
-- For papers mentioned in the personal notes or transcript, create or normalize paper cards using the fixed Feishu paper-card format. Use the user's provided PDF links and figures when present, preserve image dimensions with full-detail metadata, and mark missing `Dataset`, `定义`, or `结论` as `待核验` unless official sources have been checked.
+- For papers mentioned in the personal notes or transcript, create or normalize paper cards with [`paper-card-delivery`](../paper-card-delivery/SKILL.md). Use this Feishu workflow only for preserving user-provided links/figures, image dimensions, native blocks, raw materials, and post-write verification.
 - Treat `保守纪要` and `会后头脑风暴` differently. The conservative notes must stay grounded in the personal notes, transcript, paper links, and visible figures. The brainstorm section may intentionally connect the meeting to JEPA, world models, 3DGS, avatar, long-tail learning, music generation, origami art, or other group topics, but it must be labeled as brainstorming rather than transcript fact.
 - End with concrete TODOs from the meeting plus any follow-up paper-card verification tasks. Fetch after writing and verify that the report sections exist, raw-material sections remain, image dimensions are preserved, and the wiki child page title/hierarchy did not change.
 
@@ -170,7 +196,7 @@ For paper deep dives and complete manuscript pages, formulas are source-fidelity
 
 ## Research Map Trees
 
-When organizing a Feishu survey / research-map page, use a parent-page plus subpage structure by default:
+When organizing a Feishu survey / research-map page, use an integrated parent page plus focused supporting subpages by default:
 
 - Treat the user's Feishu page `如何构建literature tree（如何进行literature review，构建novelty tree和challenge-insight tree）` as the canonical method/example for literature organization and novelty discovery: `<FEISHU_OR_LARK_URL>` (doc token `<DOC_TOKEN>`). When building or revising literature trees, novelty trees, challenge-insight trees, or research-map pages, read/reference this page first unless the user gives a more specific template.
 - Use its novelty taxonomy when organizing papers:
@@ -180,60 +206,23 @@ When organizing a Feishu survey / research-map page, use a parent-page plus subp
   - Type 4 novelty: module-level improvement to an existing pipeline.
 - Build `Literature Tree` nodes in this order: collect papers in the same direction, identify milestone tasks and their first/seminal papers, group papers by milestone task, identify representative pipelines/representations and their first/seminal papers, subdivide by module-level novelty, then add or revise milestone tasks as field understanding improves.
 - Build `Challenge-Insight Tree` nodes by collecting field challenges first, then the insights/solution ideas addressing each challenge, then representative papers under each insight. Do not make a generic challenge tree; anchor challenges and insights in actual literature and the user's research goal.
-- The parent page is a concise survey hub. It should contain summary-level content only: research question, scope, key takeaways, recommended route, links to subpages, and a short status / TODO list.
-- Create a dedicated subpage for editable survey trees. This page should include the literature tree, challenge-insight tree, and any method / task / benchmark trees needed for navigation.
+- The parent page is the main literature-review entry, not a thin link hub. It should contain the research question, scope, key takeaways, recommended route, a short status / TODO list, and the editable survey trees directly in the page.
+- Put the editable survey trees in the parent page by default. Include at least `General Goal Literature Tree` and `Challenge-Insight Tree` as native Feishu whiteboards, plus a compact bilingual editable outline or table below them. Create a separate `Tree Maps` child page only if the user explicitly asks for separation or the trees are too large for the parent; even then, keep a compact tree-map summary in the parent.
 - Create one dedicated `Paper Cards` subpage for the survey. This page is a browsable collection that contains many paper cards in sequence. Do not create one child page per paper unless the user explicitly asks for per-paper pages.
 - Create a dedicated subpage for the full survey report. This is usually the long report copied from ChatGPT Deep Research or another long-form source. Preserve it as the source report page, then distill only the summary into the parent page.
-- The parent page should link to all three subpages and make their roles obvious: `Tree Maps`, `Paper Cards`, and `Full Survey Report` or equivalent Chinese titles.
+- The parent page should normally link only to `Paper Cards` and `Full Survey Report` or equivalent Chinese titles. Do not list `Tree Maps` as a required child page unless the tree page is an explicit exception.
+- When repairing an older survey where the parent links to a separate `Tree Maps` child page, merge that content into the parent first: create or copy native Feishu whiteboards in the parent, copy the bilingual outline / table, remove the Tree Maps link from the parent `子页面` list, and leave the old child page untouched as a non-primary legacy copy unless the user explicitly asks to delete it.
 - If the user provides an existing long report page, treat that page as the `Full Survey Report` child page when possible; do not leave the parent page as an overlong pasted report.
 - Do not create placeholder survey artifacts. Before writing the parent summary, tree maps, or paper-card page, fetch and read the full survey report, identify the actual task/method/benchmark/research-gap structure, and write content from that understanding.
-- The `Paper Cards` subpage must contain real, report-grounded cards for the important papers mentioned in the survey, usually grouped by theme, method family, or reading priority. Avoid `待补` placeholders except for genuinely missing external links or figures after a best-effort check; in those cases, state what is missing specifically.
-- Paper-card work is a source-verification task, not a formatting task. Do not mechanically convert old summaries into the new card format or fill missing slots from plausibility. For each paper card, first open and inspect the paper's official full-paper source: for arXiv papers, prefer `https://arxiv.org/html/<arxiv-id>` when it exists because it is easier to search for affiliations, project/code links, figures, datasets, experiments, limitations, and conclusions; use the PDF as the fallback or authority when HTML is unavailable, incomplete, or ambiguous. For non-arXiv papers, use the official CVF/OpenReview/publisher PDF or official proceedings page. Verify the title, venue, institution/authors when needed, task definition, input/output, supervision/data, training/inference flow, benchmarks/metrics, experiments, limitations, and conclusions from those sources before writing reader-facing claims.
-- Treat the official full paper (arXiv HTML/PDF, CVF PDF, OpenReview PDF, or publisher PDF) as the primary evidence for most paper-card facts. Web search, abstracts, project pages, GitHub, Semantic Scholar, Hugging Face, and conference pages are important supplementary sources for links, code, context, updates, and missing metadata. For `Dataset`, a reliable web summary or official page may be used when it explicitly names the dataset(s); if it does not, search the official full paper because the dataset should normally be stated there. Web snippets do not replace reading/searching the official full paper for method, experiment, compute, ablation, limitation, and conclusion claims. If the official full paper is unavailable or inaccessible, state that explicitly and mark affected fields as `待核验` or `Not reported`; do not finalize a card from snippets alone.
-- Do not retain downloaded source material after paper-card verification. Any temporary PDF, HTML, extracted text, OCR/MinerU output, figure crop, or source asset used to fill a card must be deleted after the Feishu page has been written and fetched back successfully. Keep only the final reader-facing Feishu content unless the user explicitly asks for a local retained artifact.
-- Always search for code before finalizing a paper card: check the paper text, official project page, author page, and official GitHub/organization if linked; then search GitHub by paper title, method name, and lead author/lab. Mark code as verified only when it is official or clearly maintained by the authors/project. If no reliable repository is found, write `w/o. verified code` or `w/o. code`; do not guess a repository from a similar name.
-  - `定义`, `方法`, `实现`, `结论`, and `边界 / 启发` must be source-grounded. If a statement is an inference from the verified sources, label it as such; otherwise write `未报告`, `不适用`, or `待核验` rather than pretending the card is complete. Reported compute must come from the paper/project; if GPU, memory, time, FPS, or latency are absent, write `计算资源：未报告`.
-- If a card has not been fully source-verified, mark the card or the affected fields as `待核验` and keep the wording conservative. Do not present unverified task definitions, claims, venues, code, datasets, or conclusions as confirmed facts.
-- Paper cards must use the user's compact fixed format, not an ad-hoc review format. Use the enhanced format by default when the user is surveying an unfamiliar field or the paper's task setup is not already obvious to them:
-  - Start each card with `#### Paper English Title`.
-  - The second line must be `短译名｜核心创新点 / takeaway 短语`，prefer Chinese. Do not write a plain `中文名 / 短译名` line. The takeaway phrase should help the user recognize why the paper matters at a glance.
-  - Treat the short translation, venue/institution, compact link line (`PDF｜Project｜Code`), and `Dataset` as one metadata paragraph with line breaks, not separate paragraphs. In Markdown sources for Feishu import, do not insert blank lines inside this metadata block; use Markdown hard line breaks by ending each metadata line except the last with two spaces. Example:
-    ```markdown
-    #### Paper English Title
-    人网格恢复-高斯化身闭环｜把 HMR 姿态估计和 avatar 渲染优化放回同一个可微循环  
-    arXiv 2026-05-04｜University of Michigan 等  
-    [PDF](https://arxiv.org/pdf/2605.02784)｜w/o. project page｜w/o. verified code  
-    Dataset: H36M, NeuMan, 3DPW
-    ```
-  - Then include venue + institution on one line using `｜`, followed by one compact link/status line and `Dataset: ...` within that continuous metadata paragraph. Verify institution / affiliation from arXiv HTML when available, otherwise from the paper PDF front matter, author footnotes, publisher PDF page, OpenReview/CVF page, or an official project/author page. If the official full paper is accessible, do not leave institution as `待核验`, `Institution: Not fully verified`, or `Affiliations in paper`; read the source and fill the actual institution names. If there are many affiliations, list the primary visible institutions plus `等`, but only after checking the source. Use `Institution: 待核验` only when the official full paper and official metadata are inaccessible.
-  - `PDF:` must point directly to the PDF file, not an abstract page, HTML page, search result, or project page. For arXiv papers, use `https://arxiv.org/pdf/<arxiv-id>` rather than `https://arxiv.org/abs/<arxiv-id>` or `/html/<arxiv-id>`.
-  - For available links, use compact linked labels rather than pasting full URLs in the metadata text: `[PDF](...)｜[Project](...)｜[Code](...)`. In Feishu XML this should appear as linked text like `<a href="...">PDF</a>｜<a href="...">Project</a>｜<a href="...">Code</a>`.
-  - For missing links, keep the missing-status text in the corresponding slot without an extra field prefix, e.g. `[PDF](...)｜w/o. project page｜w/o. verified code`. Use `w/o. PDF`, `w/o. project page`, or `w/o. verified code` when a link is not found; do not write `Project:` or `Code:` inside the compact link line.
-  - Include a reliable core method / pipeline / architecture / framework / system overview figure when available. Do not use a teaser, qualitative showcase, result collage, demo gallery, title-page screenshot, or PDF page render as the only paper-card image when a core method/process figure exists. If no reliable core figure has been checked yet, omit the image or mark `配图待补` rather than inserting a questionable one.
-  - Use this exact header/metadata pattern:
-    `#### Paper English Title`
-    `短译名｜核心创新点 / takeaway 短语`
-    `Venue｜Institution`
-    `PDF｜Project｜Code` as compact linked labels or missing-link statuses
-    `Dataset: ...`
-    These metadata lines must be separated by line breaks inside one paragraph, not by blank lines or separate paragraphs.
-  - `Dataset:` is mandatory and replaces the old `Data / Benchmark:` field. For clothing / physics / simulation-ready pages, put simulation metadata on the same line after an ASCII separator: `Dataset: H36M, NeuMan | Simulation: Not reported` or `Dataset: 4D-Dress | Simulation: CLO3D / Marvelous Designer`. Keep `Dataset:` terse: list only dataset names or the paper's explicit dataset phrase, separated by commas or `；`. Keep `Simulation:` terse as well: name only the simulator, physics engine, simulation framework, or explicit simulation setting used by the paper, such as CLO3D, Marvelous Designer, C-IPC, XPBD, MPM, MuJoCo, Isaac Gym, Blender physics, or `Not reported`; do not include long explanations in metadata. Only fill `Simulation:` after checking the official full paper HTML/PDF or the official project page; if a paper merely says it is simulation-ready but does not name the simulator, write `Simulation: Not reported`, and if the official source has not been checked yet, write `Simulation: 待核验`. Do not infer simulator names from the method family or from the word `simulation-ready`.
-  - If a reliable web summary, official project page, conference page, or abstract explicitly names the dataset(s), it is acceptable to fill `Dataset:` from that source. If not, search the official full paper, preferably arXiv HTML for arXiv papers and otherwise the PDF, usually in the dataset, experiment, implementation, or benchmark section; dataset information should be present somewhere in the paper. Do not infer dataset names from the method family. Do not include benchmark task names, metrics, capture setup, scale, modalities, train/eval split, access links, or explanatory prose in this metadata field. Put those details in `定义` or `实现` only when they matter. If the dataset still cannot be found after official full-paper inspection, the card is incomplete: write `Dataset: 待核验` and revisit rather than guessing.
-  - End with exactly the fixed six bullet slots: `定义`；`问题`；`方法`；`实现`；`结论`；`边界 / 启发`.
-  - The six fixed bullet slots are Chinese-first reader notes. Do not leave raw English technical phrases in bullet content, such as `motion-dependent cloth dynamics`, `simulation-ready garment asset`, or `physically plausible deformation`, unless they are method names, model names, dataset names, code/link statuses, mathematical symbols, or exact quoted labels from a figure/table. When an English technical term is useful, write the Chinese term first and keep the English only as a parenthetical gloss, e.g. `运动相关布料动力学（motion-dependent cloth dynamics）`, `仿真就绪服装资产（simulation-ready garment asset）`, or `物理合理形变（physically plausible deformation）`. In bullet content, prefer Chinese placeholders such as `未报告` / `不适用` / `待核验`; keep English placeholders like `Not reported` only in compact metadata fields where the user has explicitly standardized that field.
-  - `方法` must start with one compact summary sentence after `方法：`, before any nested bullets. This sentence should state the overall technical route or pipeline in plain language, then include exactly two nested bullets: `核心创新 1` and `核心创新 2`. Do not make `方法` only a container for the two innovation bullets.
-  - `定义` is mandatory for unfamiliar fields and must describe the task contract, not the experiment details: task, input, output, supervision/training data type, training-stage data flow, inference-stage data flow, and evaluation benchmark/metric names. Keep it to 1-3 compact lines. If a dimension is not reported or not applicable, say `未报告` or `不适用` instead of guessing.
-  - `实现` must not repeat the task contract. It should summarize how the paper actually realizes and validates the method: datasets used, baselines, key ablations, main metrics/results, whether data is real robot / simulation / offline / web-scale, and reported compute. Always include training and inference resource notes when available: training GPU count/model, training time, inference GPU/model, VRAM, FPS/latency/runtime. If GPU, memory, time, FPS, or latency are not reported, write `计算资源：未报告`.
-  - `结论` must summarize the authors' own conclusion from the official full paper text, especially the conclusion, discussion, abstract, and experiment-summary sections. For arXiv papers, arXiv HTML is acceptable and often faster to search; use the PDF if the HTML is unavailable or incomplete. It should state what the paper claims it demonstrates or establishes, not the agent's independent judgment, research preference, or route-level interpretation. Do not add personal takeaways such as "this is important for UniGAvatar because..." in `结论`; put that kind of analysis only in `边界 / 启发`.
-  - `边界 / 启发` should combine author-claimed limitations with one research-direction takeaway for the user's current research direction. Do not append explicit scoring or ranking tails such as `相关性：10/10；优先级：A。`, `relevance score`, or `read priority` inside each paper card unless the user explicitly asks for a separate triage/ranking table.
-  - For papers in a field the user already knows well, a shorter legacy card is acceptable, but do not omit `定义` or `结论` when the task setup, evaluation, or final takeaway is non-obvious.
-- Tree-map subpages must contain at least two contentful editable maps by default: a `General Goal Literature Tree` and a `Challenge-Insight Tree`. Their nodes should be based on the report's actual field structure, not generic labels.
-- Verify after writing that the survey has the expected small set of real Feishu wiki/doc subpages: `Tree Maps`, one collection-style `Paper Cards` page, and `Full Survey Report`. The `Paper Cards` page should contain multiple cards inside the page, not many per-paper child pages.
+- The `Paper Cards` subpage must contain real cards for the important papers mentioned in the survey. Use [`paper-card-delivery`](../paper-card-delivery/SKILL.md) as the only source for card grouping, verification, metadata, figure/caption choice, fixed bullet slots, sorting, and validation. This Feishu workflow only decides page hierarchy, native image insertion, layout preservation, temporary-file cleanup, and fetch-back verification.
+- Parent-page tree maps must contain at least two contentful editable maps by default: a `General Goal Literature Tree` and a `Challenge-Insight Tree`. Their nodes should be based on the report's actual field structure, not generic labels.
+- Verify after writing that the survey has the expected small set of real Feishu wiki/doc pages: an integrated parent page with tree maps, one collection-style `Paper Cards` page, and `Full Survey Report` when a long report exists. The parent page should not depend on a separate `Tree Maps` child link unless explicitly requested. The `Paper Cards` page should contain multiple cards inside the page, not many per-paper child pages.
 
 When a Feishu research-map page asks for a literature tree, challenge-insight tree, or native mind map:
 
 - Keep an editable nested outline in the Feishu page, because static images are hard to revise.
 - If the user asks for `飞书原生思维导图`, `原生思维导图`, or says a Mermaid/flowchart rendering is not a real mind map, do not use Mermaid `flowchart LR` as a substitute.
+- For the user's research-map / literature-review mind maps, every node must be bilingual: English on the first line and Chinese on the second line. Do not ship all-English nodes, Chinese-only nodes, or `English / 中文` single-line substitutes when the user asked for a mind map. If PlantUML `\n` renders as the literal characters `\n`, or `<br/>` breaks the Feishu preview, query the board as raw JSON, patch each native `mind_map` node's `text.text` with an actual newline character between the English and Chinese text, write it back with raw overwrite, and verify by exporting a preview image.
 - Convert the tree to PlantUML mind map syntax (`@startmindmap ... @endmindmap`) and write it into a Feishu board block (`block_type=43`) with `docs +whiteboard-update --input_format plantuml --overwrite`.
 - Default visual style means Feishu's actual native default mind-map style, not a custom DSL card diagram that merely looks similar. Keep the imported `mind_map` node types and Feishu default styling unless the user explicitly asks for a designed/custom-colored diagram.
 - When there are many first-level branches and the user asks for balanced left-right distribution, first import with PlantUML, then verify with `whiteboard +query --output_as raw`. If Feishu stores every first-level child under `right_children`, patch the raw native mind-map JSON instead of redrawing custom nodes: set `mind_map_root.left_children` / `right_children`, set each first-level node's `mind_map_node.layout_position` to `left` or `right`, adjust coordinates as needed, then write back with `whiteboard +update --input_format raw --overwrite`.
@@ -256,7 +245,7 @@ When a Feishu research-map page asks for a literature tree, challenge-insight tr
 - For Peng Sida / Learning Research style research maps, use two complementary trees by default:
   - `General Goal Literature Tree`: field goal -> milestone tasks -> seminal branches -> recommended reading order.
   - `Challenge-Insight Tree`: challenge -> insight -> representative papers -> remaining gap.
-- Verify after writing that only the intended board blocks remain, `flowchart LR` is absent when native mind map was requested, and the fetched whiteboard content contains `@startmindmap`.
+- Verify after writing that only the intended board blocks remain, `flowchart LR` is absent when native mind map was requested, the fetched whiteboard content contains `@startmindmap`, and raw node text / exported preview show English newline Chinese for every mind-map node.
 - Preserve the source page title and verify after writing that the title did not become `Untitled`.
 
 ## Investigation Pages
@@ -266,9 +255,7 @@ When organizing a Feishu `Investigation` page from a technical talk, research-di
 - Keep the parent page as the distilled investigation note: source metadata, one-sentence conclusion, core thesis, technical route, route relevance, open questions, and a compact diagram when useful.
 - Create a child page named `Paper Cards` or `<Parent Title>｜Paper Cards` when the talk/report mentions concrete papers, systems, benchmarks, or project pages that support the route.
 - The `Paper Cards` child page is a collection page containing many paper cards in sequence. Do not create one child page per paper unless explicitly requested.
-- Include all clearly mentioned papers from the source material, grouped by the talk's actual narrative arc. If a title is uncertain because the source is an imperfect transcript, mark it as a口播线索 and do not fabricate metadata.
-- Use the fixed paper-card format from the Research Map section. `PDF:` must point directly to a PDF when available.
-- Prefer official project pages, arXiv pages, CVF/OpenReview pages, author pages, or official GitHub repositories. Avoid relying on generic search snippets when primary sources exist.
+- Include clearly mentioned papers from the source material when they support the route, and use [`paper-card-delivery`](../paper-card-delivery/SKILL.md) for all paper-card content standards.
 - After writing, verify the parent-child hierarchy and that the paper-card child page has real cards, not placeholders.
 
 ## Useful Commands
@@ -291,7 +278,7 @@ Insert an image as a native Feishu media block:
   --selection-with-ellipsis '<nearby text>' \
   --before \
   --align center \
-  --caption '图 1｜完整中文图注：<完整翻译论文原始 caption>'
+  --caption '<caption prepared under paper-card-delivery>'
 ```
 
 Add or update a caption on an existing image block without re-uploading the image:
@@ -300,7 +287,7 @@ Add or update a caption on an existing image block without re-uploading the imag
 ~/.local/bin/lark-cli api PATCH \
   "/open-apis/docx/v1/documents/<docx_token>/blocks/batch_update" \
   --as user \
-  --data '{"requests":[{"block_id":"<image_block_id>","replace_image":{"token":"<existing_image_file_token>","align":2,"scale":<existing_scale>,"caption":{"content":"图 1｜完整中文图注：<完整翻译论文原始 caption>"}}}]}'
+  --data '{"requests":[{"block_id":"<image_block_id>","replace_image":{"token":"<existing_image_file_token>","align":2,"scale":<existing_scale>,"caption":{"content":"<caption prepared under paper-card-delivery>"}}}]}'
 ```
 
 Create a gray callout:

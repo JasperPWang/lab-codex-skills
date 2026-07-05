@@ -14,9 +14,13 @@ Treat the review as a personal research-company operating review, not a diary. T
 
 Default language is Chinese. Use English terms when they are the natural technical labels.
 
+For reader-facing Chinese review prose and TODOs, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md): keep method names, acronyms, project names, and simulation terms when they are names, but translate ordinary technical concepts into Chinese instead of mixing raw English phrases into Chinese sentences.
+
 ## Feishu Placement
 
 Use the `feishu-doc-workflow` skill for all Feishu reads/writes.
+
+If the user brings a research-method article or web source into the review context and asks for `原文`, `提取原文`, or `英文原文与中文译文`, use [`bilingual-source-archive`](../bilingual-source-archive/SKILL.md) as a side path. Do not fold the source into the daily review as a summary unless the user explicitly asks for a review takeaway.
 
 Stable hierarchy:
 
