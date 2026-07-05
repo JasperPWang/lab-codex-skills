@@ -24,6 +24,30 @@ Before publishing or sharing, review:
 - `THIRD_PARTY_NOTICES.md`
 - `.gitignore`
 
+## Copy-Paste Setup Prompt
+
+For lab teammates, the easiest setup path is to paste this prompt into Codex on
+their own machine. Codex should run the commands, validate the installation, and
+report any missing prerequisites.
+
+```text
+请帮我配置 Human Centric Intelligence Lab 的 Codex skill bundle。
+
+目标：
+1. 从 GitHub 克隆公开仓库：https://github.com/JasperPWang/lab-codex-skills
+2. 放到我本机一个稳定位置，例如 ~/lab-codex-skills；如果目录已存在，先 fetch/pull 更新，不要删除我的本地修改。
+3. 运行 install.sh，把 skill 以 symlink 方式暴露到 ~/.codex/skills。
+4. 运行 scripts/validate-all.sh，确认所有 skill 通过校验。
+5. 检查 ~/.codex/skills 里是否能看到 paper-card-delivery、paper-deep-dive、feishu-doc-workflow、survey-builder、ai-research-workflow、chinese-technical-writing、feynman-learning 等常用入口。
+6. 如果我要编辑飞书原生文档，请检查 ~/.local/bin/lark-cli doctor；如果没有安装或没有登录，只告诉我需要配置，不要猜测或写入任何 token / secret。
+7. 最后用中文告诉我：安装目录、校验结果、可用的常用 prompt、以及 Feishu 原生编辑是否已就绪。
+
+约束：
+- 不要把任何 access token、refresh token、app secret、cookie、私有 Feishu 链接写进仓库或聊天输出。
+- 如果遇到已有目录或已有 skill，同名普通目录先备份，不要直接覆盖；symlink 可以安全重建。
+- 如果命令失败，先诊断并给出下一步，不要假装安装成功。
+```
+
 On a new Mac or a lab teammate's machine, run one of these:
 
 ```bash
