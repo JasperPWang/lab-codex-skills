@@ -50,6 +50,54 @@ metadata:
 bash ".tools/skills/scripts/export-github-bundle.sh" /tmp/lab-codex-skills
 ```
 
+## Research Workflow Skill Map
+
+Use natural daily prompts first. Codex should select the right skill stack and
+only ask for more detail when the missing context would change the result.
+
+| Research step | Daily prompt | Main skills |
+| --- | --- | --- |
+| Feishu page editing | `帮我整理/规范这个飞书页面` | `feishu-doc-workflow`, `chinese-technical-writing` |
+| Paper cards | `帮我补全这个页面的 paper card` | `paper-card-delivery`, `feishu-doc-workflow` |
+| Single-paper deep dive | `帮我 deep dive 一下这篇论文` | `paper-deep-dive`, `paper-card-delivery`, `feishu-doc-workflow` |
+| Literature tree / survey | `帮我把这个方向整理成 literature tree` | `survey-builder`, `ai-research-workflow`, `deep-research` |
+| Broad field exploration | `帮我调研这个方向，给我研究路线图` | `deep-research`, `academic-research-suite`, `nature-academic-search` |
+| Concept learning | `帮我讲清楚这个概念/方法` | `feynman-learning` |
+| Local wiki ingestion | `把这份材料纳入我的本地研究 wiki` | `llm-wiki-skill`, `chinese-technical-writing` |
+| Manuscript planning/writing | `帮我搭论文框架/写引言/改摘要` | `nature-writing`, `paper-spine`, `academic-paper` |
+| Manuscript polishing | `帮我润色这段英文论文文字` | `nature-polishing` |
+| Citation verification | `帮我核验这些引用是否真的支撑论断` | `cite-verify`, `nature-citation` |
+| Figures and plots | `帮我把这张图做成论文级图表` | `nature-figure` |
+| Statistics sanity check | `帮我检查这些实验表格和 p 值是否一致` | `stats-sanity` |
+| Reproducibility / release | `帮我整理这个项目的复现包` | `repro-pack` |
+| Research code workflow | `按科研开发规范帮我改/跑/记录这个实验` | `research-dev-standards` |
+| Mock review / rebuttal | `帮我从审稿人角度审一下/帮我回审稿意见` | `academic-paper-reviewer`, `nature-reviewer`, `nature-response` |
+| Grant / proposal | `帮我搭这个基金/博士课题 proposal` | `grant-writer` |
+| Daily review | `帮我做今天的科研经营复盘` | `daily-research-review` |
+
+## Downloaded Skills Worth Using
+
+These are not all daily defaults, but they are useful at specific pressure
+points. Prefer short prompts; the skill carries the detailed protocol.
+
+| Skill | Best use | Example prompt |
+| --- | --- | --- |
+| `deep-research` | A new direction is still fuzzy and needs question formulation, source search, synthesis, and risk checks. | `帮我调研 simulation-ready avatar reconstruction，给我问题树、关键论文和研究空白。` |
+| `academic-research-suite` | Heavier academic research workflow: literature review, research question refinement, integrity checks, and writing pipeline coordination. | `帮我把这个方向整理成一个可写论文的 research plan。` |
+| `nature-academic-search` | Systematic multi-source literature search, citation file conversion, deduplication, and reference management. | `帮我检索 2024-2026 simulation-ready reconstruction 的核心论文，并导出 BibTeX。` |
+| `cite-verify` | Before a manuscript, proposal, or important Feishu knowledge page relies on citations. | `帮我核验这些引用是否真的支持每一句 claim。` |
+| `nature-reader` | Standalone full-paper bilingual reading with source anchors; use `paper-deep-dive` when the deliverable must be the Feishu deep-dive package. | `帮我做这篇论文的中英文对照精读，不要只总结。` |
+| `nature-writing` | Drafting or restructuring abstract, introduction, related work, method, experiments, or discussion. | `帮我把这些结果组织成一版论文 introduction 逻辑。` |
+| `nature-polishing` | Publication-style English polishing and LaTeX layout cleanup. | `帮我润色这段 introduction，保留技术含义，不要过度改写。` |
+| `nature-figure` | Paper-grade Python/R figures, multi-panel plots, export QA. | `用 Python 帮我把这个实验结果画成论文级 figure。` |
+| `stats-sanity` | Numeric consistency for tables, metrics, p-values, confidence intervals, denominators, and figure-text drift. | `帮我检查这张实验表和正文里的数字是否一致。` |
+| `repro-pack` | Before open-source release, paper artifact submission, or intern handoff. | `帮我把这个实验项目整理成可复现包。` |
+| `paper-spine` | Heavy end-to-end manuscript/report build from materials or a rough draft. | `帮我基于这些材料搭一篇完整论文草稿。` |
+| `academic-paper-reviewer` / `nature-reviewer` | Pre-submission critique, novelty/risk assessment, reviewer-perspective feedback. | `帮我从审稿人角度审一下这篇 draft。` |
+| `nature-response` | Reviewer response and rebuttal letters. | `帮我把这些审稿意见整理成逐点回复。` |
+| `grant-writer` | Project narratives, aims, milestones, risks, and reviewer-facing proposal strategy. | `帮我搭一个博士课题/基金 proposal 的 aims 和 approach。` |
+| `nature-paper2ppt` | Occasional real PPTX deck from a paper. This is the preferred downloaded slide skill; `paper-to-slides-skill` is not a daily default. | `帮我把这篇论文做成 15 分钟组会 PPT。` |
+
 ## Common Prompts
 
 Daily prompts should stay short. The agent should choose the matching skill and
