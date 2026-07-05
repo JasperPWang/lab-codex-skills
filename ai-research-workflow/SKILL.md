@@ -16,6 +16,28 @@ Whenever a workflow will create, normalize, audit, or sync paper cards, first us
 
 Whenever a workflow will produce Chinese reader-facing research notes, Feishu pages, wiki pages, paper-card prose, deep-dive notes, survey summaries, or meeting/daily-review text, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Keep English for names, acronyms, code, formulas, datasets, and exact source text; translate ordinary technical concepts into Chinese.
 
+## Lab-Native Integration Principle
+
+Personal lab skills own final deliverables. Downloaded / vendored skills are
+method libraries unless the user explicitly asks to run them as standalone
+workflows.
+
+- For Feishu work, final structure, hierarchy, native images, native captions,
+  formula handling, fetch-before-write, and fetch-after-write verification are
+  controlled by `feishu-doc-workflow` and the task-specific personal skill.
+- For paper deep dives, borrow `nature-reader` ideas such as block-level source
+  maps, original / Chinese correspondence, figure/table placement, terminology
+  consistency, and uncertainty notes, but convert them into the required Feishu
+  parent page plus `英文原文稿`, `原文译稿`, and `中文精读稿`.
+- For surveys and literature organization, borrow `deep-research` ideas such as
+  research-question clarification, source verification, contradiction checks,
+  synthesis, and gap analysis, but convert them into the user's literature tree,
+  challenge-insight tree, novelty tree, paper matrix, and paper-card collection.
+- Do not let an external skill's default artifact format override the user's
+  Feishu-native conventions. External APA reports, Markdown readers, PRISMA
+  reports, or local asset bundles can be kept as intermediate/source artifacts
+  only when useful and should be clearly labeled.
+
 ## 何时用哪个 skill
 
 | 用户意图 | Skill |

@@ -50,6 +50,50 @@ metadata:
 bash ".tools/skills/scripts/export-github-bundle.sh" /tmp/lab-codex-skills
 ```
 
+## Feishu Native Editing Prerequisite
+
+Feishu / Lark work in this bundle assumes the local `lark-cli` is installed and
+authenticated. This is what lets Codex edit native Feishu documents instead of
+flattening pages through browser copy-paste or generic Markdown.
+
+Expected local command:
+
+```bash
+~/.local/bin/lark-cli doctor
+```
+
+Common checks:
+
+```bash
+~/.local/bin/lark-cli docs +fetch --help
+~/.local/bin/lark-cli docs +update --help
+~/.local/bin/lark-cli docs +media-insert --help
+~/.local/bin/lark-cli wiki --help
+```
+
+Configuration is user-local under `~/.lark-cli/`. Do not commit app secrets,
+tokens, refresh tokens, or local Feishu config into this repository.
+
+## Integration Policy
+
+Personal lab skills own final deliverables. Downloaded skills can provide
+methods, checklists, and intermediate reasoning, but they should not override
+the user's Feishu-native page structure or formatting.
+
+- Deep dives may borrow `nature-reader`'s source-map and bilingual-reader
+  methods, then convert them into the lab format: parent page plus `英文原文稿`,
+  `原文译稿`, and `中文精读稿`.
+- Literature reviews may borrow `deep-research`'s question clarification,
+  source verification, synthesis, and gap-analysis methods, then convert them
+  into literature trees, challenge-insight trees, novelty trees, matrices, and
+  paper-card pages.
+- Paper cards remain governed by `paper-card-delivery`.
+- Feishu hierarchy, native images, captions, formulas, whiteboards, fetch
+  before write, and fetch after write remain governed by `feishu-doc-workflow`.
+- External formats such as APA reports, PRISMA reports, standalone Markdown
+  readers, or local asset bundles are intermediate/source artifacts unless the
+  user explicitly asks for them as final deliverables.
+
 ## Research Workflow Skill Map
 
 Use natural daily prompts first. Codex should select the right skill stack and

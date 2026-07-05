@@ -15,6 +15,25 @@ When a survey includes paper cards, also use [`paper-card-delivery`](../paper-ca
 
 For Chinese survey prose, taxonomy descriptions, challenge-insight explanations, paper matrices, reading routes, Feishu captions, and non-bilingual mind-map/table labels, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Keep required bilingual mind-map nodes as English newline Chinese when specified, but write ordinary Chinese explanation in Chinese-first terminology.
 
+## Borrowed Research Method Layer
+
+This is the user's Feishu-native literature-tree workflow. It may borrow useful
+research methods from downloaded skills, but those skills do not own the final
+survey format.
+
+- From `deep-research`, borrow research-question clarification, scope
+  boundaries, search strategy design, source verification, contradiction
+  disclosure, synthesis / gap analysis, and devil's-advocate checks.
+- Do not publish the external `deep-research` APA report, PRISMA report, or
+  agent transcript as the final Feishu survey unless the user explicitly asks
+  for that report as a separate `Full Survey Report` source page.
+- Translate the borrowed method output into the user's survey artifacts:
+  literature tree, challenge-insight tree, novelty tree, paper matrix, reading
+  route, research gaps, and one collection-style `Paper Cards` page.
+- Keep paper-card creation under `paper-card-delivery`, Feishu hierarchy and
+  native blocks under `feishu-doc-workflow`, and Chinese prose under
+  `chinese-technical-writing`.
+
 Canonical method reference:
 - Before building or revising a literature survey, literature tree, novelty tree, or challenge-insight tree for the user's research wiki, use the user's Feishu method page as the canonical example unless a more specific template is provided: `如何构建literature tree（如何进行literature review，构建novelty tree和challenge-insight tree）`, <FEISHU_OR_LARK_URL> doc token `<DOC_TOKEN>`.
 - Follow its four novelty levels when classifying papers: Type 1 = seminal work for a milestone task; Type 2 = seminal work for a novel pipeline or representation; Type 3 = seminal work for a novel module; Type 4 = module-level improvement to an existing pipeline.

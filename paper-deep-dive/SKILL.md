@@ -17,6 +17,28 @@ When this workflow creates or modifies a paper card, also use [`paper-card-deliv
 
 For `原文译稿`, `完整中文译稿`, `中文精读稿`, Chinese figure captions, parent-page summaries, and Chinese paper-card prose, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Preserve official English source text in `英文原文稿`, formulas, method/model/dataset names, and symbols, but do not leave ordinary technical concepts as raw English phrase islands in Chinese prose.
 
+## Borrowed Method Layer
+
+This is the user's Feishu-native deep-dive workflow. It may borrow useful reading
+methods from downloaded skills, but those skills do not own the final output
+format.
+
+- From `nature-reader`, borrow the source-map-first method: build stable source
+  block IDs such as `S001`, `F001`, `T001`, preserve original / Chinese
+  correspondence, keep figure/table captions attached to the relevant text, and
+  record uncertainty instead of guessing.
+- Do not publish the external `nature-reader` artifact contract as-is. Do not
+  replace the required Feishu hierarchy with `paper.md`, `source_map.json`,
+  `translation_notes.md`, or an English/Chinese Markdown reader unless the user
+  explicitly asks for a local Markdown artifact.
+- Use the source map as an internal scaffold for `英文原文稿`, `原文译稿`, and
+  source-grounded `中文精读稿`. The final Feishu deliverable must still follow the
+  parent-plus-three-child structure below and must use native Feishu images,
+  captions, formulas, and fetch-back verification through `feishu-doc-workflow`.
+- In `中文精读稿`, short bilingual source snippets or block IDs may be included
+  when they clarify a key claim, equation, or figure, but the page remains an
+  analytical Chinese close-reading guide rather than a second full translation.
+
 ## When To Use
 
 - Reading a new paper deeply rather than only summarizing it.
@@ -31,13 +53,14 @@ If the user says `deep dive`, `深读`, `详细解析`, `dive into`, or asks to 
 1. Capture source metadata: title, authors, year, venue, DOI/arXiv, URL, local PDF path, and extraction date.
 2. Extract the paper to inspectable Markdown when tooling is available; preserve figure references and equation context. On this machine, use MinerU as the default PDF-to-Markdown path before building Feishu deep-dive pages.
 3. Check the MinerU conversion draft against official HTML when available, especially arXiv HTML for arXiv papers. Repair section order, paragraph continuity, formulas, figures, tables, captions, appendices, body citations, and references before publishing.
-4. Create the English original manuscript (`英文原文稿`) from the verified official paper source. This means the paper's original English text in source order, not a structural outline, not selected excerpts, and not an English summary. It is used as the source for Chinese translation and may be deleted after the translation is complete if the user wants.
-5. Create the complete faithful Chinese translation (`原文译稿` / `完整中文译稿`) from the verified English manuscript in source order. It must preserve section hierarchy, paragraph correspondence, formulas, figure/table positions, citations, captions, references, and layout structure as much as the target editor allows.
-6. Check terminology in the Chinese translation. Technical terms should be translated accurately; important terms and proper nouns should appear as `中文（English term）` on first use or where clarity is needed. Avoid leaving large runs of English technical terms untranslated in Chinese prose.
-7. Create the Chinese close-reading notes (`中文精读稿`) with problem, motivation, method, experiments, results, limitations, next questions, and research implications. This is interpretation and learning material; do not present it as the complete translation.
-8. Create a paper card using [`paper-card-delivery`](../paper-card-delivery/SKILL.md), then run its validator on the Markdown draft when a local draft exists.
-9. Store figures and assets in a stable assets folder.
-10. Mark source says, inference, citation needed, and unresolved questions separately.
+4. Build a source map inspired by `nature-reader`: stable block IDs for body text, figures, tables, captions, equations, appendices, and references; page / section location; extraction confidence; and links between first figure/table mention and the visual asset.
+5. Create the English original manuscript (`英文原文稿`) from the verified official paper source. This means the paper's original English text in source order, not a structural outline, not selected excerpts, and not an English summary. It is used as the source for Chinese translation and may be deleted after the translation is complete if the user wants.
+6. Create the complete faithful Chinese translation (`原文译稿` / `完整中文译稿`) from the verified English manuscript in source order. It must preserve section hierarchy, paragraph correspondence, formulas, figure/table positions, citations, captions, references, and layout structure as much as the target editor allows.
+7. Check terminology in the Chinese translation. Technical terms should be translated accurately; important terms and proper nouns should appear as `中文（English term）` on first use or where clarity is needed. Avoid leaving large runs of English technical terms untranslated in Chinese prose.
+8. Create the Chinese close-reading notes (`中文精读稿`) with problem, motivation, method, experiments, results, limitations, next questions, and research implications. This is interpretation and learning material; do not present it as the complete translation. Ground important analysis in source-map block IDs or short bilingual snippets when useful.
+9. Create a paper card using [`paper-card-delivery`](../paper-card-delivery/SKILL.md), then run its validator on the Markdown draft when a local draft exists.
+10. Store figures and assets in a stable assets folder.
+11. Mark source says, inference, citation needed, and unresolved questions separately.
 
 Paper-card content standards live in [`paper-card-delivery`](../paper-card-delivery/SKILL.md). This deep-dive skill must not duplicate or override paper-card source verification, metadata, image/caption selection, fixed bullet slots, sorting, or structural validation.
 
