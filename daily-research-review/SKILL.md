@@ -50,6 +50,23 @@ Use this order:
 
 If the user gives a long free-form answer, first reflect it back as structured notes, then ask for missing high-value information.
 
+## Good Research Loop Lens
+
+Use the review to train research taste, not just record activity. When relevant, extract these signals and place them into the existing required sections:
+
+- Problem ownership: did the user choose the problem from their own reasoning, or merely absorb an advisor's task, a trend, or a paper's framing?
+- Important and attackable: is the current question both worth solving and small enough to test with the next concrete action?
+- Forecast before result: what did the user expect before reading a paper, asking for advice, running an experiment, or seeing a metric?
+- Belief update: after the result, what changed in the user's model of the project, method, baseline, data, or evaluation?
+- Loop speed: how quickly did the user discover they were wrong, and what tooling, command, config, plot, or AI workflow could shorten that loop tomorrow?
+- Output inspection: did the user inspect raw outputs, failure cases, visualizations, transcripts, samples, or geometry artifacts instead of only trusting aggregate metrics?
+- Failure clustering: what is the largest pile of failures, and what is the smallest attack on that pile?
+- Input quality: did today's reading include primary papers, appendices, limitations, old or underpriced sources, and not only social summaries?
+- Focus versus exploration: did the user protect the main project line while giving exploratory ideas a bounded budget?
+- Generous asset: did today's work produce something reusable for future self, collaborators, public writing, code, Feishu, wiki, or paper writing?
+
+Map these signals into the template rather than adding new daily sections. For example, forecast and belief update belong in `今日假设验证`; loop speed and output inspection belong in `今日资产沉淀`, `GPT / Codex / AI 投资回报`, or `当前最大风险`; problem ownership and importance belong in `项目经营判断`.
+
 ## Required Sections
 
 Write each daily page with these sections:
@@ -98,6 +115,9 @@ Phrase hypotheses explicitly:
 - `假设：...`
 - `今日证据：支持 / 反驳 / 不确定`
 - `下一步：继续 / 收缩 / 转向 / 停止`
+- `预测：...`
+- `结果：...`
+- `更新后的判断：...`
 
 Do not convert ideas into conclusions too early. For new ideas, preserve the user's intuition and mark what evidence is still missing.
 
@@ -110,6 +130,8 @@ Evaluate AI usage by outputs, not interaction volume:
 - Assets created or cleaned.
 - Experiments, code, papers, or Feishu pages advanced.
 - Whether AI use became unproductive chatting.
+- Whether AI shortened the research loop by making experiments, plots, comparisons, source reading, or failure inspection faster.
+- Whether the user kept ownership of the key judgment instead of outsourcing taste, problem choice, or claims to AI.
 
 ## Role-Based TODOs
 
@@ -125,6 +147,7 @@ Use these roles to find blind spots:
 - Reviewer: strongest attack on novelty, evaluation, claims, and baselines.
 - Writer / Communicator: Feishu, wiki, paper, slides, mentor communication.
 - AI Manager: what to delegate to AI and what judgment the user must own.
+- Research Taste Coach: forecast before seeing answers, compare with reality, and convert the gap into a sharper next experiment or reading question.
 
 After role scanning, keep exactly three execution TODOs:
 

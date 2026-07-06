@@ -19,6 +19,7 @@ Keep English when it is genuinely a name, identifier, or source-fidelity object:
 - standard acronyms and symbols such as SMPL-X, 3DGS, CLIP, PSNR, LPIPS, FID, FPS, GPU, API, $L_2$, and $\mathcal{L}$;
 - code identifiers, file paths, commands, config keys, CLI flags, class/function names, and quoted error messages;
 - exact original English text in `英文原文稿`, bilingual source archives, citations, block quotes, paper abstracts copied as source text, and other source-preserving sections;
+- References / bibliography entries in paper translations and deep dives: keep the original English authors, titles, venues, publisher names, page ranges, DOI/arXiv strings, and other reference fields instead of translating them into Chinese;
 - required bilingual mind-map nodes or headings when another workflow explicitly requires English plus Chinese.
 
 ## Chinese-First Rule
@@ -79,7 +80,7 @@ If a term has no stable Chinese translation or the English form is the community
 ## Document-Specific Handling
 
 - Paper cards: also use `paper-card-delivery`; the card's metadata takeaway, caption, and six bullets must be Chinese-first.
-- Paper deep dives: preserve official source text in `英文原文稿`; enforce Chinese-first wording in `原文译稿` and `中文精读稿`.
+- Paper deep dives: preserve official source text in `英文原文稿`; enforce Chinese-first wording in the body of `原文中译稿` and parent-page `精读稿`; keep References / bibliography entries in the original English rather than translating them.
 - Bilingual source archives: do not modify the English original blocks; enforce this rule only on Chinese translation blocks or Chinese notes.
 - Feishu rich pages: normalize wording with narrow text edits; do not rewrite or damage images, grids, tables, formulas, or whiteboards just to fix language.
 - LLM Wiki / Obsidian notes: use Chinese body text, `中文（English term）` on first use, LaTeX for formulas, and English only for names/identifiers.

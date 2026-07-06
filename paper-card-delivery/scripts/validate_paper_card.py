@@ -15,7 +15,7 @@ from pathlib import Path
 from urllib.parse import unquote
 
 
-REQUIRED_BULLETS = ["定义", "问题", "方法", "实现", "结论", "边界 / 启发"]
+REQUIRED_BULLETS = ["定义", "问题", "方法", "实现", "结论", "局限", "启发"]
 CJK_RE = re.compile(r"[\u3400-\u9fff]")
 RESIDUE_PATTERNS = [
     r"!\[\[",
@@ -33,6 +33,25 @@ BAD_IMAGE_HINTS = [
     "paper page",
     "abstract page",
 ]
+FORBIDDEN_PLACEHOLDERS = [
+    "配图待补",
+    "图注待补",
+    "图片待补",
+    "图像待补",
+    "待补配图",
+    "待补图片",
+    "待补图像",
+    "待补图注",
+    "figure todo",
+    "image todo",
+    "caption todo",
+    "figure tbd",
+    "image tbd",
+    "caption tbd",
+    "figure pending",
+    "image pending",
+    "caption pending",
+]
 TRANSLATABLE_ENGLISH_TERMS = {
     "parametric human estimation": "参数化人体估计",
     "perspective distortion": "透视畸变/透视失真",
@@ -45,6 +64,15 @@ TRANSLATABLE_ENGLISH_TERMS = {
     "physically plausible deformation": "物理合理形变",
     "simulation-ready asset": "仿真就绪资产",
 }
+SIMULATION_HINTS_RE = re.compile(
+    r"\b("
+    r"mujoco|isaac(?:\s+gym|\s+sim)?|pybullet|bullet|gazebo|habitat|ai2-thor|"
+    r"carla|sapien|airsim|unity|unreal|blender|omniverse|"
+    r"clo3d|marvelous\s+designer"
+    r")\b",
+    re.I,
+)
+STATUS_VALUES = {"未报告", "待核验", "不适用", "not reported", "n/a", "na", "none"}
 
 
 def normalize_title(value: str) -> str:
@@ -74,6 +102,28 @@ def cvf_slug_title(pdf_url: str) -> str | None:
 def find_pdf_url(text: str) -> str | None:
     match = re.search(r"\[PDF\]\((https?://[^)]+\.pdf)\)", text)
     return match.group(1) if match else None
+
+
+def dataset_entries(dataset_line: str) -> list[str]:
+    value = re.sub(r"^Dataset:\s*", "", dataset_line, flags=re.I)
+    dataset_part = re.split(r"\s*\|\s*Simulation\s*[:：]", value, maxsplit=1, flags=re.I)[0]
+    dataset_part = dataset_part.strip()
+    if not dataset_part or dataset_part.lower() in STATUS_VALUES:
+        return []
+    parts = re.split(r"\s*(?:,|，|、|;|；|\s/\s)\s*", dataset_part)
+    return [part.strip() for part in parts if part.strip()]
+
+
+def check_dataset_line(dataset_line: str, card: str, issue) -> None:
+    if re.search(r"simluation\s*[:：]", dataset_line, flags=re.I):
+        issue("simulation_spelling", "Use `Simulation:` in the Dataset metadata line, not `Simluation:`.")
+    if re.search(r"simulation\s*[:：]", dataset_line, flags=re.I) and not re.search(r"\|\s*Simulation\s*[:：]", dataset_line):
+        issue("simulation_format", "Simulation metadata must be appended as `| Simulation:` on the Dataset line.")
+    entries = dataset_entries(dataset_line)
+    if len(entries) > 3:
+        issue("dataset_too_many", "Dataset metadata must list at most three visible dataset names; put additional datasets in `实现` if needed.")
+    if SIMULATION_HINTS_RE.search(card) and not re.search(r"\|\s*Simulation\s*[:：]", dataset_line):
+        issue("simulation_missing", "Card mentions a known simulator/environment; Dataset metadata should include `| Simulation:` or explicitly mark `Simulation: 未报告`.")
 
 
 def split_cards(text: str) -> list[tuple[int, str, str]]:
@@ -126,6 +176,8 @@ def check_card(line_no: int, title: str, card: str) -> list[dict[str, object]]:
             issue("code_slot", "Code slot missing or not using compact Code/w/o. code status.")
         if not metadata_lines[3].startswith("Dataset:"):
             issue("dataset", "Fourth metadata line must start with `Dataset:`.")
+        else:
+            check_dataset_line(metadata_lines[3], card, issue)
         pdf_url = find_pdf_url(card)
         slug_title = cvf_slug_title(pdf_url or "")
         if slug_title and token_count(slug_title) > token_count(title) + 2:
@@ -134,6 +186,17 @@ def check_card(line_no: int, title: str, card: str) -> list[dict[str, object]]:
     for bullet in REQUIRED_BULLETS:
         if not re.search(rf"^\s*[-*]\s+{re.escape(bullet)}\s*[:：]", card, flags=re.M):
             issue("required_bullet", f"Missing fixed bullet slot `{bullet}`.")
+
+    if re.search(r"^\s*[-*]\s+边界\s*/\s*启发\s*[:：]", card, flags=re.M):
+        issue("legacy_bullet", "Use separate `局限` and `启发` bullet slots instead of the legacy combined `边界 / 启发` slot.")
+
+    limitation_match = re.search(r"^\s*[-*]\s+局限\s*[:：](.*?)(?=^\s*[-*]\s+(?:定义|问题|方法|实现|结论|启发)\s*[:：]|\Z)", card, flags=re.M | re.S)
+    if limitation_match:
+        limitation_text = limitation_match.group(1).strip()
+        if not limitation_text:
+            issue("limitation_empty", "`局限` should state author-reported limitations, `作者未明确报告局限`, or `待核验`.")
+        elif not re.search(r"作者|未报告|未明确报告|待核验|Not reported|N/A", limitation_text, flags=re.I):
+            issue("limitation_source_marker", "`局限` should distinguish author-reported limitations from agent analysis, or explicitly state `作者未明确报告局限` / `待核验`.")
 
     if not re.search(r"^\s*[-*]\s+核心创新\s*1\s*[:：]", card, flags=re.M):
         issue("method_innovation", "Missing nested `核心创新 1` bullet under 方法.")
@@ -148,6 +211,14 @@ def check_card(line_no: int, title: str, card: str) -> list[dict[str, object]]:
     for hint in BAD_IMAGE_HINTS:
         if hint in lowered:
             issue("bad_image_hint", f"Possible forbidden paper-card image/source hint: `{hint}`.")
+
+    card_casefolded = card.casefold()
+    for placeholder in FORBIDDEN_PLACEHOLDERS:
+        if placeholder.casefold() in card_casefolded:
+            issue(
+                "figure_placeholder_forbidden",
+                f"Formal paper-card delivery must not contain `{placeholder}`; add a verified figure/caption or mark the whole page as draft/blocker.",
+            )
 
     for line in card.splitlines():
         if not CJK_RE.search(line):

@@ -16,6 +16,23 @@ Whenever a workflow will create, normalize, audit, or sync paper cards, first us
 
 Whenever a workflow will produce Chinese reader-facing research notes, Feishu pages, wiki pages, paper-card prose, deep-dive notes, survey summaries, or meeting/daily-review text, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Keep English for names, acronyms, code, formulas, datasets, and exact source text; translate ordinary technical concepts into Chinese.
 
+## Good Research Operating Loop Gate
+
+For research planning, paper reading, survey work, experiments, reproduction, and writing, treat the workflow as a loop that improves judgment:
+
+1. Problem choice: state why the problem matters, why it generalizes beyond one narrow trick, and why the next attack is simple enough to test.
+2. Ownership: distinguish the user's own reasoning from advisor framing, paper framing, social-media framing, and AI-generated framing.
+3. Forecast: before reading the result, asking a mentor, or running an experiment, write the expected outcome and the reason.
+4. Correction: after evidence arrives, write what belief changed and what remains unknown.
+5. Speed: prefer the path that discovers wrong assumptions fastest: one-command run, one-command plot, reproducible config, small data slice, or single-batch overfit check.
+6. Output inspection: inspect raw outputs, failure cases, visual samples, logs, transcripts, geometry, and qualitative artifacts before trusting an aggregate metric.
+7. Baseline pressure: tune baselines, run ablations, and compare against the simplest strong alternative before claiming novelty.
+8. Research notebook compression: preserve experiment findings, insights, code progress, failed runs, and next steps in a form that can be compressed weekly or reused in Feishu/wiki/paper assets.
+9. Focus budget: protect the main research line; give wandering, new fields, and speculative ideas a bounded exploration budget unless evidence justifies a pivot.
+10. Communication asset: convert useful understanding into an explanation, tool, code snippet, paper card, Feishu page, or draft paragraph.
+
+Do not turn this gate into a long questionnaire. Use it to catch missing reasoning before choosing a downstream skill.
+
 ## Lab-Native Integration Principle
 
 Personal lab skills own final deliverables. Downloaded / vendored skills are
@@ -28,7 +45,8 @@ workflows.
 - For paper deep dives, borrow `nature-reader` ideas such as block-level source
   maps, original / Chinese correspondence, figure/table placement, terminology
   consistency, and uncertainty notes, but convert them into the required Feishu
-  parent page plus `英文原文稿`, `原文译稿`, and `中文精读稿`.
+  parent page with `Paper Card`, native `论文解析树`, and source-order `精读稿`,
+  plus child pages `英文原文稿` and `原文中译稿`.
 - For surveys and literature organization, borrow `deep-research` ideas such as
   research-question clarification, source verification, contradiction checks,
   synthesis, and gap analysis, but convert them into the user's literature tree,
@@ -78,11 +96,15 @@ Deep-dive  Builder   Pack    Stats    Nature/LaTeX
 ## 阶段门（大型任务前自检）
 
 1. Research question 是否明确？
-2. Literature / source list 是否足够？
-3. Claim 是否有 evidence？
-4. Citation 是否真实支撑？
-5. 统计/指标是否自洽？
-6. 实验是否可复现（commit、config、command）？
+2. 问题是否重要、可泛化、且下一步足够简单？
+3. 用户自己的判断、导师/论文/趋势/AI 的输入是否已经区分清楚？
+4. Literature / source list 是否足够，且是否读到原文、附录、限制而不只读摘要？
+5. Claim 是否有 evidence？
+6. Citation 是否真实支撑？
+7. 统计/指标是否自洽？
+8. 实验是否可复现（commit、config、command）？
+9. 是否已经写下预测、结果和更新后的判断？
+10. 是否检查过原始输出和失败样本，而不只看平均指标？
 
 ## 详细调研摘要
 
