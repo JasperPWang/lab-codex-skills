@@ -138,7 +138,7 @@ only ask for more detail when the missing context would change the result.
 | Figures and plots | `帮我把这张图做成论文级图表` | `nature-figure` |
 | Statistics sanity check | `帮我检查这些实验表格和 p 值是否一致` | `stats-sanity` |
 | Reproducibility / release | `帮我整理这个项目的复现包` | `repro-pack` |
-| Research code workflow | `按科研开发规范帮我改/跑/记录这个实验` | `research-dev-standards` |
+| Research code / environment workflow | `按科研开发规范帮我改/跑/记录这个实验，或帮我配置服务器实验环境` | `research-dev-standards` |
 | Mock review / rebuttal | `帮我从审稿人角度审一下/帮我回审稿意见` | `academic-paper-reviewer`, `nature-reviewer`, `nature-response` |
 | Grant / proposal | `帮我搭这个基金/博士课题 proposal` | `grant-writer` |
 | Daily review | `帮我做今天的科研经营复盘` | `daily-research-review` |

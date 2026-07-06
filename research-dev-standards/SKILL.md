@@ -1,6 +1,6 @@
 ---
 name: research-dev-standards
-description: Enforces evidence-based reasoning, test-driven development, strict step order, small incremental changes, and pre-completion review (tensor shapes and core logic). Maintains RoadMap.md, docs/Experiment.md, and Q&A archives. Use when working on this repository’s research/training code, running or documenting experiments, or when the user mentions 科研开发规范 or similar workflow rules.
+description: Enforces evidence-based reasoning, test-driven development, tmux-first long-running sessions, Docker-first reproducible experiment environments, strict step order, small incremental changes, and pre-completion review (tensor shapes and core logic). Maintains RoadMap.md, docs/Experiment.md, and Q&A archives. Use when working on research/training code, configuring GPU/server experiment environments, running or documenting experiments, or when the user mentions 科研开发规范, 代码规范, 实验环境, Docker first, tmux first, Docker, tmux, or similar workflow rules.
 ---
 
 # 科研开发规范（UniGAvatar）
@@ -29,6 +29,30 @@ description: Enforces evidence-based reasoning, test-driven development, strict 
 - 避免单次提交中堆叠大量未验证的模块、损失项或配置分叉。
 - 优先小范围改动 → 验证 → 再下一处。
 
+### 研究循环
+
+- 每个重要实验或分析都应写成一个可校正循环：`假设 / 设置 / 预测 / 结果 / 更新后的判断 / 下一步最小动作`。
+- 在运行前写下预测，训练对模型、数据、baseline、损失项和指标的品味；不要只在看到结果后解释。
+- 优先缩短发现错误的时间：单命令运行、单命令画图、可复现 config、小数据切片、单 batch 过拟合检查。
+- 看指标前后都要检查原始输出：可视化、失败样本、日志、几何结果、视频、渲染图或数据样例。
+- 对失败样本做聚类：先攻击最大的失败堆，再决定是否扩大实验规模。
+- 任何新增方法结论都要经受 baseline 调参、最小 ablation、数据/评价边界检查。
+
+### 实验环境优先级：tmux first + Docker first
+
+- 默认路线：**tmux first** 保证长任务不中断，**Docker first** / Docker Compose 保证环境可复现。
+- 需要在服务器上跑实验、训练、下载数据、编译或长时间配置环境时，先进入 `tmux` 会话，再启动命令；不要把长任务裸跑在普通 SSH shell 里。
+- 宿主机只保持最小稳定层：SSH、tmux、NVIDIA Driver、Docker、Docker Compose、NVIDIA Container Toolkit、存储挂载。
+- 项目依赖默认进入容器：CUDA runtime、Python、PyTorch、系统库、编译依赖、项目包版本。
+- 配新服务器或新项目环境时，先检查：
+  - 项目是否已有 `Dockerfile` / `docker-compose.yml` / `.devcontainer`；
+  - 服务器是否通过 `nvidia-smi`、`docker --version`、`docker compose version`；
+  - `docker run --rm --gpus all ... nvidia-smi` 是否能看到 GPU；
+  - 代码、数据、cache、checkpoints、outputs 是否挂载到稳定目录。
+- 只有 Docker 不可用、权限不足或临时救急时，才用 conda / pip-on-host / system package 作为 fallback，并在结果中说明原因。
+- 不静默接受 Anaconda Terms of Service，不随意修改全局 conda channels，不把项目依赖散装到宿主机。
+- 环境完成的最低标准：容器内跑通项目最小验证命令，例如 `nvidia-smi`、核心 Python import、单 batch overfit、dry run 或 smoke test。
+
 ### 完成前审查
 
 - 在宣称功能完成前，做一次针对性审查，重点包括：
@@ -48,7 +72,7 @@ description: Enforces evidence-based reasoning, test-driven development, strict 
 ### 实验记录：`docs/Experiment.md`（根目录 `Experiment.md` 为入口）
 
 - 每次重要实验结束后**补充条目**。
-- 建议包含：实验目的、**完整或可复制命令**、关键超参与环境说明、主要结果（指标/现象）、**产物路径**（检查点、日志、图表、视频等）。
+- 建议包含：实验目的、**完整或可复制命令**、Docker 镜像/Compose 文件/容器入口、关键超参与环境说明、运行前预测、主要结果（指标/现象）、失败样本/原始输出观察、更新后的判断、下一步最小动作、**产物路径**（检查点、日志、图表、视频等）。
 
 ### Q&A 归档
 
@@ -65,6 +89,12 @@ description: Enforces evidence-based reasoning, test-driven development, strict 
 - [ ] 是否有测试或可重复验证步骤？
 - [ ] 是否按步骤执行，未擅自跳步？
 - [ ] 改动是否小步、可回滚？
+- [ ] 实验/分析是否写下 `假设 / 设置 / 预测 / 结果 / 更新后的判断 / 下一步最小动作`？
+- [ ] 长任务是否先进入 `tmux` 会话，而不是裸跑在 SSH shell？
+- [ ] 实验环境是否优先走 Docker/Compose，而不是散装到宿主机？
+- [ ] 是否验证了容器内 GPU、核心 import、smoke test 或单 batch 运行？
+- [ ] 是否检查了原始输出和失败样本，而不只看平均指标？
+- [ ] 是否有单命令运行、画图、config 或小数据验证来缩短发现错误的时间？
 - [ ] 完成前是否核对维度与形状与核心逻辑？
 - [ ] 是否更新了 `RoadMap.md` / `docs/Experiment.md` / Q&A 归档（如适用）？
 
