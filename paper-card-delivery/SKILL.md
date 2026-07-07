@@ -9,7 +9,7 @@ description: Canonical paper-card delivery standard for source-grounded research
 
 Treat paper-card work as source verification, not formatting. A finished card is allowed only after inspecting the official full-paper source end to end enough to verify the card fields: abstract, method, experiment/evaluation, conclusion/discussion, limitations when present, affiliations, datasets, code/project links, selected figure, and selected figure caption.
 
-If official full-paper verification is incomplete, do not write a polished card. Mark it `candidate / 待核验`, `待核验`, `未报告`, `Not reported`, `N/A`, or leave a verification TODO in the affected fields.
+If a field is `待核验`, the required next action is to inspect the official full-paper source or other official source until the field is resolved. Do not leave `待核验` in reader-facing paper cards. A finished paper-card delivery must contain no `待核验`, `candidate`, TODO/TBD/pending verification text, or other unresolved verification markers. For missing information, use `未报告`, `Not reported`, `N/A`, or `不适用` only after checking the official paper/project/code sources and confirming the item is not reported or not applicable. `无法获取原文` is allowed only after every reasonable official acquisition route has failed, including official HTML, official PDF, arXiv/OpenReview/CVF/publisher/conference pages, DOI landing page, project page, author/lab page, official repository, local PDF download/rendering, and available extraction/OCR routes such as MinerU. When that happens, report a blocker with the attempted routes instead of shipping a finished card.
 
 For formal delivery, every paper card must include a verified method/process figure or a user-approved figure, with a complete Chinese caption. Do not deliver cards with `配图待补`, `图注待补`, `图片待补`, `图像待补`, `待补配图`, `待补图注`, empty image slots, or text-only figure/caption TODO/TBD/pending notes. Any reader-facing sentence like `配图待补：优先从官方论文 HTML / PDF 中提取...` is a hard delivery failure, not an acceptable caveat. If the figure cannot be obtained within the current turn, the correct outcome is to continue extraction, explicitly downgrade the page to a draft, reduce scope with the user's approval, or report that the deliverable is blocked. Never mark a paper-card page complete while any card is missing its figure or figure caption.
 
@@ -29,6 +29,8 @@ Use primary sources first:
 4. Secondary sources only for discovery/context, not for finished claims.
 
 Do not finalize method, implementation, conclusion, limitation, compute, dataset, or figure claims from abstracts, snippets, project pages, README files, slides, screenshots, search results, or secondary summaries alone.
+
+When the paper source cannot be opened at first, do not convert unknown fields to `待核验`. Keep trying official acquisition routes: alternate official HTML/PDF mirrors, DOI/publisher/conference pages, arXiv versioned pages, OpenReview/CVF pages, project and author pages, official code, local PDF download, local rendering, MinerU extraction, and OCR when available. Only after those routes fail may you write `无法获取原文`, and only as a blocker/source-verification TODO with attempted routes, not as a completed card field.
 
 ## Fixed Card Format
 
@@ -60,22 +62,22 @@ Format-only example. This is synthetic and not a real paper; do not copy its fac
 ```markdown
 #### Example Paper Title for Format Only
 示例论文短译名｜把稀疏输入约束转化为可验证的重建流程  
-Venue 待核验｜Institution 待核验  
+Venue 2026｜Example University
 [PDF](https://example.com/paper.pdf)｜w/o. project page｜w/o. verified code  
-Dataset: 待核验
+Dataset: 未报告
 
 ![method-flow](relative-or-native-image)
 图 1｜完整中文图注：该图为示例占位格式；真实卡片必须替换为官方论文 HTML/PDF、项目页、用户批准截图或 MinerU 提取的可信方法/process figure，并完整翻译原始图注。
 
-- 定义：待核验。正式卡片中这里写任务契约：输入、输出、监督/数据类型、训练和推理流程，以及必要的评价基准和指标。
-- 问题：待核验。正式卡片中这里写论文声称要解决的核心问题，而不是用户自己的研究动机。
-- 方法：待核验。正式卡片中这里先用一句话概括整体技术路线。
-  - 核心创新 1：待核验。
-  - 核心创新 2：待核验。
-- 实现：待核验。正式卡片中这里写数据、基线、消融实验、指标/结果和计算资源；缺失时写 `计算资源：未报告`。
-- 结论：待核验。正式卡片中这里只写作者在摘要、结论、讨论或实验总结中声称的结论。
-- 局限：待核验。正式卡片中这里优先写作者明确报告的局限；若作者未明确报告，写 `作者未明确报告局限`，再补充基于实验设置、数据、指标、失败案例或适用条件分析出的论文局限。
-- 启发：待核验。正式卡片中这里写对用户研究方向的启发、可迁移想法、可试实验或头脑风暴，不放独立评分。
+- 定义：示例占位。正式卡片中这里写任务契约：输入、输出、监督/数据类型、训练和推理流程，以及必要的评价基准和指标。
+- 问题：示例占位。正式卡片中这里写论文声称要解决的核心问题，而不是用户自己的研究动机。
+- 方法：示例占位。正式卡片中这里先用一句话概括整体技术路线。
+  - 核心创新 1：示例占位。
+  - 核心创新 2：示例占位。
+- 实现：示例占位。正式卡片中这里写数据、基线、消融实验、指标/结果和计算资源；缺失时写 `计算资源：未报告`。
+- 结论：示例占位。正式卡片中这里只写作者在摘要、结论、讨论或实验总结中声称的结论。
+- 局限：作者未明确报告局限。正式卡片中这里优先写作者明确报告的局限；若作者未明确报告，写 `作者未明确报告局限`，再补充基于实验设置、数据、指标、失败案例或适用条件分析出的论文局限。
+- 启发：示例占位。正式卡片中这里写对用户研究方向的启发、可迁移想法、可试实验或头脑风暴，不放独立评分。
 ```
 
 Rules:
@@ -89,18 +91,18 @@ Rules:
 - Use compact link labels: `[PDF](...)｜[Project](...)｜[Code](...)`. For missing links use exactly `w/o. PDF`, `w/o. project page`, or `w/o. verified code` / `w/o. code`.
 - `PDF` must point directly to a PDF when one exists, not an abstract/search/project page.
 - Always search for code before finalizing a card: paper text, official project page, author/lab page, official organization, and GitHub by paper title / method name / lead author. Mark code as verified only when it is official or clearly author-maintained.
-- `Dataset:` is mandatory. Keep it terse: dataset names only, maximum three visible datasets. If the paper uses more than three datasets, choose the three most important for the card metadata and put the fuller dataset list in `实现` when needed. Do not infer datasets from method family. If the official source does not report a dataset, write `Dataset: 未报告` or `Dataset: 待核验`.
+- `Dataset:` is mandatory. Keep it terse: dataset names only, maximum three visible datasets. Separate multiple dataset names with ASCII comma plus space, for example `Dataset: H3.6M, 3DPW, SURREAL`; do not use `｜`, `/`, `、`, `，`, `;`, or `；` as dataset delimiters. If the paper uses more than three datasets, choose the three most important for the card metadata and put the fuller training/evaluation dataset list in `实现` when needed. Do not infer datasets from method family. If the official source does not report a dataset after checking the full paper and related official sources, write `Dataset: 未报告`. Never leave `Dataset: 待核验`; go back to the original source and resolve it.
 - If the paper uses a simulator, synthetic-data generator, physics engine, game engine, robotics environment, cloth simulator, or other explicit simulation environment, append terse simulation metadata on the same line using exactly `| Simulation:`: `Dataset: ... | Simulation: CLO3D / Marvelous Designer`, `Dataset: ... | Simulation: MuJoCo / Isaac Gym`, or `Dataset: ... | Simulation: 未报告`. Use official paper/project/HTML evidence for the simulator or environment; do not infer a simulator from the task family. Do not write misspellings such as `Simluation`.
 - End with exactly seven Chinese bullet slots: `定义`, `问题`, `方法`, `实现`, `结论`, `局限`, `启发`.
 - The metadata takeaway, figure captions, and seven bullet slots are Chinese-first reader notes. For English terms, write Chinese first and use the English term only as a parenthetical gloss unless it is a method/model/dataset/code name or mathematical symbol.
-- `定义` states the task contract: task, input, output, supervision/data type, training/inference flow, and evaluation benchmark/metric names when relevant. Use `未报告` / `不适用` / `待核验` instead of guessing.
+- `定义` states the task contract: task, input, output, supervision/data type, training/inference flow, and evaluation benchmark/metric names when relevant. Use `未报告` / `不适用` instead of guessing only after checking the official source. Never leave `待核验`; treat it as an instruction to verify from the original paper.
 - `方法` must include one summary sentence and exactly two nested bullets: `核心创新 1` and `核心创新 2`.
-- `实现` states how the paper realizes and validates the method: datasets beyond the three-name metadata limit when needed, baselines, key ablations, metrics/results, data source type, simulation environment details when too long for metadata, and reported compute. If GPU, memory, time, FPS, latency, or runtime are not reported, write `计算资源：未报告`.
+- `实现` states how the paper realizes and validates the method: datasets beyond the three-name metadata limit when needed, baselines, key ablations, metrics/results, data source type, simulation environment details when too long for metadata, and reported training/implementation compute. Always report GPU details when the paper, appendix, project page, or official code reports them, especially GPU count, model, and memory. If GPU, memory, time, FPS, latency, or runtime are not reported, write `计算资源：未报告`.
 - `结论` must summarize the authors' own conclusion, not the agent's route-level judgment.
 - `局限` must prioritize limitations explicitly reported by the authors in limitations, discussion, conclusion, experiment analysis, appendix, or failure-case text. If the paper does not explicitly report limitations, write `作者未明确报告局限` and then add the agent's own source-grounded limitation analysis based on experimental setup, datasets, metrics, baselines, failure cases, assumptions, or deployment conditions. Clearly distinguish author-reported limitations from agent analysis; do not disguise speculation as an author claim.
 - Put user-specific interpretation, brainstormed research ideas, possible extensions, and project-specific transfer only in `启发`. This slot can be freer than `局限`, but should still be useful for the user's research direction.
 - Do not append ranking tails such as `相关性：10/10` or `优先级：A` inside the card unless the user explicitly asks for a separate triage/ranking table.
-- Keep verification status inside the affected metadata field or bullet, for example `w/o. verified code`, `Not reported`, `待核验`, or `计算资源：未报告`. Figure and caption fields are stricter: formal delivery must not use any `配图待补` / `图注待补` / `图片待补` / `待补图注` / figure TODO-style text as a verification status. Do not add a separate broad `核验说明` / verification disclaimer section unless the user explicitly asks for an audit note.
+- Keep verified absence status inside the affected metadata field or bullet, for example `w/o. verified code`, `Not reported`, `N/A`, `不适用`, or `计算资源：未报告`. `待核验`, `candidate`, TODO/TBD/pending verification text, and broad `核验说明` disclaimers must not remain in paper-card delivery. When they appear, fetch the official source and resolve them before writing back. `无法获取原文` is not a replacement for `待核验`; use it only after exhausting official acquisition/extraction routes, and record it outside the finished card as a blocker. Figure and caption fields are stricter: formal delivery must not use any `配图待补` / `图注待补` / `图片待补` / `待补图注` / figure TODO-style text as a verification status.
 
 ## Chinese Technical Language
 
@@ -176,13 +178,13 @@ Survey / research-map cards:
 
 - A `Paper Cards` page is a collection page containing many cards in sequence. Do not create one child page per paper unless the user explicitly asks.
 - Group cards by the survey's actual theme, method family, narrative arc, or reading priority when that improves scanning.
-- Use report/source context to decide which papers deserve cards, but do not fill card facts from plausibility. If a paper is important but not fully verified yet, keep the affected fields `待核验`.
+- Use report/source context to decide which papers deserve cards, but do not fill card facts from plausibility. If a paper is important but not fully verified yet, fetch the official paper source and resolve the missing fields before delivering the card; otherwise list it outside the card section as a source-verification TODO.
 - Reject placeholder cards in formal delivery. A card with missing figure or missing caption is not complete, even if all text fields are filled. For survey-scale work, reduce the number of delivered cards or label the page as a draft instead of shipping `配图待补` placeholders.
 
 Meeting / transcript cards:
 
 - Personal notes, supplied PDF links, screenshots, and visible figures can guide importance and context, but finished claims still require official paper sources.
-- If a paper title comes only from an imperfect transcript or speech clue, mark it as `口播线索 / 待核验` and do not fabricate metadata.
+- If a paper title comes only from an imperfect transcript or speech clue, do not fabricate a paper card. Put it in a separate source-verification TODO such as `口播线索：需从官方论文核验 <title clue>`; finished meeting paper cards still require official paper-source verification.
 - Prefer user-provided PDF links and figures when present, but still verify title, venue, dataset, conclusion, and caption against official sources before marking the card finished.
 
 Teacher / lab profile cards:
@@ -204,7 +206,8 @@ Before presenting a finished card, explicitly verify:
 - Official full paper inspected end to end enough for all reader-facing claims.
 - Title, venue/date, institution/affiliation verified. The title check must compare the card heading with official metadata/PDF first-page title; for CVF pages, also compare against the PDF filename slug to catch acronym-only headings.
 - PDF, project page, and official/verified code searched.
-- `Dataset:` filled from source or explicitly marked, with at most three visible dataset names.
+- No `待核验`, `candidate`, TODO/TBD/pending verification markers, broad verification disclaimers, or other unresolved source-verification statuses remain in formal delivery.
+- `Dataset:` filled from source or explicitly marked, with at most three visible dataset names separated by ASCII comma plus space; extra training/evaluation datasets belong in `实现`.
 - Papers using a simulator or simulation environment include `| Simulation:` on the `Dataset:` line, sourced from official paper/project evidence or marked `Simulation: 未报告`.
 - Method/process figure selected from official source or user-approved source for every card; no `配图待补`, `图注待补`, empty image slot, or text-only image TODO remains in a finished page.
 - User-provided or user-approved screenshots/crops were checked first; HTML / project-page figure search was completed before any agent PDF fallback, and no agent PDF screenshot/crop was used when a usable user-approved or HTML/project figure with matching caption exists.
@@ -225,7 +228,7 @@ Run the bundled structural validator on local Markdown drafts before syncing:
 python .tools/skills/paper-card-delivery/scripts/validate_paper_card.py path/to/cards.md
 ```
 
-The script catches missing headings, missing or non-compact metadata lines, `Dataset:`, dataset lists longer than three visible names, malformed or misspelled `Simulation:` metadata, fixed bullet slots, legacy `边界 / 启发` slots, missing `核心创新` bullets, `配图待补` / `图注待补` placeholders, local-path residue, common forbidden images, and known raw English phrases that should be Chinese-first. It cannot prove official-source verification or whether a limitation was truly author-reported; the agent must still state the source evidence it inspected.
+The script catches missing headings, missing or non-compact metadata lines, `Dataset:`, dataset lists longer than three visible names, malformed or misspelled `Simulation:` metadata, fixed bullet slots, legacy `边界 / 启发` slots, missing `核心创新` bullets, `待核验` / candidate verification markers, `配图待补` / `图注待补` placeholders, local-path residue, common forbidden images, and known raw English phrases that should be Chinese-first. It cannot prove official-source verification or whether a limitation was truly author-reported; the agent must still state the source evidence it inspected.
 
 For Feishu pages, do not rely on fetched Markdown alone to verify compact metadata. Feishu's Markdown export can render hard line breaks inside one native text block as blank-separated lines, which is indistinguishable from four loose paragraphs in plain Markdown. After writing to Feishu, fetch the Docx blocks and run the block-level validator:
 
@@ -235,7 +238,7 @@ lark-cli api GET /open-apis/docx/v1/documents/<docx_token>/blocks \
 python .tools/skills/paper-card-delivery/scripts/validate_feishu_paper_card_blocks.py blocks.json
 ```
 
-The block-level validator is authoritative for Feishu compact metadata and image caption placement: each card heading must be followed by exactly one normal text block whose content has four non-empty hard-break lines: takeaway, `Venue｜Institution`, `PDF｜Project｜Code`, and `Dataset:`; each card must then use a native image block whose caption field contains the complete Chinese figure caption, unless a formula-bearing caption requires an adjacent paragraph fallback. A separate `图 N｜...图注...` paragraph after the image is an error when the caption has no formula; formula-bearing captions may remain adjacent as a fidelity fallback. Cards with `配图待补`, `图注待补`, no image block, or image blocks without captions must fail final validation. It also checks CVF PDF links for title-shortening errors when the PDF filename exposes a longer official title than the card heading.
+The block-level validator is authoritative for Feishu compact metadata and image caption placement: each card heading must be followed by exactly one normal text block whose content has four non-empty hard-break lines: takeaway, `Venue｜Institution`, `PDF｜Project｜Code`, and `Dataset:`; each card must then use a native image block whose caption field contains the complete Chinese figure caption, unless a formula-bearing caption requires an adjacent paragraph fallback. A separate `图 N｜...图注...` paragraph after the image is an error when the caption has no formula; formula-bearing captions may remain adjacent as a fidelity fallback. Cards with `待核验` / candidate verification markers, `配图待补`, `图注待补`, no image block, or image blocks without captions must fail validation. It also checks CVF PDF links for title-shortening errors when the PDF filename exposes a longer official title than the card heading.
 
 ## Sorting
 

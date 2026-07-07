@@ -52,6 +52,12 @@ FORBIDDEN_PLACEHOLDERS = [
     "image pending",
     "caption pending",
 ]
+DRAFT_STATUS_PATTERNS = [
+    (re.compile(r"待核验"), "Formal paper-card delivery must not contain `待核验`; verify against the official source and resolve it. If the original source cannot be obtained after all official acquisition/extraction routes fail, report a blocker instead of shipping a card."),
+    (re.compile(r"\bcandidate\s*/", re.I), "Formal paper-card delivery must not contain candidate-status markers."),
+    (re.compile(r"\b(?:todo|tbd|pending)\b", re.I), "Formal paper-card delivery must not contain TODO/TBD/pending verification markers."),
+    (re.compile(r"(?:核验|验证)\s*(?:TODO|TBD|pending|待办)", re.I), "Formal paper-card delivery must not contain unresolved verification TODOs."),
+]
 TRANSLATABLE_ENGLISH_TERMS = {
     "parametric human estimation": "参数化人体估计",
     "perspective distortion": "透视畸变/透视失真",
@@ -72,7 +78,7 @@ SIMULATION_HINTS_RE = re.compile(
     r")\b",
     re.I,
 )
-STATUS_VALUES = {"未报告", "待核验", "不适用", "not reported", "n/a", "na", "none"}
+STATUS_VALUES = {"未报告", "不适用", "not reported", "n/a", "na", "none"}
 
 
 def normalize_title(value: str) -> str:
@@ -120,10 +126,20 @@ def check_dataset_line(dataset_line: str, card: str, issue) -> None:
     if re.search(r"simulation\s*[:：]", dataset_line, flags=re.I) and not re.search(r"\|\s*Simulation\s*[:：]", dataset_line):
         issue("simulation_format", "Simulation metadata must be appended as `| Simulation:` on the Dataset line.")
     entries = dataset_entries(dataset_line)
+    dataset_value = re.sub(r"^Dataset:\s*", "", dataset_line, flags=re.I)
+    dataset_part = re.split(r"\s*\|\s*Simulation\s*[:：]", dataset_value, maxsplit=1, flags=re.I)[0].strip()
+    if dataset_part.lower() not in STATUS_VALUES and re.search(r"｜|、|，|;|；|\s/\s", dataset_part):
+        issue("dataset_separator", "Separate Dataset metadata names with ASCII comma plus space, e.g. `Dataset: H3.6M, 3DPW, SURREAL`; put extra datasets in `实现`.")
     if len(entries) > 3:
         issue("dataset_too_many", "Dataset metadata must list at most three visible dataset names; put additional datasets in `实现` if needed.")
     if SIMULATION_HINTS_RE.search(card) and not re.search(r"\|\s*Simulation\s*[:：]", dataset_line):
         issue("simulation_missing", "Card mentions a known simulator/environment; Dataset metadata should include `| Simulation:` or explicitly mark `Simulation: 未报告`.")
+
+
+def check_draft_status_markers(text: str, issue) -> None:
+    for pattern, message in DRAFT_STATUS_PATTERNS:
+        if pattern.search(text):
+            issue("draft_status_forbidden", message)
 
 
 def split_cards(text: str) -> list[tuple[int, str, str]]:
@@ -183,6 +199,8 @@ def check_card(line_no: int, title: str, card: str) -> list[dict[str, object]]:
         if slug_title and token_count(slug_title) > token_count(title) + 2:
             issue("title_incomplete", "Card heading appears shorter than the official CVF PDF title slug; use the complete official paper title, not only the method acronym.")
 
+    check_draft_status_markers(card, issue)
+
     for bullet in REQUIRED_BULLETS:
         if not re.search(rf"^\s*[-*]\s+{re.escape(bullet)}\s*[:：]", card, flags=re.M):
             issue("required_bullet", f"Missing fixed bullet slot `{bullet}`.")
@@ -194,9 +212,9 @@ def check_card(line_no: int, title: str, card: str) -> list[dict[str, object]]:
     if limitation_match:
         limitation_text = limitation_match.group(1).strip()
         if not limitation_text:
-            issue("limitation_empty", "`局限` should state author-reported limitations, `作者未明确报告局限`, or `待核验`.")
-        elif not re.search(r"作者|未报告|未明确报告|待核验|Not reported|N/A", limitation_text, flags=re.I):
-            issue("limitation_source_marker", "`局限` should distinguish author-reported limitations from agent analysis, or explicitly state `作者未明确报告局限` / `待核验`.")
+            issue("limitation_empty", "`局限` should state author-reported limitations, `作者未明确报告局限`, or verified `未报告` after checking the official source.")
+        elif not re.search(r"作者|未报告|未明确报告|Not reported|N/A", limitation_text, flags=re.I):
+            issue("limitation_source_marker", "`局限` should distinguish author-reported limitations from agent analysis, or explicitly state `作者未明确报告局限` / verified `未报告`.")
 
     if not re.search(r"^\s*[-*]\s+核心创新\s*1\s*[:：]", card, flags=re.M):
         issue("method_innovation", "Missing nested `核心创新 1` bullet under 方法.")

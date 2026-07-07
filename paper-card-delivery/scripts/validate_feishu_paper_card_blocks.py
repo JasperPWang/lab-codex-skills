@@ -29,7 +29,7 @@ SIMULATION_HINTS_RE = re.compile(
     r")\b",
     re.I,
 )
-STATUS_VALUES = {"未报告", "待核验", "不适用", "not reported", "n/a", "na", "none"}
+STATUS_VALUES = {"未报告", "不适用", "not reported", "n/a", "na", "none"}
 FORBIDDEN_PLACEHOLDERS = (
     "配图待补",
     "图注待补",
@@ -48,6 +48,12 @@ FORBIDDEN_PLACEHOLDERS = (
     "figure pending",
     "image pending",
     "caption pending",
+)
+DRAFT_STATUS_PATTERNS = (
+    (re.compile(r"待核验"), "Formal paper-card delivery must not contain `待核验`; verify against the official source and resolve it. If the original source cannot be obtained after all official acquisition/extraction routes fail, report a blocker instead of shipping a card."),
+    (re.compile(r"\bcandidate\s*/", re.I), "Formal paper-card delivery must not contain candidate-status markers."),
+    (re.compile(r"\b(?:todo|tbd|pending)\b", re.I), "Formal paper-card delivery must not contain TODO/TBD/pending verification markers."),
+    (re.compile(r"(?:核验|验证)\s*(?:TODO|TBD|pending|待办)", re.I), "Formal paper-card delivery must not contain unresolved verification TODOs."),
 )
 
 
@@ -148,10 +154,20 @@ def check_dataset_line(dataset_line: str, card_text: str, details: list[dict[str
     if re.search(r"simulation\s*[:：]", dataset_line, flags=re.I) and not re.search(r"\|\s*Simulation\s*[:：]", dataset_line):
         add("simulation_format", "Simulation metadata must be appended as `| Simulation:` on the Dataset line.")
     entries = dataset_entries(dataset_line)
+    dataset_value = re.sub(r"^Dataset:\s*", "", dataset_line, flags=re.I)
+    dataset_part = re.split(r"\s*\|\s*Simulation\s*[:：]", dataset_value, maxsplit=1, flags=re.I)[0].strip()
+    if dataset_part.lower() not in STATUS_VALUES and re.search(r"｜|、|，|;|；|\s/\s", dataset_part):
+        add("dataset_separator", "Separate Dataset metadata names with ASCII comma plus space, e.g. `Dataset: H3.6M, 3DPW, SURREAL`; put extra datasets in `实现`.")
     if len(entries) > 3:
         add("dataset_too_many", "Dataset metadata must list at most three visible dataset names; put additional datasets in `实现` if needed.")
     if SIMULATION_HINTS_RE.search(card_text) and not re.search(r"\|\s*Simulation\s*[:：]", dataset_line):
         add("simulation_missing", "Card mentions a known simulator/environment; Dataset metadata should include `| Simulation:` or explicitly mark `Simulation: 未报告`.")
+
+
+def check_draft_status_markers(text: str, details: list[dict[str, object]], title: str) -> None:
+    for pattern, message in DRAFT_STATUS_PATTERNS:
+        if pattern.search(text):
+            details.append({"title": title, "code": "draft_status_forbidden", "message": message})
 
 
 def iter_descendants(block: dict, by_id: dict[str, dict]):
@@ -242,6 +258,8 @@ def main() -> int:
         if index + 1 >= len(children):
             details.append({"title": title, "code": "metadata_missing", "message": "No block after card heading."})
             continue
+        card_text_all = "\n".join(elements_text(by_id.get(block_id, {})).strip() for block_id in children[index:next_card_index])
+        check_draft_status_markers(card_text_all, details, title)
         meta_block = by_id.get(children[index + 1], {})
         meta_text = elements_text(meta_block)
         lines = meta_text.split("\n")
@@ -264,8 +282,7 @@ def main() -> int:
         if not lines[3].startswith("Dataset:"):
             details.append({"title": title, "code": "dataset", "message": "Metadata line 4 must start with `Dataset:`."})
         else:
-            card_text = "\n".join(elements_text(by_id.get(block_id, {})).strip() for block_id in children[index:next_card_index])
-            check_dataset_line(lines[3], card_text, details, title)
+            check_dataset_line(lines[3], card_text_all, details, title)
         for pdf_url in pdf_links(meta_block):
             slug_title = cvf_slug_title(pdf_url)
             if slug_title and token_count(slug_title) > token_count(title) + 2:
@@ -295,6 +312,8 @@ def main() -> int:
                     details.append({"title": title, "code": "figure_placeholder_forbidden", "message": f"Formal paper-card delivery must not contain `{placeholder}`; add a verified figure/caption or mark the whole page as draft/blocker."})
         for image in card_images:
             caption = image_caption_text(image)
+            if caption:
+                check_draft_status_markers(caption, details, title)
             caption_casefolded = caption.casefold()
             for placeholder in FORBIDDEN_PLACEHOLDERS:
                 if placeholder.casefold() in caption_casefolded:
@@ -324,9 +343,9 @@ def main() -> int:
         if limitation_text is None:
             pass
         elif not limitation_text:
-            details.append({"title": title, "code": "limitation_empty", "message": "`局限` should state author-reported limitations, `作者未明确报告局限`, or `待核验`."})
-        elif not re.search(r"作者|未报告|未明确报告|待核验|Not reported|N/A", limitation_text, flags=re.I):
-            details.append({"title": title, "code": "limitation_source_marker", "message": "`局限` should distinguish author-reported limitations from agent analysis, or explicitly state `作者未明确报告局限` / `待核验`."})
+            details.append({"title": title, "code": "limitation_empty", "message": "`局限` should state author-reported limitations, `作者未明确报告局限`, or verified `未报告` after checking the official source."})
+        elif not re.search(r"作者|未报告|未明确报告|Not reported|N/A", limitation_text, flags=re.I):
+            details.append({"title": title, "code": "limitation_source_marker", "message": "`局限` should distinguish author-reported limitations from agent analysis, or explicitly state `作者未明确报告局限` / verified `未报告`."})
 
     result = {"cards": len(card_indices), "issues": len(details), "details": details}
     print(json.dumps(result, ensure_ascii=False, indent=2))
