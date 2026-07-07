@@ -1,6 +1,6 @@
 ---
 name: paper-deep-dive
-description: Use to turn a research paper PDF or extracted Markdown into a Feishu-first deep reading packet with source extraction, paper card, native Feishu mind-map analysis tree, Chinese close-reading notes on the parent page, English original manuscript child page, faithful Chinese translation child page, figures/assets, and sync-ready outputs.
+description: Canonical single-paper deep-dive delivery standard. Use whenever the user mentions deep dive, 深读, 详细解析, detailed-read, dive into a paper, full paper reading, English original manuscript, 原文中译稿, or asks to audit/repair a deep-dive package. Produces the Feishu-first parent page with Paper Card, native 论文解析树, source-order 精读稿, plus complete child pages for 英文原文稿 and 原文中译稿; no other skill may relax or replace this delivery contract.
 ---
 
 # Paper Deep Dive
@@ -8,6 +8,14 @@ description: Use to turn a research paper PDF or extracted Markdown into a Feish
 Short description: PDF to deep paper notes workflow. Source: Feishu wiki AI Research Skills.
 
 Use this skill when the user wants a complete paper reading workflow from PDF to stable notes, paper card, assets, and shareable summaries.
+
+## Single Source of Truth
+
+This skill is the only canonical delivery standard for single-paper deep dives. Other skills may trigger, route, write to Feishu, preserve Chinese wording, or distill the finished deep dive into a wiki, but they must not define a second deep-dive structure or mark a package complete under weaker rules.
+
+When any user request says `deep dive`, `深读`, `详细解析`, `detailed-read`, `dive into`, `精读这篇论文`, `英文原文稿`, or `原文中译稿`, treat it as this full workflow unless the user explicitly asks for a lighter artifact such as quick summary, paper card only, or partial translation. A lighter artifact must be labeled as such and must not be called a compliant deep dive.
+
+The completion standard is product-level, not effort-level. A page that has a good parent summary but incomplete manuscript children is still incomplete. A package is compliant only when the parent page, both child manuscript pages, figures/captions, formulas, references, hierarchy, and fetch-back verification all pass the delivery gate below.
 
 ## Canonical Paper Card Gate
 

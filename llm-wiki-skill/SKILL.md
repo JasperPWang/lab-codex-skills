@@ -15,7 +15,7 @@ For any paper card / 论文卡片 work, also use [`paper-card-delivery`](../pape
 
 ## Canonical Paper Deep Dive Gate
 
-For any single-paper deep dive / 深读 / 详细解析 work, also use [`paper-deep-dive`](../paper-deep-dive/SKILL.md). That skill is the canonical workflow for PDF/HTML extraction, parent-page `Paper Card` / `论文解析树` / `精读稿`, child pages `英文原文稿` and `原文中译稿`, paper-card creation, and fidelity checks. Keep this skill's Research-Wiki placement rules, but do not finalize deep-dive deliverables from this skill alone.
+For any single-paper deep dive / 深读 / 详细解析 work, also use [`paper-deep-dive`](../paper-deep-dive/SKILL.md). That skill is the single canonical delivery standard for PDF/HTML extraction, parent-page `Paper Card` / `论文解析树` / `精读稿`, child pages `英文原文稿` and `原文中译稿`, paper-card creation, manuscript fidelity, and completion gates. Keep this skill's Research-Wiki placement rules, but do not define, relax, or finalize deep-dive deliverables from this skill alone.
 
 这个 skill 用来让 Codex 直接维护一个可长期积累的 Markdown wiki：原始资料保持不可变，Codex 增量生成和更新 wiki，Obsidian 只是可选的浏览器。
 
@@ -124,19 +124,14 @@ Meeting 论文处理完成后，`1-Meetings/assets/` 只保留最终会被 meeti
 - Deep dive 成品现在默认放进飞书个人文档库，不再默认写入 Obsidian `deep-dive/` 目录。Obsidian 只接收 deep dive 之后仍然长期重要、已经被归纳提炼的知识资产；不要把英文原文稿、原文中译稿、父页精读稿或论文全文 Markdown 直接塞回 `4-Research-Wiki/wiki/`。只有当内容被判断为世界模型专题长期证据时，再蒸馏进入 `4-Research-Wiki/raw/sources/papers/` 和 `4-Research-Wiki/wiki/`。
 - 结构化解析时保留章节层级、公式/表格占位、figure caption、正文引用线索、参考文献和关键术语；如果解析质量差，需要回到 PDF 原文核验，不得只依赖损坏的 Markdown。
 
-Deep dive 标准流程：
+Deep dive 标准只保留在 [`paper-deep-dive`](../paper-deep-dive/SKILL.md)。本 skill 不再维护第二份 deep dive 结构、翻译规则、图表规则或质量门槛，以免和主标准漂移。
 
-- **先补外部上下文**：在正式写作前必须联网检索论文的最新状态和高度相关工作，优先查 arXiv、OpenReview、会议页、项目页、GitHub、Hugging Face、作者主页、follow-up 论文、同期批评论文、复现实验、官方回应和后续版本。若发现最新高度相关论文（例如同团队后续、直接批评、benchmark shortcut、pose/action/reward 等互补工作），必须在深读笔记中单独设“相关最新进展 / 后续线索 / 批评与争议”小节。不要只依赖用户给的论文 PDF。
-- **先解析，后深读**：正式 deep dive 必须优先用 MinerU 将 PDF 转为结构化 Markdown；只有 MinerU 明确失败或论文没有 PDF 时，才使用 Docling / Marker / PyMuPDF / pdfplumber fallback。不要直接只用 PDF 抽文本或网页摘要写深读，除非用户明确要求快速摘要。
-- **MinerU 只是转换稿**：MinerU 输出不是最终权威文本。arXiv 论文必须优先用 arXiv HTML 对照校验；非 arXiv 论文用官方 HTML、LaTeX source、publisher PDF 或会议官方 PDF 对照。校验章节顺序、段落连续性、公式、图表、caption、附录、正文引用和 References 后，才能发布英文原文稿或原文中译稿。
-- **飞书产物结构**：正式 deep dive 默认创建一个飞书父页和两个子页。父页是主阅读页，包含 `Paper Card`、原生飞书 `论文解析树` 和 `精读稿`；子页一是英文原文稿；子页二是原文中译稿。不要再默认创建单独的中文精读稿子页。若 arXiv PDF 稳定可访问，一般不额外上传 PDF；非 arXiv、链接不稳定或用户要求保留时才上传 PDF。
-- **父页总结 / 精读结构**：父页是扫读和精读入口，放 paper card、元信息、关键图、核心贡献短语、论文定位、核心问题、technical challenge、核心 insight、方法 / pipeline 摘要、loss / 数据 / 训练 / 评估摘要、关键实验和 ablation 摘要、局限、相关最新进展 / 后续线索 / 批评与争议，以及 `精读稿`。`精读稿` 必须按论文原文顺序和原文语境拆解：先 Abstract / Introduction，再编号章节、命名小节、Conclusion、Appendix / Supplementary。每一部分解释作者在该处做什么、为什么服务于论文论证、引入了什么机制或证据、还留下什么问题。不要在每一部分都特地写“对你的 world model 研究意味着什么”；world-model / embodied-world-model 启发、可迁移想法和后续实验只放在 `精读稿` 最后的综合启发小节。
-- **英文原文稿结构**：英文原文稿子页用 `# English Original Manuscript` 或论文原题开头，保留官方论文的原始英文正文，按原章节、原段落顺序排版，并保留公式、图表位置、caption、正文引用标记、算法、附录、编号 References 和关键术语。References 必须是一条文献一个数字序号，不是 bullet，也不是碎片化段落。它是中文翻译的来源页，翻译完成后可按用户要求删除。不得把“完整结构化英文稿”“英文源文结构稿”“英文阅读版”“selected excerpts”冒充为英文原文稿。
-- **原文中译稿结构**：原文中译稿子页用 `# 原文中文翻译` 开头，默认目标是按论文原章节顺序做**完整、忠诚、逐句的中文翻译，并尽量复刻原文排版结构**，不是章节级中文摘要，也不是学习性释义。每个原文段落都应有对应中文段落；保留原文的章节层级、段落顺序、图表位置、正文引用编号/作者年份引用、公式位置、表格结构、图注位置和编号 References。若版权、篇幅或上下文限制导致不能输出整篇逐字翻译，必须明确降级标注为“逐段中文译读/学习性释义”，并写清已覆盖章节和未覆盖章节；不得把章节级摘要或中文精读稿伪装成全文翻译。
-- **精读稿结构**：`精读稿` 是父页上的学习型深度笔记，不是单独子页，也不是完整中文译稿。它以原文顺序为主线，逐节解释论文论证、技术机制、证据、图表和未解决问题；一句话结论、论文定位、technical challenge、core insight、pipeline、loss / 数据 / 训练 / 评估、关键实验、局限与反驳、相关最新进展等内容应嵌入原文语境或放在末尾综合。不要把它改写成脱离原文顺序的主题清单，除非用户明确要求主题式 reader。
-- **翻译规则**：公式、变量、损失函数、算法伪代码、表格数值、引用编号、图号表号、模型名、数据集名、benchmark 名、仓库名、方法缩写和专有术语不要意译或改写；数学表达保留 LaTeX 原样。行内公式和展示公式同等重要：`$S$`、`$G$`、`$l(S)$`、`$\bm{x}^{n}$`、`$\mathcal{L}_{\text{RGB}}$` 这类行内变量、算子、损失名和紧凑表达式必须保留为行内 LaTeX，不得变成普通文本、中文词、反引号代码或从 OCR/飞书纯文本倒推的近似写法。翻译时应先用不可翻译占位符保护行内/展示公式，翻译周围正文，再从官方 HTML/LaTeX/PDF 还原精确 TeX；arXiv 论文优先使用 HTML 中 `math.ltx_Math` / MathML `alttext` 或 TeX annotation。技术术语要准确翻译，首次出现或容易歧义处用“中文（English term）”，后文保持一致。不要大量把专有名词和技术术语不翻译、直接堆在中文稿里；但模型名、方法名、数据集名、代码仓库名、变量名和数学符号保持英文/符号原样。不要把 `latent`、`world model`、`rollout`、`policy`、`reward`、`pose`、`occupancy`、`token` 等核心术语翻成不稳定的口语词。
-- **图表处理**：优先复用 MinerU 提取的 figure 和 caption；父页总结 / 精读稿只放最关键的 3-6 张图并解释其作用，英文原文稿和原文中译稿按原文位置保留图号、caption 和图片引用。若 MinerU 漏图或错图，再从 arXiv HTML / 项目页 / PDF 裁图补齐。
-- **质量门槛**：完成前必须检查：飞书父页、英文原文稿子页、原文中译稿子页均存在；父页包含 paper card、原生 `论文解析树` 和 `精读稿`；父页不混入长篇英文原文或完整译文；英文原文稿不是结构摘要；原文中译稿不是章节级摘要；`精读稿` 没有被命名成完整译稿，也没有变成脱离原文顺序的主题式总结；`精读稿` 中 world-model / embodied-world-model 启发只出现在末尾综合，而不是每节重复；英文原文稿已经过 HTML/官方源校验；原文中译稿按原文段落和排版结构逐段对应；正文引用保留；References 是编号列表而非 bullet；行内公式和展示公式都未被翻译破坏；fetch 后抽查 `<latex>` / `$...$` 数量和早中晚/公式密集章节样本，确认未丢 `_`、`^`、`\tag{}`、`\bm{}`、`\mathcal{}` 等结构；关键图片/图注可读；中文术语翻译准确且不是大段英文术语堆叠；最新相关工作已检索并记录；有稳定 arXiv PDF 时未额外上传 PDF。若因论文过长无法一次翻完，必须在原文中译稿中明确标注翻译进度和剩余章节，而不是伪装完成。
+当用户在 wiki / Obsidian / Research-Wiki 语境中要求 deep dive：
+
+- 先按 `paper-deep-dive` 完成或修复 Feishu deep-dive 交付包。
+- 不把半成品、结构稿、选摘稿或章节摘要写成 Research-Wiki 的正式 deep-dive 产物。
+- Deep dive 完成后，只把仍有长期价值的内容蒸馏为 Research-Wiki 的 concept、claim、question、method、evidence、limitation、open question 或 research-practice。
+- 如果需要在 wiki 中记录 deep dive 来源，只记录 Feishu 链接、论文元信息、关键 source anchors 和蒸馏后的稳定认识，不复制整篇英文原文稿、原文中译稿或父页精读稿。
 
 Meeting 输入层包括：
 

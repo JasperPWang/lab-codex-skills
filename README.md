@@ -108,6 +108,10 @@ the user's Feishu-native page structure or formatting.
   methods, then convert them into the lab format: parent page with `Paper Card`,
   native `论文解析树`, and source-order `精读稿`, plus child pages `英文原文稿`
   and `原文中译稿`.
+- `paper-deep-dive` is the single canonical delivery standard for single-paper
+  deep dives. Other skills may trigger it, route to it, write the Feishu pages,
+  or distill the finished package into a wiki, but they must not define a
+  second deep-dive structure or call a partial package complete.
 - Literature reviews may borrow `deep-research`'s question clarification,
   source verification, synthesis, and gap-analysis methods, then convert them
   into literature trees, challenge-insight trees, novelty trees, matrices, and
@@ -229,12 +233,12 @@ Use the longer prompts below only when you need to pin a specific constraint.
 ### Paper Deep Dive
 
 ```text
-对这篇论文做完整 deep dive：父页面包含 Paper Card、原生论文解析树和按原文顺序拆解的精读稿；子页面包括英文原文稿和完整原文中译稿。公式必须保留 LaTeX，图片使用中文图注。
+对这篇论文做完整 deep dive，必须满足 paper-deep-dive 交付标准：父页面包含 Paper Card、原生论文解析树和按原文顺序拆解的精读稿；子页面包括完整英文原文稿和完整原文中译稿。公式必须保留 LaTeX，图片使用中文图注；不要把半成品、章节摘要或选摘稿当成完成。
 <PDF_OR_ARXIV_OR_PROJECT_URL>
 ```
 
 ```text
-请用 paper-deep-dive 检查这篇论文的 deep dive 是否完整：父页 Paper Card、原生论文解析树、按原文顺序拆解的精读稿、英文原文稿、原文中译稿、公式、参考文献、图表 caption 和 Feishu 层级都要核验。
+请用 paper-deep-dive 检查这篇论文的 deep dive 是否完整：父页 Paper Card、原生论文解析树、按原文顺序拆解的精读稿、完整英文原文稿、完整原文中译稿、公式、参考文献、图表 caption 和 Feishu 层级都要核验；不完整就标为 WIP，不要说已完成。
 <FEISHU_OR_LARK_URL>
 ```
 

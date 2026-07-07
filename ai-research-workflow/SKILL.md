@@ -12,6 +12,10 @@ description: Orchestrates AI research agent workflows (paper deep-dive, survey b
 
 Whenever a workflow will create, normalize, audit, or sync paper cards, first use [`paper-card-delivery`](../paper-card-delivery/SKILL.md). That skill is the canonical source for paper-card verification, fixed format, image/caption rules, and validation. This router must not finalize a paper card from its local summary rules alone.
 
+## Canonical Paper Deep Dive Gate
+
+Whenever a workflow will create, audit, repair, or route a single-paper deep dive, use [`paper-deep-dive`](../paper-deep-dive/SKILL.md). That skill is the only delivery standard for what counts as a completed deep dive: parent-page `Paper Card` / native `论文解析树` / source-order `精读稿`, complete `英文原文稿`, complete `原文中译稿`, source-fidelity formulas/captions/references, and fetch-back verification. This router may choose the skill stack, but it must not define a looser deep-dive artifact or call a partial package complete.
+
 ## Canonical Chinese Technical Writing Gate
 
 Whenever a workflow will produce Chinese reader-facing research notes, Feishu pages, wiki pages, paper-card prose, deep-dive notes, survey summaries, or meeting/daily-review text, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Keep English for names, acronyms, code, formulas, datasets, and exact source text; translate ordinary technical concepts into Chinese.
@@ -42,11 +46,11 @@ workflows.
 - For Feishu work, final structure, hierarchy, native images, native captions,
   formula handling, fetch-before-write, and fetch-after-write verification are
   controlled by `feishu-doc-workflow` and the task-specific personal skill.
-- For paper deep dives, borrow `nature-reader` ideas such as block-level source
+- For paper deep dives, route final delivery through `paper-deep-dive`. Borrow `nature-reader` ideas such as block-level source
   maps, original / Chinese correspondence, figure/table placement, terminology
   consistency, and uncertainty notes, but convert them into the required Feishu
   parent page with `Paper Card`, native `论文解析树`, and source-order `精读稿`,
-  plus child pages `英文原文稿` and `原文中译稿`.
+  plus child pages `英文原文稿` and `原文中译稿`; do not publish a partial or alternate reader as the finished deep dive.
 - For surveys and literature organization, borrow `deep-research` ideas such as
   research-question clarification, source verification, contradiction checks,
   synthesis, and gap analysis, but convert them into the user's literature tree,
@@ -69,6 +73,8 @@ workflows.
 | 本仓库训练/实验代码与记录 | [`research-dev-standards`](../research-dev-standards/SKILL.md) |
 
 Paper-card gate: this router only summarizes the gate. The binding contract lives in [`paper-card-delivery`](../paper-card-delivery/SKILL.md). Do not duplicate or override its source-verification, metadata, image, caption, bullet-slot, sorting, or validator rules here.
+
+Deep-dive gate: this router only selects and composes skills. The binding contract lives in [`paper-deep-dive`](../paper-deep-dive/SKILL.md). Do not duplicate or override its hierarchy, manuscript, mind-map, close-reading, formula, figure, reference, or completion rules here.
 
 ## 推荐主线（不要孤立使用）
 

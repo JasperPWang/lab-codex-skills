@@ -23,7 +23,7 @@ For any Feishu task where the user asks for `原文`, `提取原文`, `英文原
 
 ## Canonical Paper Deep Dive Gate
 
-For any Feishu single-paper deep dive, 深读, detailed-read, or 详细解析 task, also use [`paper-deep-dive`](../paper-deep-dive/SKILL.md). That skill is the canonical workflow for source extraction, parent-page `Paper Card` / native Feishu `论文解析树` / `精读稿`, two child pages (`<paper short name>｜英文原文稿` and `<paper short name>｜原文中译稿`), paper-card creation, and fidelity checks. This Feishu workflow remains authoritative for live page creation, hierarchy, native whiteboards/images, formulas after writeback, and fetch-back verification.
+For any Feishu single-paper deep dive, 深读, detailed-read, or 详细解析 task, also use [`paper-deep-dive`](../paper-deep-dive/SKILL.md). That skill is the single canonical delivery standard for source extraction, parent-page `Paper Card` / native Feishu `论文解析树` / `精读稿`, two child pages (`<paper short name>｜英文原文稿` and `<paper short name>｜原文中译稿`), paper-card creation, manuscript fidelity, and completion gates. This Feishu workflow is only the live-document execution layer: page creation, hierarchy, native whiteboards/images, formulas after writeback, and fetch-back verification. It must not weaken, replace, or silently bypass the `paper-deep-dive` delivery contract.
 
 ## Quick Start
 
