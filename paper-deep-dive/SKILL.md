@@ -1,6 +1,6 @@
 ---
 name: paper-deep-dive
-description: Use to turn a research paper PDF or extracted Markdown into a Feishu-first deep reading packet with source extraction, English original manuscript, complete faithful Chinese translation, Chinese close-reading notes, paper card, figures/assets, and sync-ready outputs.
+description: Canonical single-paper deep-dive delivery standard. Use whenever the user mentions deep dive, 深读, 详细解析, detailed-read, dive into a paper, full paper reading, English original manuscript, 原文中译稿, or asks to audit/repair a deep-dive package. Produces the Feishu-first parent page with Paper Card, native 论文解析树, source-order 精读稿, plus complete child pages for 英文原文稿 and 原文中译稿; no other skill may relax or replace this delivery contract.
 ---
 
 # Paper Deep Dive
@@ -9,13 +9,21 @@ Short description: PDF to deep paper notes workflow. Source: Feishu wiki AI Rese
 
 Use this skill when the user wants a complete paper reading workflow from PDF to stable notes, paper card, assets, and shareable summaries.
 
+## Single Source of Truth
+
+This skill is the only canonical delivery standard for single-paper deep dives. Other skills may trigger, route, write to Feishu, preserve Chinese wording, or distill the finished deep dive into a wiki, but they must not define a second deep-dive structure or mark a package complete under weaker rules.
+
+When any user request says `deep dive`, `深读`, `详细解析`, `detailed-read`, `dive into`, `精读这篇论文`, `英文原文稿`, or `原文中译稿`, treat it as this full workflow unless the user explicitly asks for a lighter artifact such as quick summary, paper card only, or partial translation. A lighter artifact must be labeled as such and must not be called a compliant deep dive.
+
+The completion standard is product-level, not effort-level. A page that has a good parent summary but incomplete manuscript children is still incomplete. A package is compliant only when the parent page, both child manuscript pages, figures/captions, formulas, references, hierarchy, and fetch-back verification all pass the delivery gate below.
+
 ## Canonical Paper Card Gate
 
 When this workflow creates or modifies a paper card, also use [`paper-card-delivery`](../paper-card-delivery/SKILL.md). That skill is the canonical standard for official-source verification, fixed card format, figure/caption selection, and structural validation. Do not finalize the card from this deep-dive skill alone.
 
 ## Canonical Chinese Technical Writing Gate
 
-For `原文译稿`, `完整中文译稿`, `中文精读稿`, Chinese figure captions, parent-page summaries, and Chinese paper-card prose, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Preserve official English source text in `英文原文稿`, formulas, method/model/dataset names, and symbols, but do not leave ordinary technical concepts as raw English phrase islands in Chinese prose.
+For `原文中译稿`, `完整中文译稿`, `精读稿`, Chinese figure captions, parent-page summaries, and Chinese paper-card prose, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Preserve official English source text in `英文原文稿`, formulas, method/model/dataset names, and symbols, but do not leave ordinary technical concepts as raw English phrase islands in Chinese prose.
 
 ## Borrowed Method Layer
 
@@ -31,22 +39,35 @@ format.
   replace the required Feishu hierarchy with `paper.md`, `source_map.json`,
   `translation_notes.md`, or an English/Chinese Markdown reader unless the user
   explicitly asks for a local Markdown artifact.
-- Use the source map as an internal scaffold for `英文原文稿`, `原文译稿`, and
-  source-grounded `中文精读稿`. The final Feishu deliverable must still follow the
-  parent-plus-three-child structure below and must use native Feishu images,
-  captions, formulas, and fetch-back verification through `feishu-doc-workflow`.
-- In `中文精读稿`, short bilingual source snippets or block IDs may be included
-  when they clarify a key claim, equation, or figure, but the page remains an
-  analytical Chinese close-reading guide rather than a second full translation.
+- Use the source map as an internal scaffold for `英文原文稿`, `原文中译稿`, and
+  source-grounded parent-page `精读稿`. The final Feishu deliverable must still
+  follow the parent-plus-two-child structure below and must use native Feishu
+  images, captions, formulas, whiteboards, and fetch-back verification through
+  `feishu-doc-workflow`.
+- In the parent-page `精读稿`, short bilingual source snippets or block IDs may
+  be included when they clarify a key claim, equation, or figure, but the page
+  remains an analytical Chinese close-reading guide rather than a second full
+  translation.
 
 ## When To Use
 
 - Reading a new paper deeply rather than only summarizing it.
-- Converting PDF extraction into English original manuscript, complete Chinese translation, Chinese close-reading notes, and a paper card.
+- Converting PDF extraction into an English original manuscript child page, a complete faithful Chinese translation child page, parent-page Chinese close-reading notes, a native Feishu paper-analysis mind map, and a paper card.
 - Preparing Obsidian or Feishu paper pages.
 - Auditing whether figures, claims, assets, and citations are complete.
 
 If the user says `deep dive`, `深读`, `详细解析`, `dive into`, or asks to deeply read a single paper, use this full workflow by default. Do not downgrade it to a quick summary, paper card only, or close-reading note only unless the user explicitly asks for a lighter output.
+
+## Non-Negotiable Manuscript Deliverables
+
+For papers with an accessible official PDF or full-paper HTML, the two manuscript child pages are mandatory deliverables, not optional aids:
+
+- `<paper short name>｜英文原文稿`: complete original English manuscript in source order.
+- `<paper short name>｜原文中译稿`: complete faithful Chinese manuscript in the same source order.
+
+If the PDF can be downloaded or viewed, assume the manuscripts can be produced by MinerU extraction plus official HTML / LaTeX / PDF verification. Do not use context length, page length, one-turn time, Feishu page size, translation workload, or "current tool path" as reasons to downgrade the deliverable into a section summary, structured outline, selected excerpts, or partial translation. Chunk the paper by sections, append incrementally, and continue until both child pages are complete.
+
+Only three conditions justify not producing the complete manuscript pages: the full paper source is inaccessible, reproduction is blocked by a clear licensing/copyright constraint, or the user explicitly asks for a lighter / partial artifact. In all other cases, an incomplete `英文原文稿` or `原文中译稿` is work in progress, not a compliant deep-dive deliverable.
 
 ## Workflow
 
@@ -54,19 +75,22 @@ If the user says `deep dive`, `深读`, `详细解析`, `dive into`, or asks to 
 2. Extract the paper to inspectable Markdown when tooling is available; preserve figure references and equation context. On this machine, use MinerU as the default PDF-to-Markdown path before building Feishu deep-dive pages.
 3. Check the MinerU conversion draft against official HTML when available, especially arXiv HTML for arXiv papers. Repair section order, paragraph continuity, formulas, figures, tables, captions, appendices, body citations, and references before publishing.
 4. Build a source map inspired by `nature-reader`: stable block IDs for body text, figures, tables, captions, equations, appendices, and references; page / section location; extraction confidence; and links between first figure/table mention and the visual asset.
-5. Create the English original manuscript (`英文原文稿`) from the verified official paper source. This means the paper's original English text in source order, not a structural outline, not selected excerpts, and not an English summary. It is used as the source for Chinese translation and may be deleted after the translation is complete if the user wants.
-6. Create the complete faithful Chinese translation (`原文译稿` / `完整中文译稿`) from the verified English manuscript in source order. It must preserve section hierarchy, paragraph correspondence, formulas, figure/table positions, citations, captions, references, and layout structure as much as the target editor allows.
-7. Check terminology in the Chinese translation. Technical terms should be translated accurately; important terms and proper nouns should appear as `中文（English term）` on first use or where clarity is needed. Avoid leaving large runs of English technical terms untranslated in Chinese prose.
-8. Create the Chinese close-reading notes (`中文精读稿`) with problem, motivation, method, experiments, results, limitations, next questions, and research implications. This is interpretation and learning material; do not present it as the complete translation. Ground important analysis in source-map block IDs or short bilingual snippets when useful.
-9. Create a paper card using [`paper-card-delivery`](../paper-card-delivery/SKILL.md), then run its validator on the Markdown draft when a local draft exists.
-10. Store figures and assets in a stable assets folder.
-11. Mark source says, inference, citation needed, and unresolved questions separately.
+5. Create the English original manuscript child page (`<paper short name>｜英文原文稿`) from the verified official paper source. This means the paper's original English text in source order, not a structural outline, not selected excerpts, and not an English summary. If an official PDF or full-paper HTML is accessible, this page must be completed by section-level chunking and source verification before the deep dive is marked complete.
+6. Create the complete faithful Chinese manuscript child page (`<paper short name>｜原文中译稿`) from the verified English manuscript in source order. It must preserve section hierarchy, paragraph correspondence, formulas, figure/table positions, citations, captions, references, and layout structure as much as the target editor allows. Translate the paper body, captions, and explanatory prose into Chinese, but keep the References / bibliography entries in their original English form. A partial translation is allowed only as a clearly marked WIP state; it is not a final deep-dive deliverable.
+7. Check terminology in the Chinese manuscript. Technical terms should be translated accurately; important terms and proper nouns should appear as `中文（English term）` on first use or where clarity is needed. Avoid leaving large runs of English technical terms untranslated in Chinese prose.
+8. Create or update the parent page as the main reader-facing deep-dive page. It must contain, in order: paper card, native Feishu paper-analysis mind map (`论文解析树`), and `精读稿`.
+9. Create the native Feishu `论文解析树` as a mind map, not a Mermaid flowchart. Use `lark-whiteboard` / `feishu-doc-workflow` to create or update a Feishu whiteboard with PlantUML mind-map syntax. The tree should follow the paper's actual logic: problem -> key assumptions -> method modules -> losses/training -> datasets/evaluation -> limitations -> user research implications.
+10. Create the parent-page `精读稿` as a source-order analytical close reading, not a thematic essay. Follow the paper's own section order and local context: Abstract / Introduction, numbered sections, named subsections, conclusion, then appendices or supplementary material. For each part, explain what the authors are doing, why that part is needed in the paper's argument, what technical mechanism or evidence is introduced there, and what remains unresolved. Do not insert a repeated per-section heading or paragraph such as "what this means for my world-model research" / "对你的 world model 研究意味着什么"; that lens distorts the source-order reading. Put user-specific research implications, world-model / embodied-world-model takeaways, and future project ideas only in a final synthesis section after the source-order close reading. This is interpretation and learning material; do not present it as the complete translation. Ground important analysis in source-map block IDs or short bilingual snippets when useful.
+    - Inside `精读稿`, use `###` or lower-impact paragraph/list structure for source-order close-reading subsections. Do not use `####` headings for close-reading subsections on a parent page that also contains paper cards, because `####` is reserved for paper-card titles and is checked by `paper-card-delivery` validators.
+11. Create a paper card using [`paper-card-delivery`](../paper-card-delivery/SKILL.md), then run its validator on the Markdown draft when a local draft exists.
+12. Store figures and assets in a stable assets folder.
+13. Mark source says, inference, citation needed, and unresolved questions separately.
 
 Paper-card content standards live in [`paper-card-delivery`](../paper-card-delivery/SKILL.md). This deep-dive skill must not duplicate or override paper-card source verification, metadata, image/caption selection, fixed bullet slots, sorting, or structural validation.
 
 ## Local MinerU Extraction
 
-For future deep dives, first create a MinerU conversion draft when a PDF is available. Use it as the source-order manuscript scaffold for `英文原文稿`, `原文译稿`, and `中文精读稿`.
+For future deep dives, first create a MinerU conversion draft when a PDF is available. Use it as the source-order manuscript scaffold for `<paper short name>｜英文原文稿`, `<paper short name>｜原文中译稿`, and the parent-page `精读稿`.
 
 - Preferred wrapper in this vault: `$WORLD_MODEL_VAULT/.tools/mineru-md.sh`
 - MinerU binary on this machine: `$WORLD_MODEL_VAULT_MINERU_BIN`
@@ -74,14 +98,18 @@ For future deep dives, first create a MinerU conversion draft when a PDF is avai
 - Store MinerU outputs, downloaded PDFs, arXiv HTML, and temporary figure assets under `.tools/tmp/codex/<task-slug>/`; delete them after the Feishu pages are written and fetched back successfully.
 - MinerU is a conversion draft, not the authoritative final text. For arXiv papers, always check the MinerU draft against arXiv HTML when available before publishing Feishu pages. Verify section order, paragraph continuity, equations, figures, captions, tables, appendices, citations, and references. If arXiv HTML is unavailable or incomplete, use official LaTeX source, publisher HTML, or the official PDF as the authority.
 - If MinerU misses or corrupts formulas, figures, captions, appendices, or references, repair from official arXiv HTML/LaTeX/PDF or the official publisher source before marking the deep dive complete.
+- If MinerU itself fails but the PDF is accessible, try the local wrapper again with a clean output directory, inspect the error, and then use a structured fallback such as official HTML/LaTeX, publisher HTML, Docling, Marker, PyMuPDF, or pdfplumber. MinerU failure is a workflow problem to resolve or work around, not permission to ship manuscript summaries.
 
 ## Manuscript Fidelity Requirements
 
-- `英文原文稿` and `原文译稿` must preserve paper-like citation flow. Body citation markers must remain where they appear in the source, using the source style when feasible, such as `[12]`, `[Author et al., 2025]`, or `(Author et al., 2025)`.
-- The References section must be a numbered bibliography, not a bullet list. Use Markdown ordered lists or Feishu numbered-list blocks, and preserve enough bibliographic detail for each item to be identifiable.
+- `<paper short name>｜英文原文稿` and `<paper short name>｜原文中译稿` must preserve paper-like citation flow. Body citation markers must remain where they appear in the source, using the source style when feasible, such as `[12]`, `[Author et al., 2025]`, or `(Author et al., 2025)`.
+- Both manuscript child pages must cover the full paper source that the user is trying to deep dive: Abstract, Introduction, all numbered / named main sections, Conclusion / Discussion, appendices or supplementary sections when they are part of the PDF, figure and table captions, algorithms when present, and References. If the user explicitly excludes appendices or supplementary material, record that exclusion in the child page and final report.
+- Before marking complete, compare the child pages against the official source section list. Missing sections, reordered sections, dropped captions, collapsed tables, omitted algorithms, or absent References make the manuscript pages incomplete.
+- The References section must be a numbered bibliography, not a bullet list. Use Markdown ordered lists or Feishu numbered-list blocks, keep one reference per item, and preserve the original English bibliography text. Do not translate paper titles, venues, publisher names, author names, page ranges, DOI/arXiv strings, or other reference-entry fields into Chinese.
 - Figures and tables must be placed near their original reference/caption positions. Use native Feishu image blocks for figures when reliable official image assets are available.
+- Figure captions without formulas must be attached to the corresponding native Feishu image block as its image caption, not left as a separate ordinary paragraph. Captions with inline formulas, displayed formulas, or explicit formula-rendering fallbacks may remain as an immediately adjacent paragraph when native captions cannot preserve the formula; preserve the exact TeX source in that fallback.
 - Formulas must be checked against official HTML/LaTeX/PDF and preserved in LaTeX where possible. This includes inline formulas, not only displayed equations. Do not publish pages where important equations, inline variables, losses, or symbolic expressions have collapsed into prose or lost subscripts/superscripts.
-- The complete Chinese manuscript follows the same fidelity requirements as the English original manuscript: original section order, paragraph correspondence, figure/table positions, formula placement, body citations, numbered references, captions, appendices, and table structure.
+- The complete Chinese manuscript follows the same fidelity requirements as the English original manuscript: original section order, paragraph correspondence, figure/table positions, formula placement, body citations, numbered references, captions, appendices, and table structure. The Chinese manuscript's References section remains the original English bibliography, even though the main body is translated.
 - Chinese terminology must be deliberate. Translate technical terms into accurate Chinese, keep method/model/dataset names and symbols unchanged when they are names, and write important terms as `中文（English term）` when first introduced. Do not leave dense English terminology untranslated in ordinary Chinese explanatory prose.
 
 ## Formula / Equation Handling
@@ -100,20 +128,24 @@ For paper deep dives and complete manuscript pages, formulas are source-fidelity
 
 For Feishu deliverables, use this fixed hierarchy by default:
 
-- Parent page: paper card and summary only. Include metadata, source-verified pipeline / process / computation-flow figure(s), one-sentence conclusion, core problem, method/pipeline summary, experiments, limitations, and implications.
-- Child page 1: `英文原文稿`, the complete original English manuscript from official PDF/HTML/LaTeX/MinerU extraction. It is a temporary translation source and can be deleted after translation if the user requests cleanup.
-- Child page 2: `原文译稿`, the complete faithful Chinese translation.
-- Child page 3: `中文精读稿`, the Chinese close-reading / learning notes.
+- Parent page: title must be the official paper/article title only. Do not append status suffixes such as `中文`, `深度笔记`, `学习页`, `Deep Dive`, `阅读笔记`, or `解析`. The parent is the main deep-dive reading page and contains exactly the durable reader-facing synthesis: `Paper Card`, `论文解析树` as a native Feishu mind map, and `精读稿` on the same page. The paper card and mind map should include metadata, source-verified pipeline / process / computation-flow figure(s), one-sentence conclusion, core problem, method/pipeline summary, experiments, limitations, and implications. The `精读稿` itself must first follow the paper's source order and original argumentative context; user-specific research takeaways belong in one final synthesis section, not repeated after every paper section or forced into each local explanation.
+- Child page 1: `<paper short name>｜英文原文稿`, the complete original English manuscript from official PDF/HTML/LaTeX/MinerU extraction. Do not replace it with an extraction-status page when the official PDF or full-paper HTML is accessible.
+- Child page 2: `<paper short name>｜原文中译稿`, the complete faithful Chinese manuscript / translation. Use this name instead of `中文原文稿`, `完整中文稿`, or `原文译稿` for new pages.
 
-Do not replace these three child pages with an `English Structured Reader`, outline, section summary, or mixed translation/interpretation page.
+Choose `<paper short name>` as the shortest unambiguous paper identifier already used by the community or the paper itself, such as method acronym, article short title, or arXiv/project name. Do not use the full official title for child pages when it makes the page title unwieldy.
+
+Do not create a separate `中文精读稿` child page by default. The close-reading notes belong on the parent page as `精读稿`. Do not replace the two original-manuscript child pages with an outline, section summary, or mixed translation/interpretation page.
+
+Remove obsolete process/status scaffolding from reader-facing parent pages. Sections such as `Source Extraction`, `Deep Dive Structure Status`, long extraction inventories, local MinerU availability notes, and self-referential statements about which subpage is complete are working notes, not deep-dive content. Keep durable source links in a compact `来源` section when useful.
 
 Use:
 
 - `Paper Metadata`
 - `Extraction Result`
 - `English Original Manuscript`
-- `Faithful Chinese Translation`
-- `Chinese Close Reading Notes`
+- `Faithful Chinese Manuscript`
+- `Native Feishu Paper Analysis Mind Map`
+- `Chinese Close Reading Notes on Parent Page`
 - `Paper Card`
 - `Assets`
 - `Open Questions`
@@ -123,8 +155,22 @@ Use:
 
 - Do not fabricate paper content when extraction is incomplete.
 - Do not merge translation, interpretation, and speculation without labels.
-- Do not call a page `英文原文稿` unless it contains the original English paper text in source order.
-- Do not call a page `原文译稿` or `完整中文稿` unless it is a complete, faithful translation of the source paper rather than a close-reading note.
-- Do not call `中文精读稿` a complete translation; it is learning-oriented interpretation.
+- Do not call a page `英文原文稿` unless it is named `<paper short name>｜英文原文稿` and contains the original English paper text in source order.
+- Do not call a page `原文中译稿` unless it is a complete, faithful translation of the source paper rather than a close-reading note. For legacy pages named `中文原文稿`, rename them to `<paper short name>｜原文中译稿` when repairing the hierarchy.
+- Do not mark a deep dive complete if either manuscript child page is partial, section-summary-only, selected-excerpt-only, missing References, missing appendices included in the PDF, or missing major figures/tables/captions from the source paper.
+- Do not create a source-link / extraction-status child page as a substitute for `英文原文稿` or `原文中译稿` when the official PDF or full-paper HTML is accessible. Use that fallback only for genuine source access or licensing blockers, and label the whole deep dive as blocked / incomplete.
+- Do not treat long papers as a reason to reduce scope. Split the manuscript and translation by source sections, append incrementally, and verify coverage before final delivery.
+- Do not create a separate `中文精读稿` child page unless the user explicitly asks; the default close-reading deliverable is the parent-page `精读稿`.
 - Do not cite figures or equations that were not actually extracted or inspected.
 - Do not present a paper card as finished unless its problem, method, implementation, conclusion, limitations, and figure claims are grounded in the official full paper; use `Not reported`, `N/A`, or `待核验` instead of guessing.
+
+## Manuscript Completion Gate
+
+Before declaring a deep dive compliant, fetch back the parent page and both child pages, then verify:
+
+- The parent page has exactly the two required manuscript child pages plus the parent-page `Paper Card`, native `论文解析树`, and `精读稿`.
+- `<paper short name>｜英文原文稿` contains the original English source text in paper order, not a summary or outline.
+- `<paper short name>｜原文中译稿` mirrors the English manuscript section by section and paragraph by paragraph as closely as the editor allows.
+- Official source sections, captions, tables, algorithms, appendices, body citations, and References are present or explicitly excluded by the user.
+- Formulas and inline symbols survive source verification against official HTML/LaTeX/PDF samples from early, middle, formula-heavy, and appendix sections.
+- Any remaining missing section, figure, table, formula, or translation block is reported as an incomplete WIP item; do not call the package finished.

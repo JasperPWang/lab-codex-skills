@@ -105,8 +105,13 @@ methods, checklists, and intermediate reasoning, but they should not override
 the user's Feishu-native page structure or formatting.
 
 - Deep dives may borrow `nature-reader`'s source-map and bilingual-reader
-  methods, then convert them into the lab format: parent page plus `英文原文稿`,
-  `原文译稿`, and `中文精读稿`.
+  methods, then convert them into the lab format: parent page with `Paper Card`,
+  native `论文解析树`, and source-order `精读稿`, plus child pages `英文原文稿`
+  and `原文中译稿`.
+- `paper-deep-dive` is the single canonical delivery standard for single-paper
+  deep dives. Other skills may trigger it, route to it, write the Feishu pages,
+  or distill the finished package into a wiki, but they must not define a
+  second deep-dive structure or call a partial package complete.
 - Literature reviews may borrow `deep-research`'s question clarification,
   source verification, synthesis, and gap-analysis methods, then convert them
   into literature trees, challenge-insight trees, novelty trees, matrices, and
@@ -138,7 +143,7 @@ only ask for more detail when the missing context would change the result.
 | Figures and plots | `帮我把这张图做成论文级图表` | `nature-figure` |
 | Statistics sanity check | `帮我检查这些实验表格和 p 值是否一致` | `stats-sanity` |
 | Reproducibility / release | `帮我整理这个项目的复现包` | `repro-pack` |
-| Research code / environment workflow | `按科研开发规范帮我改/跑/记录这个实验，或帮我配置服务器实验环境` | `research-dev-standards` |
+| Research code workflow | `按科研开发规范帮我改/跑/记录这个实验` | `research-dev-standards` |
 | Mock review / rebuttal | `帮我从审稿人角度审一下/帮我回审稿意见` | `academic-paper-reviewer`, `nature-reviewer`, `nature-response` |
 | Grant / proposal | `帮我搭这个基金/博士课题 proposal` | `grant-writer` |
 | Daily review | `帮我做今天的科研经营复盘` | `daily-research-review` |
@@ -228,12 +233,12 @@ Use the longer prompts below only when you need to pin a specific constraint.
 ### Paper Deep Dive
 
 ```text
-对这篇论文做完整 deep dive：父页面只放 paper card 和摘要；子页面包括英文原文稿、完整中文译稿、中文精读稿。公式必须保留 LaTeX，图片使用中文图注。
+对这篇论文做完整 deep dive，必须满足 paper-deep-dive 交付标准：父页面包含 Paper Card、原生论文解析树和按原文顺序拆解的精读稿；子页面包括完整英文原文稿和完整原文中译稿。公式必须保留 LaTeX，图片使用中文图注；不要把半成品、章节摘要或选摘稿当成完成。
 <PDF_OR_ARXIV_OR_PROJECT_URL>
 ```
 
 ```text
-请用 paper-deep-dive 检查这篇论文的 deep dive 是否完整：英文原文、中文译稿、中文精读稿、公式、参考文献、图表 caption、paper card 和 Feishu 层级都要核验。
+请用 paper-deep-dive 检查这篇论文的 deep dive 是否完整：父页 Paper Card、原生论文解析树、按原文顺序拆解的精读稿、完整英文原文稿、完整原文中译稿、公式、参考文献、图表 caption 和 Feishu 层级都要核验；不完整就标为 WIP，不要说已完成。
 <FEISHU_OR_LARK_URL>
 ```
 

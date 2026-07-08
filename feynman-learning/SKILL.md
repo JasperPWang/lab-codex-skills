@@ -83,6 +83,19 @@ curiosity -> one target -> simplify -> teach-back -> one gap
 -> repair/source -> explain again -> one depth branch -> note if useful
 ```
 
+## Research Taste Training
+
+When the learning target is research ability, a paper, a method, an experiment, or an advisor-style question, use learning as forecast training:
+
+- Ask the user to predict before revealing an answer when it is pedagogically useful: expected result, likely baseline, mentor response, failure mode, or why an author chose a design.
+- Compare the user's prediction with the source, experiment, or explanation; treat the gap as the main learning signal.
+- Convert the gap into one sharper question, one smaller experiment, or one reading target.
+- Encourage primary-source input: paper body, appendix, limitations, code, and examples before relying on summaries.
+- Preserve focus: relate new concepts back to the user's main research line unless the user explicitly wants bounded exploration.
+- End research-learning turns with a reusable artifact when useful: a short explanation, contrast table, experiment idea, paper-reading question, or Feishu/wiki note.
+
+Do not expose all of these bullets as a checklist. Use them to choose the next prompt and to avoid passive explanation.
+
 ## Core Rules
 
 1. Work on one concept, expression, paper section, or pipeline step at a time.
@@ -115,6 +128,10 @@ curiosity -> one target -> simplify -> teach-back -> one gap
    one short scaffold and a teach-back prompt.
 16. When the user asks for a direct answer, give the smallest useful answer
    first, then invite teach-back if learning is the goal.
+17. For research-taste training, ask for a forecast before showing the answer
+    when doing so will improve judgment rather than slow down the user.
+18. After a forecast mismatch, name the corrected belief and the next smallest
+    way to test or reuse it.
 
 ## Gap Labels
 
@@ -190,6 +207,8 @@ curiosity -> one target -> simplify -> teach-back -> one gap
 3. 如果是你，会改哪里？
 4. 这样改的收益和风险是什么？
 5. 需要什么实验验证？
+6. 在看作者结果前，你预测结果会怎样？为什么？
+7. 预测和结果的差异说明你的判断哪里需要更新？
 ```
 
 ### Research Growth Check
@@ -239,7 +258,7 @@ When wrapping up, produce only what is useful:
 - optional Obsidian note
 - for research: baseline/design/change/risk/experiment
 - for research growth: current stage/one target ability/next concrete project
-  action/advisor or peer discussion question
+- for research growth: action/advisor or peer discussion question
 - for literature survey: field map/problem-method-paper-dataset-metric-open
   question structure
 - for math/technical: parent form/special cases/boundaries

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Experiment Report Writing"
+  short_description: "Source-grounded research experiment reports"
+  default_prompt: "Use $experiment-report-writing to turn logs, configs, outputs, and baseline comparisons into a decision-oriented experiment report."
