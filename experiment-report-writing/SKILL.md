@@ -73,6 +73,7 @@ Use this structure for a full completed experiment report:
 - 指标方向：
 - 结果表：
 - 相比 baseline / 上次运行：
+- 定量分析：
 - 统计或可比性 caveat：
 
 ## 4. 定性实验
@@ -80,26 +81,26 @@ Use this structure for a full completed experiment report:
 - 代表性失败样本：
 - 可视化 / render / geometry / video 观察：
 - 失败模式：
+- 定性分析：
 
-## 5. 分析与结论
-- 与预测是否一致：
-- 可信结论：
-- 仍不能下的结论：
-- 最大混淆因素：
-- 决策：
-- 理由：
-- 风险：
-
-## 6. 下一步最小动作
+## 5. 下一步最小动作
 1. ...
 2. ...
 3. ...
 
-## 7. 附录
+## 6. 附录
 - 可复用命令 / config：
 - 可复用图表 / 样例：
 - 原始日志 / 指标文件 / 产物路径：
 - 需要写回的文档：
+
+## 7. 结论
+- 与预测是否一致：
+- 可信结论：
+- 仍不能下的结论：
+- 决策：
+- 理由：
+- 风险：
 ```
 
 Use numbered headings in formal reports. Omit `2. 预处理` only when the experiment has no meaningful preprocessing, pseudo-label generation, alignment, filtering, or data conversion step; then renumber later sections so the report remains continuous.
