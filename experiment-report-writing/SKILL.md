@@ -83,6 +83,7 @@ Use this structure for a full completed experiment report:
 - 代表性成功样本：
 - 代表性失败样本：
 - 原分辨率图像 / 视频：
+- 图像原生图注：
 - 可视化 / render / geometry / video 观察：
 - 失败模式：
 - 定性分析：
@@ -164,6 +165,7 @@ For an experiment that has not run yet, use a pre-registration form:
 
 - Inspect representative images, videos, meshes, point clouds, or render outputs before writing qualitative conclusions.
 - Use original-resolution image and video artifacts for qualitative judgment; if the report embeds a resized preview, include the path or link to the original-resolution file.
+- When writing the report in Feishu/Lark, put image captions in the native image caption field. Do not create standalone text paragraphs that duplicate or replace image captions; reserve normal paragraphs for analysis, not captions.
 - Present paired subjects, conditions, or before/after variants side by side when the report is making a visual comparison and the page format supports it.
 - Use stable, stated column order for comparison grids. Include ground truth, baseline, current method, residuals/deltas, depth, normal, mask, or canonical views only when they are actually available and relevant.
 - Use consistent color semantics for residual or delta maps and state the meaning of colors if the figure is not self-explanatory.
@@ -203,6 +205,7 @@ Avoid these:
 - declaring improvement without baseline or confidence about metric direction;
 - hiding failed samples, NaNs, empty outputs, bad renderings, or partial checkpoints;
 - using thumbnails, downsampled images, or compressed videos as the only qualitative evidence;
+- using standalone text paragraphs as Feishu image captions instead of native image captions;
 - leaving `待核验`, TODO, or guessed fields in a completed report.
 
 ## Verification Checklist
@@ -218,6 +221,7 @@ Before calling a report complete, verify:
 - metrics and qualitative/raw output observations are both included when available;
 - metric table comparability, direction, precision, and mask/split口径 are explicit;
 - qualitative images/videos are original-resolution sources, or any resized previews are clearly linked to original-resolution artifacts;
+- Feishu/Lark image captions are native image captions, with no standalone paragraph captions left around the images;
 - visual artifacts were inspected and captions/media placement were verified when the report includes media;
 - failure cases or negative evidence are included;
 - user-provided conclusion callout is preserved, or an empty conclusion callout is left for the user instead of an invented final judgment;
