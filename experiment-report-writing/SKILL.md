@@ -15,6 +15,8 @@ Default language is Chinese. Keep method names, dataset names, model names, conf
 
 When writing to Feishu, also use `feishu-doc-workflow` and local `lark-cli`; do not use browser operations. When documenting an experiment in a code repo, also follow `research-dev-standards`.
 
+If a project has a dedicated experiment-report skill, repo guide, or server-side convention, load that first and treat this skill as the general delivery standard. Do not conclude that a project-specific convention does not exist merely because it is absent from the current local vault; check the actual machine, repo, or path the user names.
+
 ## Evidence Intake
 
 Before writing a completed report, inspect or request the evidence needed for the claims:
@@ -22,6 +24,7 @@ Before writing a completed report, inspect or request the evidence needed for th
 - goal / hypothesis / run plan;
 - exact command, script, config, branch, commit, seed, data split, checkpoint, and output directory;
 - machine and environment: GPU, CUDA, driver, Docker image / Compose service / conda env, Python and key package versions when relevant;
+- working tree state: `pwd`, branch, commit, dirty files, active worktree, symlink-resolved output root when outputs are under links;
 - logs: stdout/stderr, TensorBoard/W&B tables, evaluation JSON/CSV, training curves, failure traces;
 - artifacts: checkpoints, rendered images/videos, qualitative samples, figures, screenshots, meshes, point clouds, tables;
 - baseline or prior run for comparison;
@@ -142,6 +145,39 @@ For an experiment that has not run yet, use a pre-registration form:
 - For experiments relevant to simulation-ready / physical plausibility / deployment, explicitly state whether the run improves simulation-capable assets, geometry, dynamics, controllability, or evaluation readiness.
 - For models that use pretrained or open-source bases, report base model, checkpoint, frozen/fine-tuned/LoRA/direct-use status, and source evidence.
 
+## Feishu Delivery
+
+When updating a Feishu experiment page:
+
+- fetch the target page or section before editing, then update the real document rather than returning a chat-only draft;
+- prefer local block operations and append/replace only the relevant section instead of overwriting a rich page;
+- use `docs +media-insert` or the project-approved media path for images/videos; if upload fails from a symlinked output tree, copy final media into a temporary upload folder and upload from there;
+- after each meaningful write, fetch the touched section again and verify expected text, tables, captions, and media are present;
+- list the final Feishu URL and modified section in the completion note.
+
+For media-heavy reports, keep captions attached to the media when the document format supports it. Put subject, condition, column order, mask choice, and short interpretation in the caption or one compact shared caption. Avoid standalone explanatory paragraphs before every image/video unless formulas or document constraints require it.
+
+## Metrics, Tables, And Comparability
+
+- Run or locate the actual evaluation output before writing metric claims.
+- Round displayed scalar metrics consistently, normally to four decimal places unless the project standard differs.
+- Keep raw run directory names, checkpoint paths, mask details, and command provenance outside metric cells; table cells should carry reader-facing run labels and values.
+- Mark metric direction explicitly when it matters, such as `PSNR ↑` or `LPIPS ↓`.
+- Bold only the best value in each comparable metric column when the direction is known. Do not use background shading or bold method names unless the user asks.
+- Do not mix incompatible masks, data splits, checkpoints, or evaluation scripts in one silent comparison. If mask or split differs, create a separate table or state the incompatibility directly.
+- For matrix-style quantitative tables in Feishu, verify native header-row/header-column behavior when needed; first-column identities such as method, subject, or sequence should be treated as row headers.
+- If metrics are sensitive to foreground masks, cropping, alignment, frame selection, or pseudo-label quality, report that evaluation口径 next to the table.
+
+## Visual And Artifact Rules
+
+- Inspect representative images, videos, meshes, point clouds, or render outputs before writing qualitative conclusions.
+- Present paired subjects, conditions, or before/after variants side by side when the report is making a visual comparison and the page format supports it.
+- Do not stitch or tile media into a new bitmap/video unless the user asks or the target medium cannot present them side by side natively.
+- Use stable, stated column order for comparison grids. Include ground truth, baseline, current method, residuals/deltas, depth, normal, mask, or canonical views only when they are actually available.
+- Use consistent color semantics for residual or delta maps and state the meaning of colors if the figure is not self-explanatory.
+- Distinguish ambiguous artifacts explicitly, for example input mesh, canonical base mesh, refined mesh, posed mesh, Gaussian render, depth map, normal map, and novel-pose video. Do not substitute a generic visualization for a requested project-specific artifact.
+- Preserve existing trusted images, videos, captions, and user-visible generated assets unless the user asks to replace them or they are clearly temporary.
+
 ## Environment And Reproducibility
 
 Prefer Docker / Docker Compose for reproducible experiment environments and tmux for long-running jobs. If the run used conda or host Python, state that explicitly and explain whether it was a fallback.
@@ -151,6 +187,7 @@ Completed reports should include enough detail for a competent researcher to rer
 - exact command;
 - config path and changed keys;
 - commit hash / branch / dirty state if known;
+- working tree path and relevant symlink-resolved output path;
 - container image or environment name;
 - GPU model and count;
 - seed and deterministic settings when relevant;
@@ -167,7 +204,9 @@ Avoid these:
 - explaining a result only after seeing it, without recording the prior prediction;
 - reporting only the best metric or best image;
 - omitting command/config/output paths;
+- using run names as proof of settings without checking config, command, checkpoint, or logs;
 - mixing multiple experiments into one vague conclusion;
+- mixing incompatible masks, splits, stale runs, or non-comparable outputs as if they were directly comparable;
 - treating environment setup success as method success;
 - declaring improvement without baseline or confidence about metric direction;
 - hiding failed samples, NaNs, empty outputs, bad renderings, or partial checkpoints;
@@ -178,10 +217,14 @@ Avoid these:
 Before calling a report complete, verify:
 
 - source evidence was inspected and cited by path, command, table, log, or artifact;
+- actual project convention, dedicated skill, or repo guide was checked when the user names a specific project;
 - command, config, environment, data, and output path are present or explicitly missing;
+- branch/worktree, dirty state, and symlink-resolved output root are recorded when relevant;
 - hypothesis and run-before prediction are recorded;
 - baseline / previous-run comparison is present or its absence is stated;
 - metrics and qualitative/raw output observations are both included when available;
+- metric table comparability, direction, precision, and mask/split口径 are explicit;
+- visual artifacts were inspected and captions/media placement were verified when the report includes media;
 - failure cases or negative evidence are included;
 - conclusions state what can and cannot be concluded;
 - next step is the smallest useful action, not a vague research direction;
