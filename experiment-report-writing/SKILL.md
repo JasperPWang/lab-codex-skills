@@ -11,6 +11,8 @@ Treat an experiment report as a decision artifact, not a diary. It must help the
 
 Never invent results, metrics, hyperparameters, commands, environments, datasets, checkpoints, or qualitative observations. If logs or artifacts are missing, write the report as incomplete and list the exact missing evidence. If the experiment has not been run yet, write an experiment plan / pre-registration report, not a completed experiment report.
 
+The leading conclusion is user-owned. Preserve the user's conclusion callout if it exists, or leave a concise conclusion callout placeholder for the user to fill. Do not write final conclusions, decisions, or causal judgments for the user unless explicitly asked to draft them from inspected evidence.
+
 Default language is Chinese. Keep method names, dataset names, model names, config keys, file paths, command lines, metric names, and paper/system names in their original form when needed.
 
 Keep this skill focused on report writing. Tool-specific delivery rules, Feishu editing steps, repository operations, and project-specific paths belong in the relevant workflow or project skill.
@@ -39,17 +41,10 @@ Use this structure for a full completed experiment report:
 ```markdown
 # 实验标题
 
-一句话结论：...
+> [!结论]
+> 用户填写。Codex 不默认代写结论；若用户已提供结论，只做格式整理和位置保留。
 
-## 1. 结论
-- 与预测是否一致：
-- 可信结论：
-- 仍不能下的结论：
-- 决策：
-- 理由：
-- 风险：
-
-## 2. 实验设置
+## 1. 实验设置
 - 项目：
 - 实验日期：
 - 负责人 / 执行者：
@@ -70,13 +65,13 @@ Use this structure for a full completed experiment report:
 - 指标：
 - 评测流程：
 
-## 3. 预处理（如适用）
+## 2. 预处理（如适用）
 - 数据清洗 / mask / 对齐 / 裁剪：
 - 伪标签 / 中间产物：
 - 过滤规则：
 - 预处理对结果解释的影响：
 
-## 4. 定量实验
+## 3. 定量实验
 - 评测口径：
 - 指标方向：
 - 结果表：
@@ -84,32 +79,32 @@ Use this structure for a full completed experiment report:
 - 定量分析：
 - 统计或可比性 caveat：
 
-## 5. 定性实验
+## 4. 定性实验
 - 代表性成功样本：
 - 代表性失败样本：
 - 可视化 / render / geometry / video 观察：
 - 失败模式：
 - 定性分析：
 
-## 6. 下一步最小动作
+## 5. 下一步最小动作
 1. ...
 2. ...
 3. ...
 
-## 7. 附录
+## 6. 附录
 - 可复用命令 / config：
 - 可复用图表 / 样例：
 - 原始日志 / 指标文件 / 产物路径：
 - 需要写回的文档：
 ```
 
-Use conclusion-first numbered headings in formal reports. Omit `3. 预处理` only when the experiment has no meaningful preprocessing, pseudo-label generation, alignment, filtering, or data conversion step; then renumber later sections so the report remains continuous.
+Use a conclusion-first callout followed by numbered headings in formal reports. Omit `2. 预处理` only when the experiment has no meaningful preprocessing, pseudo-label generation, alignment, filtering, or data conversion step; then renumber later sections so the report remains continuous.
 
 Use this compact entry when appending to `docs/Experiment.md` or a running experiment log:
 
 ```markdown
 ### YYYY-MM-DD｜实验标题
-- 结论：
+- 结论：用户填写；Codex 不默认代写
 - 目的：
 - 假设 / 预测：
 - 命令：
@@ -147,7 +142,7 @@ For an experiment that has not run yet, use a pre-registration form:
 - Record negative and inconclusive results clearly. A failed run can still be a useful report if it identifies a broken assumption, bad config, data issue, or next diagnostic.
 - If the result is still running, write `状态：运行中` and include current evidence only; do not write final conclusions.
 - If an experiment failed before producing metrics, report failure stage, error snippet, likely cause, and the next diagnostic command.
-- Keep conclusions decision-oriented: `继续扩大`, `保留但复跑`, `需要 ablation`, `回滚`, `停止该路线`, or `只作为分析材料`.
+- When explicitly asked to draft conclusions, keep them decision-oriented: `继续扩大`, `保留但复跑`, `需要 ablation`, `回滚`, `停止该路线`, or `只作为分析材料`.
 - For generation, avatar, reconstruction, simulation, embodied, or graphics experiments, include visual artifact paths and inspect geometry/rendering/failure samples before concluding.
 - For experiments relevant to simulation-ready / physical plausibility / deployment, explicitly state whether the run improves simulation-capable assets, geometry, dynamics, controllability, or evaluation readiness.
 - For models that use pretrained or open-source bases, report base model, checkpoint, frozen/fine-tuned/LoRA/direct-use status, and source evidence.
@@ -220,7 +215,7 @@ Before calling a report complete, verify:
 - metric table comparability, direction, precision, and mask/split口径 are explicit;
 - visual artifacts were inspected and captions/media placement were verified when the report includes media;
 - failure cases or negative evidence are included;
-- conclusions state what can and cannot be concluded;
+- user-provided conclusion callout is preserved, or an empty conclusion callout is left for the user instead of an invented final judgment;
 - next step is the smallest useful action, not a vague research direction;
 - reusable assets and document writeback targets are listed;
 - no invented result, placeholder, unresolved `待核验`, or unsupported causal claim remains.
