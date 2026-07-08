@@ -21,12 +21,14 @@ from urllib.parse import unquote
 
 
 REQUIRED_BULLETS = ["定义", "问题", "方法", "实现", "结论", "局限", "启发"]
-SIMULATION_HINTS_RE = re.compile(
+SIMULATION_CONTEXT_RE = re.compile(
     r"\b("
     r"mujoco|isaac(?:\s+gym|\s+sim)?|pybullet|bullet|gazebo|habitat|ai2-thor|"
     r"carla|sapien|airsim|unity|unreal|blender|omniverse|"
-    r"clo3d|marvelous\s+designer"
-    r")\b",
+    r"clo3d|marvelous\s+designer|"
+    r"simulator|simulation\s+environment|simulated\s+environment|synthetic\s+data(?:set)?|"
+    r"physics\s+engine|game\s+engine|robotics\s+environment|cloth\s+simulator"
+    r")\b|仿真器|仿真环境|模拟器|合成数据|物理引擎|游戏引擎|机器人环境|布料仿真",
     re.I,
 )
 BASE_MODEL_HINTS_RE = re.compile(
@@ -168,6 +170,7 @@ def check_dataset_line(dataset_line: str, card_text: str, details: list[dict[str
     def add(code: str, message: str) -> None:
         details.append({"title": title, "code": code, "message": message})
 
+    card_context = card_text.replace(dataset_line, "")
     if re.search(r"\bbase(?:\s+model)?\s*[:：]", dataset_line, flags=re.I) and not re.search(r"\|\s*Base\s*[:：]", dataset_line, flags=re.I):
         add("base_format", "Base-model metadata must be appended on the Dataset line as `| Base:`, not as a loose `Base:` field.")
     if re.search(r"simluation\s*[:：]", dataset_line, flags=re.I):
@@ -189,7 +192,10 @@ def check_dataset_line(dataset_line: str, card_text: str, details: list[dict[str
             add("base_too_many", "Base metadata must list at most three visible base model names; put additional base-model chains or variants in `实现`.")
     if BASE_MODEL_HINTS_RE.search(card_text) and not re.search(r"\|\s*Base\s*[:：]", dataset_line):
         add("base_model_missing", "Card mentions a known open-source/pretrained base model; Dataset metadata should include `| Base:` or explicitly mark `Base: 未报告` when the base is involved but not reported.")
-    if SIMULATION_HINTS_RE.search(card_text) and not re.search(r"\|\s*Simulation\s*[:：]", dataset_line):
+    simulation_value = metadata_component(dataset_line, "Simulation")
+    if simulation_value is not None and simulation_value.lower() in STATUS_VALUES and not SIMULATION_CONTEXT_RE.search(card_context):
+        add("simulation_not_relevant", "`Simulation:` is a conditional field. Do not write `Simulation: 未报告` / `N/A` / `不适用` when the paper does not clearly involve simulation; omit the field entirely.")
+    if SIMULATION_CONTEXT_RE.search(card_context) and not re.search(r"\|\s*Simulation\s*[:：]", dataset_line):
         add("simulation_missing", "Card mentions a known simulator/environment; Dataset metadata should include `| Simulation:` or explicitly mark `Simulation: 未报告`.")
 
 
