@@ -65,6 +65,21 @@ DRAFT_STATUS_PATTERNS = (
     (re.compile(r"\b(?:todo|tbd|pending)\b", re.I), "Formal paper-card delivery must not contain TODO/TBD/pending verification markers."),
     (re.compile(r"(?:核验|验证)\s*(?:TODO|TBD|pending|待办)", re.I), "Formal paper-card delivery must not contain unresolved verification TODOs."),
 )
+BAD_CAPTION_FILLER_PATTERNS = (
+    (re.compile(r"方法或实验概览"), "Figure caption must translate the original caption, not say `方法或实验概览`."),
+    (re.compile(r"method\s+or\s+experiment\s+overview", re.I), "Figure caption must translate the original caption, not say `method or experiment overview`."),
+    (re.compile(r"用于说明(?:论文)?的?(?:核心流程|输入输出关系|关键模块|方法流程|实验概览)"), "Figure caption must not include generic `用于说明...` filler."),
+    (re.compile(r"核心流程、输入输出关系和关键模块"), "Figure caption must not include generic process/module filler."),
+    (re.compile(r"原始\s*caption\s*已在图中保留", re.I), "Do not use retained-original-caption prose instead of translating the caption."),
+    (re.compile(r"便于回溯核验"), "Figure caption must not add empty verification prose."),
+    (re.compile(r"该图来自官方论文\s*PDF\s*裁图"), "Use a short source tag such as `来源：PDF 截图`, not verbose PDF-crop prose."),
+    (re.compile(r"完整翻译原始\s*caption|这里应放原始\s*caption", re.I), "Replace caption-template text with the complete Chinese translation of the official caption."),
+)
+ALLOWED_SOURCE_LABEL_RE = re.compile(
+    r"(?:来源|源于)\s*[:：]?\s*(?:用户截图|HTML|html|MinerU\s*PDF\s*截图|mineru\s*的?\s*pdf\s*截图|PDF\s*截图|pdf\s*截图)",
+    re.I,
+)
+SOURCE_LABEL_RE = re.compile(r"(?:来源|源于)\s*[:：]?", re.I)
 
 
 def elements_text(block: dict) -> str:
@@ -203,6 +218,16 @@ def check_draft_status_markers(text: str, details: list[dict[str, object]], titl
     for pattern, message in DRAFT_STATUS_PATTERNS:
         if pattern.search(text):
             details.append({"title": title, "code": "draft_status_forbidden", "message": message})
+
+
+def check_caption_quality(text: str, details: list[dict[str, object]], title: str) -> None:
+    if not text.strip():
+        return
+    for pattern, message in BAD_CAPTION_FILLER_PATTERNS:
+        if pattern.search(text):
+            details.append({"title": title, "code": "caption_filler_forbidden", "message": message})
+    if SOURCE_LABEL_RE.search(text) and not ALLOWED_SOURCE_LABEL_RE.search(text):
+        details.append({"title": title, "code": "caption_source_label", "message": "Caption source must use a short controlled label: `来源：用户截图`, `来源：HTML`, `来源：MinerU PDF 截图`, or `来源：PDF 截图`."})
 
 
 def iter_descendants(block: dict, by_id: dict[str, dict]):
@@ -349,6 +374,7 @@ def main() -> int:
             caption = image_caption_text(image)
             if caption:
                 check_draft_status_markers(caption, details, title)
+                check_caption_quality(caption, details, title)
             caption_casefolded = caption.casefold()
             for placeholder in FORBIDDEN_PLACEHOLDERS:
                 if placeholder.casefold() in caption_casefolded:
@@ -359,8 +385,10 @@ def main() -> int:
             details.append({"title": title, "code": "image_missing", "message": "Formal paper-card delivery requires a native image block with complete caption, or a formula-caption fallback. `配图待补` is not accepted."})
         for offset, block in enumerate(media_blocks):
             block_text = elements_text(block).strip()
-            if block.get("block_type") == 2 and block_text.startswith("图 ") and "图注" in block_text and not contains_formula_marker(block_text):
-                details.append({"title": title, "code": "separate_caption_paragraph", "message": "No-formula figure captions must be native image captions, not separate paragraphs after the image."})
+            if block.get("block_type") == 2 and block_text.startswith("图 ") and "图注" in block_text:
+                check_caption_quality(block_text, details, title)
+                if not contains_formula_marker(block_text):
+                    details.append({"title": title, "code": "separate_caption_paragraph", "message": "No-formula figure captions must be native image captions, not separate paragraphs after the image."})
 
         card_texts = [
             elements_text(by_id.get(block_id, {})).strip()

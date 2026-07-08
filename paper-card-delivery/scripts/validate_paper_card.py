@@ -58,6 +58,21 @@ DRAFT_STATUS_PATTERNS = [
     (re.compile(r"\b(?:todo|tbd|pending)\b", re.I), "Formal paper-card delivery must not contain TODO/TBD/pending verification markers."),
     (re.compile(r"(?:核验|验证)\s*(?:TODO|TBD|pending|待办)", re.I), "Formal paper-card delivery must not contain unresolved verification TODOs."),
 ]
+BAD_CAPTION_FILLER_PATTERNS = [
+    (re.compile(r"方法或实验概览"), "Figure caption must translate the original caption, not say `方法或实验概览`."),
+    (re.compile(r"method\s+or\s+experiment\s+overview", re.I), "Figure caption must translate the original caption, not say `method or experiment overview`."),
+    (re.compile(r"用于说明(?:论文)?的?(?:核心流程|输入输出关系|关键模块|方法流程|实验概览)"), "Figure caption must not include generic `用于说明...` filler."),
+    (re.compile(r"核心流程、输入输出关系和关键模块"), "Figure caption must not include generic process/module filler."),
+    (re.compile(r"原始\s*caption\s*已在图中保留", re.I), "Do not use retained-original-caption prose instead of translating the caption."),
+    (re.compile(r"便于回溯核验"), "Figure caption must not add empty verification prose."),
+    (re.compile(r"该图来自官方论文\s*PDF\s*裁图"), "Use a short source tag such as `来源：PDF 截图`, not verbose PDF-crop prose."),
+    (re.compile(r"完整翻译原始\s*caption|这里应放原始\s*caption", re.I), "Replace caption-template text with the complete Chinese translation of the official caption."),
+]
+ALLOWED_SOURCE_LABEL_RE = re.compile(
+    r"(?:来源|源于)\s*[:：]?\s*(?:用户截图|HTML|html|MinerU\s*PDF\s*截图|mineru\s*的?\s*pdf\s*截图|PDF\s*截图|pdf\s*截图)",
+    re.I,
+)
+SOURCE_LABEL_RE = re.compile(r"(?:来源|源于)\s*[:：]?", re.I)
 TRANSLATABLE_ENGLISH_TERMS = {
     "parametric human estimation": "参数化人体估计",
     "perspective distortion": "透视畸变/透视失真",
@@ -177,6 +192,16 @@ def check_draft_status_markers(text: str, issue) -> None:
             issue("draft_status_forbidden", message)
 
 
+def check_caption_quality(text: str, issue) -> None:
+    if not text.strip():
+        return
+    for pattern, message in BAD_CAPTION_FILLER_PATTERNS:
+        if pattern.search(text):
+            issue("caption_filler_forbidden", message)
+    if SOURCE_LABEL_RE.search(text) and not ALLOWED_SOURCE_LABEL_RE.search(text):
+        issue("caption_source_label", "Caption source must use a short controlled label: `来源：用户截图`, `来源：HTML`, `来源：MinerU PDF 截图`, or `来源：PDF 截图`.")
+
+
 def split_cards(text: str) -> list[tuple[int, str, str]]:
     matches = list(re.finditer(r"^####\s+(.+?)\s*$", text, flags=re.M))
     cards: list[tuple[int, str, str]] = []
@@ -264,6 +289,11 @@ def check_card(line_no: int, title: str, card: str) -> list[dict[str, object]]:
     for hint in BAD_IMAGE_HINTS:
         if hint in lowered:
             issue("bad_image_hint", f"Possible forbidden paper-card image/source hint: `{hint}`.")
+
+    for line in card.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("图 ") and "图注" in stripped:
+            check_caption_quality(stripped, issue)
 
     card_casefolded = card.casefold()
     for placeholder in FORBIDDEN_PLACEHOLDERS:

@@ -46,7 +46,7 @@ Venue｜Institution
 Dataset: ...
 
 ![method-flow](relative-or-native-image)
-图 N｜完整中文图注：...
+图 N｜完整中文图注：<完整翻译原始 caption>（来源：HTML）
 
 - 定义：
 - 问题：
@@ -69,7 +69,7 @@ Venue 2026｜Example University
 Dataset: 未报告
 
 ![method-flow](relative-or-native-image)
-图 1｜完整中文图注：该图为示例占位格式；真实卡片必须替换为官方论文 HTML/PDF、项目页、用户批准截图或 MinerU 提取的可信方法/process figure，并完整翻译原始图注。
+图 1｜完整中文图注：这里应放原始 caption 的完整中文翻译，包括图号、子图说明和关键术语。（来源：HTML）
 
 - 定义：示例占位。正式卡片中这里写任务契约：输入、输出、监督/数据类型、训练和推理流程，以及必要的评价基准和指标。
 - 问题：示例占位。正式卡片中这里写论文声称要解决的核心问题，而不是用户自己的研究动机。
@@ -84,7 +84,8 @@ Dataset: 未报告
 
 Rules:
 
-- In local Markdown drafts, the `图 N｜完整中文图注：...` line is the caption source. When synced to Feishu, a no-formula caption must become the native image caption instead of remaining as a separate paragraph; captions containing inline formulas may use an adjacent paragraph only when the native caption field cannot preserve the formula.
+- In local Markdown drafts, the `图 N｜完整中文图注：...` line is the caption source. The caption body must be a complete Chinese translation of the official original caption, not a generated description of why the figure is useful. When synced to Feishu, a no-formula caption must become the native image caption instead of remaining as a separate paragraph; captions containing inline formulas may use an adjacent paragraph only when the native caption field cannot preserve the formula.
+- If a source label is useful, keep it to one short controlled tag at the end of the caption: `来源：用户截图`, `来源：HTML`, `来源：MinerU PDF 截图`, or `来源：PDF 截图`. Do not write verbose source prose such as `该图来自官方论文 PDF 裁图`, and do not add filler such as `用于说明论文的核心流程、输入输出关系和关键模块`, `原始 caption 已在图中保留`, or `便于回溯核验`.
 - When relevant, keep base-model and simulation metadata on the fourth metadata line, for example `Dataset: ... | Base: ...`, `Dataset: ... | Simulation: ...`, or `Dataset: ... | Base: ... | Simulation: ...`. Do not create a fifth metadata line for base models or simulation. `Simulation:` is a conditional field, not a default placeholder; if the paper does not involve simulation, omit it entirely.
 - Start every card with `#### Paper English Title`.
 - The heading must be the exact official English paper title from the official paper page, arXiv/OpenReview/CVF/publisher metadata, or the first page of the official PDF. Do not shorten it to a method name, acronym, section/topic label, or locally convenient title when the official title is longer. Conversely, do not invent an explanatory subtitle when the official paper title itself is short, for example `Mapping Networks`.
@@ -168,7 +169,7 @@ Agent manual PDF crop quality standard, for last-resort crops only:
 - If the cropped figure is visually soft, too small, or hard to read at normal Feishu card width, rerender at higher DPI and recrop. If it remains unreadable or ambiguous, do not ship the card as finished; continue extraction or mark the overall deliverable as a draft/blocker.
 - Before upload, visually inspect the crop locally or in a contact sheet and verify figure number, panel labels, and caption match the official paper. After Feishu upload, fetch back and verify native image dimensions/aspect ratio, no `512 x 512` fallback, and no visible blur introduced by the upload.
 
-Every selected figure needs the complete Chinese translation of the official original caption, including figure number, subfigure labels, symbols, method names, dataset names, and important technical terms. If no verified caption exists, do not deliver the card as finished. A `图注待补` caption is allowed only in an explicitly labeled draft or work-in-progress page and must fail final validation.
+Every selected figure needs the complete Chinese translation of the official original caption, including figure number, subfigure labels, symbols, method names, dataset names, and important technical terms. The caption must not be replaced by an agent-written summary such as `method or experiment overview` / `方法或实验概览` or by an explanation of what the figure is "used to show". If no verified caption exists, do not deliver the card as finished. A `图注待补` caption is allowed only in an explicitly labeled draft or work-in-progress page and must fail final validation.
 
 For Feishu, insert images as native image blocks after the metadata and `Dataset`, before the seven bullet slots, and put the complete Chinese caption into the native image caption field. If the caption has no formula, this is mandatory: do not leave the figure caption as a separate ordinary paragraph below the image. If the caption contains inline formulas, displayed formulas, or a formula-rendering fallback that the native caption field cannot preserve, an immediately adjacent caption paragraph is acceptable; preserve the exact TeX source and keep it visually tied to the image. Preserve existing image blocks, same-row layouts, grid ratios, dimensions, captions, and order. Never rewrite a rich page just to normalize text.
 
@@ -218,7 +219,7 @@ Before presenting a finished card, explicitly verify:
 - User-provided or user-approved screenshots/crops were checked first; HTML / project-page figure search was completed before any agent PDF fallback, and no agent PDF screenshot/crop was used when a usable user-approved or HTML/project figure with matching caption exists.
 - If PDF fallback was needed, MinerU extraction was attempted before agent manual screenshot/crop unless MinerU is unavailable; any remaining agent manual crop was visually QA'd against the official PDF, and the reason user-approved / HTML / project / MinerU sources could not be used is recorded in task notes.
 - Any last-resort agent manual PDF crop was rendered from the PDF at high DPI, tightly cropped, saved losslessly, visually inspected before upload, and fetched back from Feishu to verify dimensions/aspect ratio and readability.
-- Figure caption is complete Chinese translation of the original caption; in Feishu, no-formula captions are native image captions, while formula-bearing captions may use a directly adjacent paragraph only to preserve formula fidelity.
+- Figure caption is complete Chinese translation of the original caption, optionally ending with only one short source tag (`来源：用户截图`, `来源：HTML`, `来源：MinerU PDF 截图`, or `来源：PDF 截图`). Captions must not contain generic filler like `用于说明...`, `核心流程、输入输出关系和关键模块`, `原始 caption 已在图中保留`, or `便于回溯核验`. In Feishu, no-formula captions are native image captions, while formula-bearing captions may use a directly adjacent paragraph only to preserve formula fidelity.
 - Seven fixed bullet slots present and source-grounded.
 - Reader-facing Chinese prose uses Chinese-first terms; no raw translatable English phrase islands such as `parametric human estimation`, `perspective distortion`, or `scene geometry`.
 - `结论` reflects authors' claims; `局限` distinguishes author-reported limitations from agent analysis; user takeaways are only in `启发`.
@@ -233,7 +234,7 @@ Run the bundled structural validator on local Markdown drafts before syncing:
 python .tools/skills/paper-card-delivery/scripts/validate_paper_card.py path/to/cards.md
 ```
 
-The script catches missing headings, missing or non-compact metadata lines, `Dataset:`, dataset lists longer than three visible names, malformed or misspelled `Base:` / `Simulation:` metadata, unnecessary default `Simulation: 未报告` placeholders, fixed bullet slots, legacy `边界 / 启发` slots, missing `核心创新` bullets, `待核验` / candidate verification markers, `配图待补` / `图注待补` placeholders, local-path residue, common forbidden images, and known raw English phrases that should be Chinese-first. It cannot prove official-source verification or whether a limitation was truly author-reported; the agent must still state the source evidence it inspected.
+The script catches missing headings, missing or non-compact metadata lines, `Dataset:`, dataset lists longer than three visible names, malformed or misspelled `Base:` / `Simulation:` metadata, unnecessary default `Simulation: 未报告` placeholders, fixed bullet slots, legacy `边界 / 启发` slots, missing `核心创新` bullets, `待核验` / candidate verification markers, `配图待补` / `图注待补` placeholders, generic caption filler, verbose source-label prose, local-path residue, common forbidden images, and known raw English phrases that should be Chinese-first. It cannot prove official-source verification, caption translation completeness, or whether a limitation was truly author-reported; the agent must still state the source evidence it inspected.
 
 For Feishu pages, do not rely on fetched Markdown alone to verify compact metadata. Feishu's Markdown export can render hard line breaks inside one native text block as blank-separated lines, which is indistinguishable from four loose paragraphs in plain Markdown. After writing to Feishu, fetch the Docx blocks and run the block-level validator:
 
@@ -243,7 +244,7 @@ lark-cli api GET /open-apis/docx/v1/documents/<docx_token>/blocks \
 python .tools/skills/paper-card-delivery/scripts/validate_feishu_paper_card_blocks.py blocks.json
 ```
 
-The block-level validator is authoritative for Feishu compact metadata and image caption placement: each card heading must be followed by exactly one normal text block whose content has four non-empty hard-break lines: takeaway, `Venue｜Institution`, `PDF｜Project｜Code`, and `Dataset:`; each card must then use a native image block whose caption field contains the complete Chinese figure caption, unless a formula-bearing caption requires an adjacent paragraph fallback. A separate `图 N｜...图注...` paragraph after the image is an error when the caption has no formula; formula-bearing captions may remain adjacent as a fidelity fallback. Cards with `待核验` / candidate verification markers, `配图待补`, `图注待补`, no image block, or image blocks without captions must fail validation. It also checks CVF PDF links for title-shortening errors when the PDF filename exposes a longer official title than the card heading.
+The block-level validator is authoritative for Feishu compact metadata and image caption placement: each card heading must be followed by exactly one normal text block whose content has four non-empty hard-break lines: takeaway, `Venue｜Institution`, `PDF｜Project｜Code`, and `Dataset:`; each card must then use a native image block whose caption field contains the complete Chinese figure caption, unless a formula-bearing caption requires an adjacent paragraph fallback. A separate `图 N｜...图注...` paragraph after the image is an error when the caption has no formula; formula-bearing captions may remain adjacent as a fidelity fallback. Cards with `待核验` / candidate verification markers, `配图待补`, `图注待补`, generic caption filler, verbose source-label prose, no image block, or image blocks without captions must fail validation. It also checks CVF PDF links for title-shortening errors when the PDF filename exposes a longer official title than the card heading.
 
 ## Sorting
 
