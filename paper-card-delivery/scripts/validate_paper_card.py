@@ -78,6 +78,14 @@ SIMULATION_HINTS_RE = re.compile(
     r")\b",
     re.I,
 )
+BASE_MODEL_HINTS_RE = re.compile(
+    r"\b("
+    r"flux(?:\.1)?(?:-[a-z0-9.]+)?|hunyuan(?:video)?|stable\s+diffusion|stable\s+video\s+diffusion|"
+    r"sdxl|sd3|wan\d(?:\.\d)?|cogvideo(?:x)?|pixart(?:-[a-z0-9.]+)?|kandinsky|kolors|"
+    r"animatediff|modelscope\s+t2v|zeroscope|open-?sora|videocrafter|qwen(?:-image|-vl)?"
+    r")\b",
+    re.I,
+)
 STATUS_VALUES = {"未报告", "不适用", "not reported", "n/a", "na", "none"}
 
 
@@ -112,7 +120,7 @@ def find_pdf_url(text: str) -> str | None:
 
 def dataset_entries(dataset_line: str) -> list[str]:
     value = re.sub(r"^Dataset:\s*", "", dataset_line, flags=re.I)
-    dataset_part = re.split(r"\s*\|\s*Simulation\s*[:：]", value, maxsplit=1, flags=re.I)[0]
+    dataset_part = re.split(r"\s*\|\s*(?:Base|Simulation)\s*[:：]", value, maxsplit=1, flags=re.I)[0]
     dataset_part = dataset_part.strip()
     if not dataset_part or dataset_part.lower() in STATUS_VALUES:
         return []
@@ -120,18 +128,39 @@ def dataset_entries(dataset_line: str) -> list[str]:
     return [part.strip() for part in parts if part.strip()]
 
 
+def metadata_component(dataset_line: str, name: str) -> str | None:
+    match = re.search(rf"\|\s*{re.escape(name)}\s*[:：]\s*([^|]+)", dataset_line, flags=re.I)
+    return match.group(1).strip() if match else None
+
+
+def comma_entries(value: str) -> list[str]:
+    if not value or value.lower() in STATUS_VALUES:
+        return []
+    return [part.strip() for part in re.split(r"\s*,\s*", value) if part.strip()]
+
+
 def check_dataset_line(dataset_line: str, card: str, issue) -> None:
+    if re.search(r"\bbase(?:\s+model)?\s*[:：]", dataset_line, flags=re.I) and not re.search(r"\|\s*Base\s*[:：]", dataset_line, flags=re.I):
+        issue("base_format", "Base-model metadata must be appended on the Dataset line as `| Base:`, not as a loose `Base:` field.")
     if re.search(r"simluation\s*[:：]", dataset_line, flags=re.I):
         issue("simulation_spelling", "Use `Simulation:` in the Dataset metadata line, not `Simluation:`.")
     if re.search(r"simulation\s*[:：]", dataset_line, flags=re.I) and not re.search(r"\|\s*Simulation\s*[:：]", dataset_line):
         issue("simulation_format", "Simulation metadata must be appended as `| Simulation:` on the Dataset line.")
     entries = dataset_entries(dataset_line)
     dataset_value = re.sub(r"^Dataset:\s*", "", dataset_line, flags=re.I)
-    dataset_part = re.split(r"\s*\|\s*Simulation\s*[:：]", dataset_value, maxsplit=1, flags=re.I)[0].strip()
+    dataset_part = re.split(r"\s*\|\s*(?:Base|Simulation)\s*[:：]", dataset_value, maxsplit=1, flags=re.I)[0].strip()
     if dataset_part.lower() not in STATUS_VALUES and re.search(r"｜|、|，|;|；|\s/\s", dataset_part):
         issue("dataset_separator", "Separate Dataset metadata names with ASCII comma plus space, e.g. `Dataset: H3.6M, 3DPW, SURREAL`; put extra datasets in `实现`.")
     if len(entries) > 3:
         issue("dataset_too_many", "Dataset metadata must list at most three visible dataset names; put additional datasets in `实现` if needed.")
+    base_value = metadata_component(dataset_line, "Base")
+    if base_value is not None:
+        if base_value.lower() not in STATUS_VALUES and re.search(r"｜|、|，|;|；|\s/\s", base_value):
+            issue("base_separator", "Separate Base metadata names with ASCII comma plus space, e.g. `| Base: FLUX.1-dev, HunyuanVideo`; put extra base-model details in `实现`.")
+        if len(comma_entries(base_value)) > 3:
+            issue("base_too_many", "Base metadata must list at most three visible base model names; put additional base-model chains or variants in `实现`.")
+    if BASE_MODEL_HINTS_RE.search(card) and not re.search(r"\|\s*Base\s*[:：]", dataset_line):
+        issue("base_model_missing", "Card mentions a known open-source/pretrained base model; Dataset metadata should include `| Base:` or explicitly mark `Base: 未报告` when the base is involved but not reported.")
     if SIMULATION_HINTS_RE.search(card) and not re.search(r"\|\s*Simulation\s*[:：]", dataset_line):
         issue("simulation_missing", "Card mentions a known simulator/environment; Dataset metadata should include `| Simulation:` or explicitly mark `Simulation: 未报告`.")
 
