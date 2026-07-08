@@ -28,7 +28,7 @@ Before writing a completed report, inspect or request the evidence needed for th
 - machine and environment: GPU, CUDA, driver, Docker image / Compose service / conda env, Python and key package versions when relevant;
 - code provenance: repo or project path, branch, commit, dirty state if known, and output root;
 - logs: stdout/stderr, TensorBoard/W&B tables, evaluation JSON/CSV, training curves, failure traces;
-- artifacts: checkpoints, rendered images/videos, qualitative samples, figures, screenshots, meshes, point clouds, tables;
+- artifacts: checkpoints, original-resolution rendered images/videos, qualitative samples, figures, screenshots, meshes, point clouds, tables;
 - baseline or prior run for comparison;
 - known failure cases, raw outputs, and any manual filtering.
 
@@ -82,6 +82,7 @@ Use this structure for a full completed experiment report:
 ## 4. 定性实验
 - 代表性成功样本：
 - 代表性失败样本：
+- 原分辨率图像 / 视频：
 - 可视化 / render / geometry / video 观察：
 - 失败模式：
 - 定性分析：
@@ -144,6 +145,7 @@ For an experiment that has not run yet, use a pre-registration form:
 - If an experiment failed before producing metrics, report failure stage, error snippet, likely cause, and the next diagnostic command.
 - When explicitly asked to draft conclusions, keep them decision-oriented: `继续扩大`, `保留但复跑`, `需要 ablation`, `回滚`, `停止该路线`, or `只作为分析材料`.
 - For generation, avatar, reconstruction, simulation, embodied, or graphics experiments, include visual artifact paths and inspect geometry/rendering/failure samples before concluding.
+- For qualitative figures or videos used to judge experimental quality, provide original-resolution source files by default. Scaled display in a document is acceptable, but thumbnails, compressed previews, cropped exports, or re-encoded low-resolution videos are not substitutes unless explicitly labeled as previews and linked to the original-resolution artifact.
 - For experiments relevant to simulation-ready / physical plausibility / deployment, explicitly state whether the run improves simulation-capable assets, geometry, dynamics, controllability, or evaluation readiness.
 - For models that use pretrained or open-source bases, report base model, checkpoint, frozen/fine-tuned/LoRA/direct-use status, and source evidence.
 
@@ -161,6 +163,7 @@ For an experiment that has not run yet, use a pre-registration form:
 ## Visual And Artifact Rules
 
 - Inspect representative images, videos, meshes, point clouds, or render outputs before writing qualitative conclusions.
+- Use original-resolution image and video artifacts for qualitative judgment; if the report embeds a resized preview, include the path or link to the original-resolution file.
 - Present paired subjects, conditions, or before/after variants side by side when the report is making a visual comparison and the page format supports it.
 - Use stable, stated column order for comparison grids. Include ground truth, baseline, current method, residuals/deltas, depth, normal, mask, or canonical views only when they are actually available and relevant.
 - Use consistent color semantics for residual or delta maps and state the meaning of colors if the figure is not self-explanatory.
@@ -199,6 +202,7 @@ Avoid these:
 - treating environment setup success as method success;
 - declaring improvement without baseline or confidence about metric direction;
 - hiding failed samples, NaNs, empty outputs, bad renderings, or partial checkpoints;
+- using thumbnails, downsampled images, or compressed videos as the only qualitative evidence;
 - leaving `待核验`, TODO, or guessed fields in a completed report.
 
 ## Verification Checklist
@@ -213,6 +217,7 @@ Before calling a report complete, verify:
 - baseline / previous-run comparison is present or its absence is stated;
 - metrics and qualitative/raw output observations are both included when available;
 - metric table comparability, direction, precision, and mask/split口径 are explicit;
+- qualitative images/videos are original-resolution sources, or any resized previews are clearly linked to original-resolution artifacts;
 - visual artifacts were inspected and captions/media placement were verified when the report includes media;
 - failure cases or negative evidence are included;
 - user-provided conclusion callout is preserved, or an empty conclusion callout is left for the user instead of an invented final judgment;
