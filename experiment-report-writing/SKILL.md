@@ -41,7 +41,15 @@ Use this structure for a full completed experiment report:
 
 一句话结论：...
 
-## 1. 实验设置
+## 1. 结论
+- 与预测是否一致：
+- 可信结论：
+- 仍不能下的结论：
+- 决策：
+- 理由：
+- 风险：
+
+## 2. 实验设置
 - 项目：
 - 实验日期：
 - 负责人 / 执行者：
@@ -62,13 +70,13 @@ Use this structure for a full completed experiment report:
 - 指标：
 - 评测流程：
 
-## 2. 预处理（如适用）
+## 3. 预处理（如适用）
 - 数据清洗 / mask / 对齐 / 裁剪：
 - 伪标签 / 中间产物：
 - 过滤规则：
 - 预处理对结果解释的影响：
 
-## 3. 定量实验
+## 4. 定量实验
 - 评测口径：
 - 指标方向：
 - 结果表：
@@ -76,39 +84,32 @@ Use this structure for a full completed experiment report:
 - 定量分析：
 - 统计或可比性 caveat：
 
-## 4. 定性实验
+## 5. 定性实验
 - 代表性成功样本：
 - 代表性失败样本：
 - 可视化 / render / geometry / video 观察：
 - 失败模式：
 - 定性分析：
 
-## 5. 下一步最小动作
+## 6. 下一步最小动作
 1. ...
 2. ...
 3. ...
 
-## 6. 附录
+## 7. 附录
 - 可复用命令 / config：
 - 可复用图表 / 样例：
 - 原始日志 / 指标文件 / 产物路径：
 - 需要写回的文档：
-
-## 7. 结论
-- 与预测是否一致：
-- 可信结论：
-- 仍不能下的结论：
-- 决策：
-- 理由：
-- 风险：
 ```
 
-Use numbered headings in formal reports. Omit `2. 预处理` only when the experiment has no meaningful preprocessing, pseudo-label generation, alignment, filtering, or data conversion step; then renumber later sections so the report remains continuous.
+Use conclusion-first numbered headings in formal reports. Omit `3. 预处理` only when the experiment has no meaningful preprocessing, pseudo-label generation, alignment, filtering, or data conversion step; then renumber later sections so the report remains continuous.
 
 Use this compact entry when appending to `docs/Experiment.md` or a running experiment log:
 
 ```markdown
 ### YYYY-MM-DD｜实验标题
+- 结论：
 - 目的：
 - 假设 / 预测：
 - 命令：
