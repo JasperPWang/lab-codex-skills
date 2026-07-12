@@ -1,6 +1,6 @@
 ---
 name: chinese-technical-writing
-description: Chinese-first technical/research writing standard for Feishu pages, Obsidian/LLM Wiki notes, paper cards, daily reviews, meeting notes, paper deep dives, source translations, and AI-generated Chinese documents. Use whenever Codex writes, revises, audits, or translates Chinese reader-facing research/technical prose and should avoid unnecessary English phrase mixing while preserving method names, acronyms, code names, formulas, datasets, and original source text.
+description: Chinese-first technical/research writing standard for Feishu/Lark pages, Notion pages and databases, Obsidian/LLM Wiki notes, paper cards, daily reviews, meeting notes, paper deep dives, source translations, and AI-generated Chinese documents. Use whenever Codex writes, revises, audits, or translates Chinese reader-facing research/technical prose and should avoid unnecessary English phrase mixing while preserving method names, acronyms, code names, formulas, datasets, and original source text.
 ---
 
 # Chinese Technical Writing
@@ -9,7 +9,7 @@ description: Chinese-first technical/research writing standard for Feishu pages,
 
 Reader-facing Chinese research documents must use Chinese as the default technical language. English is a precision tool for names, acronyms, symbols, searchability, and source fidelity; it is not a substitute for writing clear Chinese prose.
 
-Use this skill for Chinese Feishu pages, Obsidian/LLM Wiki notes, paper cards, daily reviews, meeting notes, paper deep dives, source translations, summaries, figure captions, tables, and TODO/review documents.
+Use this skill for Chinese Feishu/Lark pages, Notion pages/databases, Obsidian/LLM Wiki notes, paper cards, daily reviews, meeting notes, paper deep dives, source translations, summaries, figure captions, tables, and TODO/review documents. Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) when the prose will be written into a durable research document.
 
 ## Allowed English
 
@@ -79,10 +79,11 @@ If a term has no stable Chinese translation or the English form is the community
 
 ## Document-Specific Handling
 
-- Paper cards: also use `paper-card-delivery`; the card's metadata takeaway, caption, and six bullets must be Chinese-first.
+- Paper cards: also use `paper-card-delivery`; the card's metadata takeaway, caption, and seven fixed bullets must be Chinese-first.
 - Paper deep dives: preserve official source text in `英文原文稿`; enforce Chinese-first wording in the body of `原文中译稿` and parent-page `精读稿`; keep References / bibliography entries in the original English rather than translating them.
 - Bilingual source archives: do not modify the English original blocks; enforce this rule only on Chinese translation blocks or Chinese notes.
 - Feishu rich pages: normalize wording with narrow text edits; do not rewrite or damage images, grids, tables, formulas, or whiteboards just to fix language.
+- Notion pages/databases: preserve native blocks, properties, relations, equations, captions, and page links while editing prose.
 - LLM Wiki / Obsidian notes: use Chinese body text, `中文（English term）` on first use, LaTeX for formulas, and English only for names/identifiers.
 - Diagrams and tables: Chinese labels by default; keep method names, dataset names, symbols, and required bilingual node formats unchanged.
 

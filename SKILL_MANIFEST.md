@@ -19,6 +19,7 @@ copies.
 - `bilingual-source-archive`
 - `chinese-technical-writing`
 - `daily-research-review`
+- `experiment-report-writing`
 - `feishu-doc-workflow`
 - `intern-interview-intake`
 - `lark-whiteboard`
@@ -28,6 +29,7 @@ copies.
 - `paper-rag`
 - `paper-to-slides-skill`
 - `pdf`
+- `research-doc-workflow`
 - `survey-builder`
 
 ## Vendored Or Downloaded Skills

@@ -1,6 +1,6 @@
 ---
 name: experiment-report-writing
-description: Write source-grounded research experiment reports and experiment-log entries for ML/vision/graphics/robotics projects. Use when the user asks to整理/撰写/补全/审查实验报告, 实验记录, 训练报告, 评测报告, ablation report, baseline report, reproduction report, docs/Experiment.md entries, or Feishu experiment summaries.
+description: Write source-grounded research experiment reports and experiment-log entries for ML/vision/graphics/robotics projects across Feishu/Lark, Notion, and Obsidian/Markdown. Use when the user asks to整理/撰写/补全/审查实验报告, 实验记录, 训练报告, 评测报告, ablation report, baseline report, reproduction report, docs/Experiment.md entries, or research-document experiment summaries.
 ---
 
 # Experiment Report Writing
@@ -11,11 +11,11 @@ Treat an experiment report as a decision artifact, not a diary. It must help the
 
 Never invent results, metrics, hyperparameters, commands, environments, datasets, checkpoints, or qualitative observations. If logs or artifacts are missing, write the report as incomplete and list the exact missing evidence. If the experiment has not been run yet, write an experiment plan / pre-registration report, not a completed experiment report.
 
-The leading conclusion is user-owned. Preserve the user's conclusion callout if it exists, or leave a concise conclusion callout placeholder for the user to fill. Do not write final conclusions, decisions, or causal judgments for the user unless explicitly asked to draft them from inspected evidence.
+The leading conclusion callout is user-owned and has one fixed purpose: record the first question and its answer before the experiment runs. It must state what the minimum experiment is intended to verify and the precommitted success standard. Preserve the user's answer, or help make supplied intent falsifiable and measurable without inventing it. Do not rewrite this callout after seeing results; if the verification target or success standard changes, create a new experiment entry. Do not write final conclusions, decisions, or causal judgments for the user unless explicitly asked to draft them from inspected evidence.
 
 Default language is Chinese. Keep method names, dataset names, model names, config keys, file paths, command lines, metric names, and paper/system names in their original form when needed.
 
-Keep this skill focused on report writing. Tool-specific delivery rules, Feishu editing steps, repository operations, and project-specific paths belong in the relevant workflow or project skill.
+Keep this skill focused on report writing. Also use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) for platform selection and durable delivery to Feishu, Notion, or Obsidian. Tool-specific editing steps, repository operations, and project-specific paths belong in that workflow or the relevant project skill.
 
 If a project has an existing report style, preserve its generic writing conventions such as numbered sections, section order, table style, and caption style. Do not copy project-specific paths, run names, or one-off implementation details into this general skill.
 
@@ -23,7 +23,8 @@ If a project has an existing report style, preserve its generic writing conventi
 
 Before writing a completed report, inspect or request the evidence needed for the claims:
 
-- goal / hypothesis / run plan;
+- first question and answer: verification target plus a success standard fixed before the run;
+- hypothesis / run plan;
 - exact command, script, config, branch, commit, seed, data split, checkpoint, and output directory;
 - machine and environment: GPU, CUDA, driver, Docker image / Compose service / conda env, Python and key package versions when relevant;
 - code provenance: repo or project path, branch, commit, dirty state if known, and output root;
@@ -42,7 +43,9 @@ Use this structure for a full completed experiment report:
 # 实验标题
 
 > [!结论]
-> 用户填写。Codex 不默认代写结论；若用户已提供结论，只做格式整理和位置保留。
+> **第一问题：这个最小实验要验证什么？成功的标准是什么？**
+> - 验证目标：<一句可证伪的陈述>
+> - 成功标准：<预先确定的指标、阈值或明确的可观察条件>
 
 ## 1. 实验设置
 - 项目：
@@ -55,10 +58,11 @@ Use this structure for a full completed experiment report:
 - 配置 / checkpoint：
 - 命令：
 - 产物路径：
-- 问题：
-- 假设：
+- 核心假设：
+- 最高风险假设：
 - 运行前预测：
-- 成功标准：
+- 反驳 / 无法判定条件：
+- 资源上限：
 - 变量：
 - 对照 / baseline：
 - 固定条件：
@@ -100,14 +104,18 @@ Use this structure for a full completed experiment report:
 - 需要写回的文档：
 ```
 
-Use a conclusion-first callout followed by numbered headings in formal reports. Omit `2. 预处理` only when the experiment has no meaningful preprocessing, pseudo-label generation, alignment, filtering, or data conversion step; then renumber later sections so the report remains continuous.
+Use the conclusion callout immediately after the title to preserve the first question and its user-owned answer. Keep the same Markdown report on every platform; only map the semantic callout marker to a native callout in Feishu or Notion when supported. Create and freeze it before the run; do not replace it with a post-hoc result summary. Follow it with numbered headings. Omit `2. 预处理` only when the experiment has no meaningful preprocessing, pseudo-label generation, alignment, filtering, or data conversion step; then renumber later sections so the report remains continuous.
 
 Use this compact entry when appending to `docs/Experiment.md` or a running experiment log:
 
 ```markdown
 ### YYYY-MM-DD｜实验标题
-- 结论：用户填写；Codex 不默认代写
-- 目的：
+
+> [!结论]
+> **第一问题：这个最小实验要验证什么？成功的标准是什么？**
+> - 验证目标：<一句可证伪的陈述>
+> - 成功标准：<预先确定的指标、阈值或明确的可观察条件>
+
 - 假设 / 预测：
 - 命令：
 - 环境：
@@ -123,12 +131,17 @@ For an experiment that has not run yet, use a pre-registration form:
 
 ```markdown
 # 实验计划｜实验标题
+
+> [!结论]
+> **第一问题：这个最小实验要验证什么？成功的标准是什么？**
+> - 验证目标：<一句可证伪的陈述>
+> - 成功标准：<预先确定的指标、阈值或明确的可观察条件>
+
 - 背景问题：
 - 假设：
 - 运行前预测：
 - 最小实验设置：
 - 对照 / baseline：
-- 成功标准：
 - 失败时如何解释：
 - 命令草案：
 - 预计产物：
@@ -137,6 +150,8 @@ For an experiment that has not run yet, use a pre-registration form:
 
 ## Writing Rules
 
+- Put the first question and answer in the first conclusion callout immediately after the title. Write and freeze it before execution; never retrofit the verification target or success threshold to match observed results.
+- Keep both answers concrete: the verification target must be falsifiable, and the success standard must be a metric, threshold, or unambiguous observable condition. Treat `效果不错`, `看起来可行`, or equivalent wording as incomplete.
 - Separate evidence from interpretation. Use phrases like `日志显示`, `指标表明`, `可视化显示`, and `我的判断是` to distinguish source-backed observation from analysis.
 - Always compare against a baseline, previous run, or explicit expectation when possible. If no baseline exists, say so and propose the smallest baseline to add.
 - Report both metrics and raw outputs. Do not conclude from aggregate metrics alone when qualitative artifacts exist.
@@ -165,7 +180,7 @@ For an experiment that has not run yet, use a pre-registration form:
 
 - Inspect representative images, videos, meshes, point clouds, or render outputs before writing qualitative conclusions.
 - Use original-resolution image and video artifacts for qualitative judgment; if the report embeds a resized preview, include the path or link to the original-resolution file.
-- When writing the report in Feishu/Lark, put image captions in the native image caption field. Do not create standalone text paragraphs that duplicate or replace image captions; reserve normal paragraphs for analysis, not captions.
+- Use the target platform's caption representation: native image captions in Feishu/Lark and Notion; the established vault convention in Obsidian, or meaningful Markdown alt text when no visible-caption convention exists. Do not duplicate the same caption as a separate paragraph.
 - Present paired subjects, conditions, or before/after variants side by side when the report is making a visual comparison and the page format supports it.
 - Use stable, stated column order for comparison grids. Include ground truth, baseline, current method, residuals/deltas, depth, normal, mask, or canonical views only when they are actually available and relevant.
 - Use consistent color semantics for residual or delta maps and state the meaning of colors if the figure is not self-explanatory.
@@ -212,6 +227,7 @@ Avoid these:
 
 Before calling a report complete, verify:
 
+- the first conclusion callout answers what the minimum experiment verifies and what counts as success, and its wording was fixed before the run;
 - source evidence was inspected and cited by path, command, table, log, or artifact;
 - actual project convention, dedicated skill, or repo guide was checked when the user names a specific project;
 - command, config, environment, data, and output path are present or explicitly missing;
@@ -221,10 +237,10 @@ Before calling a report complete, verify:
 - metrics and qualitative/raw output observations are both included when available;
 - metric table comparability, direction, precision, and mask/split口径 are explicit;
 - qualitative images/videos are original-resolution sources, or any resized previews are clearly linked to original-resolution artifacts;
-- Feishu/Lark image captions are native image captions, with no standalone paragraph captions left around the images;
+- image captions use the target platform's native or established representation, with no duplicate standalone caption paragraphs;
 - visual artifacts were inspected and captions/media placement were verified when the report includes media;
 - failure cases or negative evidence are included;
-- user-provided conclusion callout is preserved, or an empty conclusion callout is left for the user instead of an invented final judgment;
+- the user-provided first-question callout is preserved without post-hoc rewriting, and no final judgment was invented for the user;
 - next step is the smallest useful action, not a vague research direction;
 - reusable assets and document writeback targets are listed;
 - no invented result, placeholder, unresolved `待核验`, or unsupported causal claim remains.

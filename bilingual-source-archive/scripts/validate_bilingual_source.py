@@ -22,19 +22,25 @@ SUMMARY_FIRST = [
     r"^\s*#{1,6}\s*(AI总结|摘要|总结|Summary|Key Takeaways|Takeaways)\s*$",
     r"^\s*(AI总结|摘要|总结|Summary|Key Takeaways|Takeaways)\s*[:：]\s*",
 ]
-RESIDUE_PATTERNS = [
-    r"!\[\[",
+COMMON_RESIDUE_PATTERNS = [
     r"<iframe\b",
     r"\bEW_IMG",
     r"图像：",
     r"/Users/",
     r"WorldModelVault",
 ]
+NON_OBSIDIAN_RESIDUE_PATTERNS = [r"!\[\["]
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate bilingual source archive Markdown.")
     parser.add_argument("path", nargs="?", help="Markdown file. Reads stdin if omitted or `-`.")
+    parser.add_argument(
+        "--target",
+        choices=("feishu", "notion", "obsidian", "markdown"),
+        default="markdown",
+        help="Destination platform; controls platform-specific residue checks.",
+    )
     args = parser.parse_args()
 
     if not args.path or args.path == "-":
@@ -57,7 +63,10 @@ def main() -> int:
         for pattern in FORBIDDEN_LABELS:
             if re.search(pattern, line, flags=re.I):
                 issue("forbidden_label", "Do not use repeated `Original` / `译文` field labels.", idx)
-        for pattern in RESIDUE_PATTERNS:
+        residue_patterns = list(COMMON_RESIDUE_PATTERNS)
+        if args.target in {"feishu", "notion"}:
+            residue_patterns.extend(NON_OBSIDIAN_RESIDUE_PATTERNS)
+        for pattern in residue_patterns:
             if re.search(pattern, line, flags=re.I):
                 issue("source_residue", f"Reader-facing text contains residue matching `{pattern}`.", idx)
         if idx <= 25:
@@ -65,8 +74,15 @@ def main() -> int:
                 if re.search(pattern, line, flags=re.I):
                     issue("summary_first", "Source archive should not start with an AI summary/takeaway section.", idx)
 
-    if lines[:1] == ["---"] or (len(lines) > 2 and lines[0] == "---" and "---" in lines[1:10]):
-        issue("frontmatter_residue", "Remove web-clipper or Obsidian frontmatter from the Feishu-facing draft.", 1)
+    has_frontmatter = lines[:1] == ["---"] or (
+        len(lines) > 2 and lines[0] == "---" and "---" in lines[1:10]
+    )
+    if has_frontmatter and args.target in {"feishu", "notion"}:
+        issue(
+            "frontmatter_residue",
+            f"Remove Obsidian/YAML frontmatter from the {args.target}-facing draft.",
+            1,
+        )
 
     cjk_chars = len(re.findall(r"[\u4e00-\u9fff]", text))
     english_words = len(re.findall(r"\b[A-Za-z][A-Za-z'-]{2,}\b", text))

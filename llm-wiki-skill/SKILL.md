@@ -9,13 +9,17 @@ description: 用 Codex 直接维护客制化 LLM Wiki / Markdown 知识库。Use
 
 For any generated Chinese wiki page, query answer, clipping distillation, source summary, synthesis, comparison, or Obsidian-ready note, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Keep this skill's wiki structure and citation rules, but do not leave avoidable English phrase islands in Chinese prose.
 
+## Canonical Platform Delivery Gate
+
+Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) whenever a wiki source, meeting note, paper card, deep dive, or review may be delivered to Feishu/Lark, Notion, or Obsidian. This skill owns the Obsidian/Markdown knowledge model; it must not force an Obsidian request through Feishu first.
+
 ## Canonical Paper Card Gate
 
 For any paper card / 论文卡片 work, also use [`paper-card-delivery`](../paper-card-delivery/SKILL.md). That skill is the canonical source for official-source verification, fixed format, figure/caption requirements, sorting, and validation. Keep this skill's wiki-specific placement rules, but do not finalize paper cards from this skill alone.
 
 ## Canonical Paper Deep Dive Gate
 
-For any single-paper deep dive / 深读 / 详细解析 work, also use [`paper-deep-dive`](../paper-deep-dive/SKILL.md). That skill is the single canonical delivery standard for PDF/HTML extraction, parent-page `Paper Card` / `论文解析树` / `精读稿`, child pages `英文原文稿` and `原文中译稿`, paper-card creation, manuscript fidelity, and completion gates. Keep this skill's Research-Wiki placement rules, but do not define, relax, or finalize deep-dive deliverables from this skill alone.
+For any single-paper deep dive / 深读 / 详细解析 work, also use [`paper-deep-dive`](../paper-deep-dive/SKILL.md). That skill is the single canonical delivery standard for PDF/HTML extraction, main-entry `Paper Card` / `论文解析树` / `精读稿`, linked artifacts `英文原文稿` and `原文中译稿`, paper-card creation, manuscript fidelity, and completion gates. Keep this skill's Research-Wiki placement rules, but do not define, relax, or finalize deep-dive deliverables from this skill alone.
 
 这个 skill 用来让 Codex 直接维护一个可长期积累的 Markdown wiki：原始资料保持不可变，Codex 增量生成和更新 wiki，Obsidian 只是可选的浏览器。
 
@@ -82,7 +86,7 @@ Daily 输入层包括：
 - 手机截图：主要来自微信/公众号和小红书。它们默认上下文不完整、来源质量不稳定，需要更强筛选。截图原图放入 `0-Daily/Screenshots/assets/`；整理稿（`0-Daily/Screenshots/YYYY-MM-DD-简短主题.md`）**不放内嵌原图**，结构固定为：**上半「总结」**（主题、要点、与 vault 的衔接、待核验），**下半「全部原文（OCR）」**——将截图中**可见文字尽数转写**（含标题、副标题、段落、列表、小标题、按钮文案、评论等版面文字），并标 `ocr.status`；不是「摘录」或大幅删节。**写作前须校验原图**：若宽高异常（例如宽度仅数十像素的长条），说明导出损坏或误选文件，须请用户重导原图后再 OCR，**禁止**仅凭多模态「读图描述」编造正文。论文线索与判断写在「总结」中即可。B 站内容通常不走截图主流程，更适合以链接或剪藏进入 `0-Daily/Clippings/`。
 - Clippings / 剪藏：网页文章、公众号网页、访谈、博客、平台内容等网页剪藏。它们属于 Daily 日常摄取，不等同于已进入 Research-Wiki 的证据；不要把截图整理稿默认放进 `0-Daily/Clippings/`。
 
-如果用户对 clipping / 网页文章 / pasted text 明确要求 `原文`、`提取原文`、`英文原文与中文译文`、English original plus Chinese translation，或强调 `不要总结`，不要进入本 skill 的蒸馏/原子笔记流程。先使用 [`bilingual-source-archive`](../bilingual-source-archive/SKILL.md) 生成 Feishu-first 原文与中文译文页；只有后续用户要求沉淀长期知识时，再从该 Feishu source archive 蒸馏进 Research-Wiki。
+如果用户对 clipping / 网页文章 / pasted text 明确要求 `原文`、`提取原文`、`英文原文与中文译文`、English original plus Chinese translation，或强调 `不要总结`，不要进入本 skill 的蒸馏/原子笔记流程。先使用 [`bilingual-source-archive`](../bilingual-source-archive/SKILL.md) 在用户选择的平台生成原文与中文译文归档；只有后续用户要求沉淀长期知识时，再从该 source archive 蒸馏进 Research-Wiki。
 
 处理 Daily 时：
 
@@ -110,7 +114,7 @@ Daily 输入层包括：
 - 本 skill 不再定义 paper card 的正文格式、metadata 字段、图像选择、图注标准、排序或验证门槛；这些统一以 [`paper-card-delivery`](../paper-card-delivery/SKILL.md) 为准。
 - 无论论文来自 `0-Daily` 截图、clipping、`1-Meetings` 链接、Zotero、`2-Learnings/EmbodiedWorld/` 还是 `3-Projects/`，只要要生成、补全、审核或同步 paper card，都必须先使用 `paper-card-delivery` 的六槽位格式与 source-grounded 验证流程。
 - 本 skill 只补充 Research-Wiki / local vault 归档边界；本地 Markdown 图片资产、文件命名、相对路径、缺图状态、候选状态等 paper-card 规则也统一按 `paper-card-delivery` 执行。
-- 同步到飞书时，必须同时使用 `feishu-doc-workflow`；paper-card 的图片位置、图注、布局验证和迁移残留检查按 `paper-card-delivery` 执行。
+- 写入或同步到任一平台时，必须同时使用 `research-doc-workflow`；paper-card 的图片位置、图注、布局验证和迁移残留检查按 `paper-card-delivery` 的目标平台分支执行。
 
 Meeting 论文处理完成后，`1-Meetings/assets/` 只保留最终会被 meeting 文档引用的流程图或必要图像；下载的 PDF、整页渲染截图、临时裁图和其他中间文件必须删除。具体 paper-card 图片资产命名和清理规则按 `paper-card-delivery` 执行。
 
@@ -121,17 +125,17 @@ Meeting 论文处理完成后，`1-Meetings/assets/` 只保留最终会被 meeti
 - PDF-to-Markdown 优先考虑 MinerU、Docling、Marker、Unstructured、PDFFigures2 这类结构化解析工具；若本机未安装，先用轻量 PyMuPDF / pdfplumber 作为 fallback，不把缺工具作为停止理由。
 - 当前 vault **默认**本地主工具为 **MinerU**：便捷脚本 **`.tools/mineru-md.sh INPUT.pdf OUTPUT_DIR`**（默认 `pipeline` 后端，纯 CPU 可跑）。脚本保存在 vault 内，MinerU Python 环境默认保存在本机 `~/Library/Application Support/WorldModelVault/envs/mineru-env/`，不随 iCloud vault 同步。做深读解析时优先使用该脚本；输出目录结构与 MinerU 版本相关，以生成物为准。若仍需 Docling，使用 `.tools/setup-docling-mac.sh` 与 `.tools/docling-md.sh`。
 - PDF-to-Markdown 结果是深读中间层，不等同于 Research-Wiki。不要把论文全文 Markdown 全量塞进 `4-Research-Wiki/wiki/`；只把经过提炼的 concept、claim、method、evidence、limitation、open question 或 research-practice 写入 wiki。
-- Deep dive 成品现在默认放进飞书个人文档库，不再默认写入 Obsidian `deep-dive/` 目录。Obsidian 只接收 deep dive 之后仍然长期重要、已经被归纳提炼的知识资产；不要把英文原文稿、原文中译稿、父页精读稿或论文全文 Markdown 直接塞回 `4-Research-Wiki/wiki/`。只有当内容被判断为世界模型专题长期证据时，再蒸馏进入 `4-Research-Wiki/raw/sources/papers/` 和 `4-Research-Wiki/wiki/`。
+- Deep dive 成品遵循用户选择的平台，不再默认放入飞书。若目标是 Obsidian，将完整 deep-dive 包放在独立、稳定的论文阅读目录或用户指定路径，不要把英文原文稿、原文中译稿和整篇论文正文直接塞进 `4-Research-Wiki/wiki/` 的原子理解层。只有长期成立的概念、主张、问题、方法和证据才进一步蒸馏进入 `4-Research-Wiki/raw/sources/papers/` 与 `4-Research-Wiki/wiki/`。
 - 结构化解析时保留章节层级、公式/表格占位、figure caption、正文引用线索、参考文献和关键术语；如果解析质量差，需要回到 PDF 原文核验，不得只依赖损坏的 Markdown。
 
 Deep dive 标准只保留在 [`paper-deep-dive`](../paper-deep-dive/SKILL.md)。本 skill 不再维护第二份 deep dive 结构、翻译规则、图表规则或质量门槛，以免和主标准漂移。
 
 当用户在 wiki / Obsidian / Research-Wiki 语境中要求 deep dive：
 
-- 先按 `paper-deep-dive` 完成或修复 Feishu deep-dive 交付包。
+- 先按 `paper-deep-dive` 在用户选择的平台完成或修复完整 deep-dive 交付包；Obsidian 请求可直接生成 Obsidian 包，不需要经过飞书。
 - 不把半成品、结构稿、选摘稿或章节摘要写成 Research-Wiki 的正式 deep-dive 产物。
 - Deep dive 完成后，只把仍有长期价值的内容蒸馏为 Research-Wiki 的 concept、claim、question、method、evidence、limitation、open question 或 research-practice。
-- 如果需要在 wiki 中记录 deep dive 来源，只记录 Feishu 链接、论文元信息、关键 source anchors 和蒸馏后的稳定认识，不复制整篇英文原文稿、原文中译稿或父页精读稿。
+- 如果需要在 Research-Wiki 中记录 deep dive 来源，只记录目标平台链接或相对路径、论文元信息、关键 source anchors 和蒸馏后的稳定认识，不复制整篇英文原文稿、原文中译稿或主入口精读稿。
 
 Meeting 输入层包括：
 
@@ -141,21 +145,17 @@ Meeting 输入层包括：
 
 Meeting 总结默认包含两层：**保守纪要** 和 **会后头脑风暴**。保守纪要只写可由转写、图像、论文链接或原文校验的信息；会后头脑风暴明确标注为研究发散，用来把当天论文、组内项目和更大的研究主线连接起来。
 
-Meeting 默认写入飞书，不再写入本地 vault：
+Meeting 使用 `research-doc-workflow` 选择目标平台，并保留现有会议库的平台。当前任务发生在本地 vault 且用户没有提供外部目标时，优先写入 Obsidian；提供 Notion 或飞书页面时则更新对应平台，不建立无必要的平行副本。
 
-```text
-Feishu / Lark wiki or docs page, organized by meeting date
-```
+一次组会、一次文献整理、一次导师讨论或一次科研交流，对应一个按日期组织的 durable meeting page/note。内容保留日期、简述、关键论文/链接/图片、Paper Cards、保守纪要、会后头脑风暴和待办。标题使用 `YYYY-MM-DD 简短主题`，主题应根据当日核心内容命名，不使用无信息量的固定尾缀。Meeting 页面是输入层，不代表已纳入 Research-Wiki。如果材料来自 Zotero collection，而 collection 本身跨越多个日期，应优先按日期子 collection 名或明确记录中的日期拆成多个日期页面；没有日期子 collection 时，再参考条目的 `dateAdded`。不要把导出日期当成组会日期。
 
-一次组会、一次文献整理、一次导师讨论或一次科研交流，对应一个飞书 wiki/doc 页面。页面里保留日期、简述、关键论文/链接/图片、Paper Cards、保守纪要、会后头脑风暴和待办。标题使用 `YYYY-MM-DD 简短主题`，主题应根据当日核心内容命名，不使用无信息量的固定尾缀。飞书页面是 meeting 输入层，不代表已纳入 Research-Wiki。如果材料来自 Zotero collection，而 collection 本身跨越多个日期，应优先按日期子 collection 名或明确记录中的日期拆成多个日期页面；没有日期子 collection 时，再参考条目的 `dateAdded`。不要把导出日期当成组会日期。
-
-本地 Obsidian vault **不再默认放置会议内容**。不要在 `1-Meetings/` 新建会议纪要正文，也不要把完整 meeting paper cards、保守纪要或头脑风暴写入本地 vault，除非用户明确要求“写到 Obsidian / 本地 vault”。本地只可临时保存处理中间文件、下载的临时图片或缓存；最终应同步/写入飞书后清理不必要的中间文件。若需要在本地保留索引，只写极简飞书链接入口，不复制正文。
+平台映射：Feishu 使用 wiki/doc 页面；Notion 使用会议数据库记录或日期子页面；Obsidian 使用既有 `1-Meetings/` 目录、frontmatter、相对资源和 MOC 链接。写后必须按目标平台重新读取并验证标题、日期、图片、Paper Cards、纪要和头脑风暴边界。
 
 处理 Meeting 时：
 
 - 不直接把整场会议记录编译进 wiki，只提取高价值科研片段。
-- 默认先写飞书 meeting 页面；只有当 meeting 中的内容需要长期进入 Research-Wiki 时，再从飞书纪要蒸馏 `raw/sources/meeting-extracts/YYYY-MM-DD.md`，不要把完整会议纪要复制进 Research-Wiki。
-- 如果飞书 meeting 页面已经基于 `个人研究名片` 做了讲者匹配，蒸馏进 Research-Wiki 时保留这个身份锚点，例如 `speaker`、`research_card` 或正文中的人物链接。它用于追溯某个观点/项目/论文线索来自谁，不等于该人物主页，也不替代原始会议证据。
+- 先写用户选择平台的 meeting 页面；只有当 meeting 中的内容需要长期进入 Research-Wiki 时，再从该页面蒸馏 `raw/sources/meeting-extracts/YYYY-MM-DD.md`，不要把完整会议纪要复制进 Research-Wiki。
+- 如果 meeting 页面已经基于 `个人研究名片` 做了讲者匹配，蒸馏进 Research-Wiki 时保留这个身份锚点，例如 `speaker`、`research_card` 或正文中的人物链接。它用于追溯某个观点/项目/论文线索来自谁，不等于该人物主页，也不替代原始会议证据。
 - 如果讲者只由转写或模型推断得到，保留 `讲者待核验` / `可能为 <name>（待核验）`，不要把不确定归因写成 stable claim。缺失的研究名片应进入 meeting TODO，而不是阻塞会议整理。
 - 豆包总结中的关键信息需要和图像、论文链接或原论文互相校验。
 - 如果图像或链接中识别到论文线索，自动进入论文追踪流程：搜索论文资源，总结论文，判断与世界模型研究的相关性；正式 meeting 文档中的论文应优先按 `paper-card-delivery` 补成 source-grounded paper card。

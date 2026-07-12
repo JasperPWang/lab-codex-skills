@@ -9,7 +9,7 @@ description: >
   words", "我想学/理解/搞懂 X", "帮我讲清楚 X", "这篇论文/这个方法我没懂", IELTS/TOEFL
   English learning, graduate job/internship interview preparation, research
   ability building, research project planning, literature survey field mapping,
-  or Obsidian-ready note generation. The user does not need to mention Feynman
+  or Notion/Obsidian-ready note generation. The user does not need to mention Feynman
   or the skill name.
 ---
 
@@ -23,7 +23,7 @@ English, and career preparation.
 
 ## Canonical Chinese Technical Writing Gate
 
-When producing Chinese explanations, Obsidian-ready notes, research learning notes, field maps, or paper/method explanations, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Keep names, acronyms, formulas, code, datasets, and English-learning examples intact, but translate ordinary technical concepts into Chinese prose instead of leaving raw English phrase islands.
+When producing Chinese explanations, Notion/Obsidian-ready notes, research learning notes, field maps, or paper/method explanations, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) when the user asks to persist the learning artifact. Keep names, acronyms, formulas, code, datasets, and English-learning examples intact, but translate ordinary technical concepts into Chinese prose instead of leaving raw English phrase islands.
 
 ## First Move
 
@@ -47,7 +47,7 @@ Default to one depth branch:
 | Research growth, project planning, or field map | Research ability roadmap | `references/research-growth.md` |
 | IELTS/TOEFL English | Exam English ability | `references/language-learning.md` |
 | Graduate job/internship interview | Interview preparation | `references/interview-prep.md` |
-| User asks for note | Obsidian note | `references/note-templates.md` |
+| User asks for note | Platform-neutral learning note, delivered through `research-doc-workflow` | `references/note-templates.md` |
 
 Escalate to another branch only if the user asks, seems stuck, or the concept
 requires it.
@@ -73,8 +73,7 @@ Load only the files needed for the active branch:
 - `references/interview-prep.md`: graduate jobs, internships, research
   interviews, project stories, technical fundamentals, role fit, and follow-up
   handling.
-- `references/note-templates.md`: concise Obsidian notes after a useful learning
-  result exists.
+- `references/note-templates.md`: concise Markdown note structure after a useful learning result exists; adapt it to Notion or Obsidian through `research-doc-workflow`.
 
 ## Core Loop
 
@@ -92,7 +91,7 @@ When the learning target is research ability, a paper, a method, an experiment, 
 - Convert the gap into one sharper question, one smaller experiment, or one reading target.
 - Encourage primary-source input: paper body, appendix, limitations, code, and examples before relying on summaries.
 - Preserve focus: relate new concepts back to the user's main research line unless the user explicitly wants bounded exploration.
-- End research-learning turns with a reusable artifact when useful: a short explanation, contrast table, experiment idea, paper-reading question, or Feishu/wiki note.
+- End research-learning turns with a reusable artifact when useful: a short explanation, contrast table, experiment idea, paper-reading question, or Notion/Obsidian/Feishu research note.
 
 Do not expose all of these bullets as a checklist. Use them to choose the next prompt and to avoid passive explanation.
 
@@ -255,7 +254,7 @@ When wrapping up, produce only what is useful:
 - refined explanation
 - repaired gap
 - one transfer question
-- optional Obsidian note
+- optional Notion/Obsidian note
 - for research: baseline/design/change/risk/experiment
 - for research growth: current stage/one target ability/next concrete project
 - for research growth: action/advisor or peer discussion question

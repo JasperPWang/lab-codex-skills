@@ -1,6 +1,6 @@
 ---
 name: daily-research-review
-description: Run the user's daily科研经营复盘 / Daily Research Operating Review. Use when the user says they want to start, continue, write, or organize a daily review, daily research review, 每日复盘, 科研复盘, 今日复盘, or asks to create/update the dated Feishu review page with reflection, project triage, AI ROI, simulation-ready research direction checks, and tomorrow's three key TODOs.
+description: Run the user's daily科研经营复盘 / Daily Research Operating Review and persist it in Feishu/Lark, Notion, or Obsidian/Markdown. Use when the user says they want to start, continue, write, or organize a daily review, daily research review, 每日复盘, 科研复盘, 今日复盘, or asks to create/update a dated review page with reflection, project triage, AI ROI, simulation-ready research direction checks, and tomorrow's three key TODOs.
 ---
 
 # Daily Research Review
@@ -16,22 +16,28 @@ Default language is Chinese. Use English terms when they are the natural technic
 
 For reader-facing Chinese review prose and TODOs, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md): keep method names, acronyms, project names, and simulation terms when they are names, but translate ordinary technical concepts into Chinese instead of mixing raw English phrases into Chinese sentences.
 
-## Feishu Placement
+## Platform Placement
 
-Use the `feishu-doc-workflow` skill for all Feishu reads/writes.
+Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) for destination selection and durable writes. Preserve an existing review hub's platform; do not create a parallel Feishu copy when the active review system is Notion or Obsidian.
 
 If the user brings a research-method article or web source into the review context and asks for `原文`, `提取原文`, or `英文原文与中文译文`, use [`bilingual-source-archive`](../bilingual-source-archive/SKILL.md) as a side path. Do not fold the source into the daily review as a summary unless the user explicitly asks for a review takeaway.
 
-Stable hierarchy:
+Keep this logical hierarchy on every platform:
 
 - Parent context page: `Entrepreneurial Research Mindset`
 - Review hub: `科研经营复盘｜Daily Research Operating Review`
-- Daily child pages under the hub: `YYYY-MM-DD 科研经营复盘`
+- Dated entries under or linked from the hub: `YYYY-MM-DD 科研经营复盘`
 
-Before writing, fetch the hub and child list. If today's child page exists, update it. If not, create it under the review hub. Verify after writing that:
+Map it natively:
 
-- The document title and wiki node title are not `Untitled` / `无标题`.
-- The page is under the review hub, not directly under the outer parent.
+- Feishu/Lark: wiki parent, review hub, and dated child page through `feishu-doc-workflow`.
+- Notion: review hub plus dated subpage or database record with date/status properties.
+- Obsidian: review MOC/index plus dated Markdown note in the established review folder, with frontmatter and links following neighboring notes.
+
+Before writing, fetch or read the hub/index and dated entries. If today's entry exists, update it; otherwise create it in the same system. Verify after writing that:
+
+- The title is not `Untitled` / `无标题` and the date is correct.
+- The entry is linked to or contained by the review hub, not left orphaned.
 - The final page contains `明日三项关键 Todo`.
 
 ## Review Flow
@@ -63,7 +69,7 @@ Use the review to train research taste, not just record activity. When relevant,
 - Failure clustering: what is the largest pile of failures, and what is the smallest attack on that pile?
 - Input quality: did today's reading include primary papers, appendices, limitations, old or underpriced sources, and not only social summaries?
 - Focus versus exploration: did the user protect the main project line while giving exploratory ideas a bounded budget?
-- Generous asset: did today's work produce something reusable for future self, collaborators, public writing, code, Feishu, wiki, or paper writing?
+- Generous asset: did today's work produce something reusable for future self, collaborators, public writing, code, Notion/Obsidian/Feishu documentation, or paper writing?
 
 Map these signals into the template rather than adding new daily sections. For example, forecast and belief update belong in `今日假设验证`; loop speed and output inspection belong in `今日资产沉淀`, `GPT / Codex / AI 投资回报`, or `当前最大风险`; problem ownership and importance belong in `项目经营判断`.
 
@@ -128,7 +134,7 @@ Evaluate AI usage by outputs, not interaction volume:
 - Time saved.
 - Judgment improved.
 - Assets created or cleaned.
-- Experiments, code, papers, or Feishu pages advanced.
+- Experiments, code, papers, or durable research pages advanced.
 - Whether AI use became unproductive chatting.
 - Whether AI shortened the research loop by making experiments, plots, comparisons, source reading, or failure inspection faster.
 - Whether the user kept ownership of the key judgment instead of outsourcing taste, problem choice, or claims to AI.
@@ -145,7 +151,7 @@ Use these roles to find blind spots:
 - CFO: time, GPU, GPT, and attention ROI.
 - Data / Infra: data, environment, logs, visualizations, failure cases.
 - Reviewer: strongest attack on novelty, evaluation, claims, and baselines.
-- Writer / Communicator: Feishu, wiki, paper, slides, mentor communication.
+- Writer / Communicator: Notion/Obsidian/Feishu documentation, paper, slides, mentor communication.
 - AI Manager: what to delegate to AI and what judgment the user must own.
 - Research Taste Coach: forecast before seeing answers, compare with reality, and convert the gap into a sharper next experiment or reading question.
 

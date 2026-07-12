@@ -1,0 +1,4 @@
+interface:
+  display_name: "Research Document Workflow"
+  short_description: "Route research docs across Feishu, Notion, and Obsidian"
+  default_prompt: "Use $research-doc-workflow to create or update this research document in the correct Feishu, Notion, or Obsidian backend."

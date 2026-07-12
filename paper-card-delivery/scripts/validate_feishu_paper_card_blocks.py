@@ -13,33 +13,80 @@ fetched Markdown alone.
 from __future__ import annotations
 
 import argparse
+import difflib
 import json
 import re
 import sys
+from collections import defaultdict
 from pathlib import Path
 from urllib.parse import unquote
 
 
 REQUIRED_BULLETS = ["定义", "问题", "方法", "实现", "结论", "局限", "启发"]
-SIMULATION_CONTEXT_RE = re.compile(
+FOUNDATION_MODEL_NAMES_RE = re.compile(
     r"\b("
-    r"mujoco|isaac(?:\s+gym|\s+sim)?|pybullet|bullet|gazebo|habitat|ai2-thor|"
-    r"carla|sapien|airsim|unity|unreal|blender|omniverse|"
-    r"clo3d|marvelous\s+designer|"
-    r"simulator|simulation\s+environment|simulated\s+environment|synthetic\s+data(?:set)?|"
-    r"physics\s+engine|game\s+engine|robotics\s+environment|cloth\s+simulator"
-    r")\b|仿真器|仿真环境|模拟器|合成数据|物理引擎|游戏引擎|机器人环境|布料仿真",
-    re.I,
-)
-BASE_MODEL_HINTS_RE = re.compile(
-    r"\b("
-    r"flux(?:\.1)?(?:-[a-z0-9.]+)?|hunyuan(?:video)?|stable\s+diffusion|stable\s+video\s+diffusion|"
-    r"sdxl|sd3|wan\d(?:\.\d)?|cogvideo(?:x)?|pixart(?:-[a-z0-9.]+)?|kandinsky|kolors|"
-    r"animatediff|modelscope\s+t2v|zeroscope|open-?sora|videocrafter|qwen(?:-image|-vl)?"
+    r"flux(?:\.[12])?|stable\s+diffusion|sdxl|sd3|sd\s*1\.5|controlnet|"
+    r"zero123|wonder3d|tripo(?:sr)?|mvdream|syncdreamer|dreamfusion|magic3d|"
+    r"hunyuan3d|hunyuanimage|qwen[-\s]?image|longcat[-\s]?image|z[-\s]?image|"
+    r"kolors|cogview|bagel|step1x|instantmesh|openlrm|dust3r|vggt|streamvggt|"
+    r"trellis|pi3|π³|moge|metric3d|noposplat|cogvideox|sam2|t5|"
+    r"shapellm|dinov2|alpha[-\s]?clip|roberta|qwen(?:[-\s]?(?:2|3)(?:[-\s]?\d+(?:\.\d+)?b)?)?"
     r")\b",
     re.I,
 )
+BACKBONE_HINTS_RE = re.compile(
+    r"\b("
+    r"backbone|base\s+model|foundation\s+model|pre[-\s]?trained\s+model|"
+    r"pre[-\s]?trained\s+backbone|encoder\s+backbone|decoder\s+backbone|"
+    r"diffusion\s+backbone|initialized\s+from|initialised\s+from|powered\s+by"
+    r")\b|"
+    r"(骨干|基座|基础模型|预训练模型|预训练骨干|初始化)",
+    re.I,
+)
+TRAINING_MODE_HINTS_RE = re.compile(
+    r"\b("
+    r"training[-\s]?free|train[-\s]?free|zero[-\s]?training|without\s+training|"
+    r"no\s+training|inference[-\s]?only|lora|low[-\s]?rank\s+adaptation|"
+    r"adapter|fine[-\s]?tune|finetune|fine[-\s]?tuning|full[-\s]?fine[-\s]?tune|"
+    r"full[-\s]?fine[-\s]?tuning|full[-\s]?training|end[-\s]?to[-\s]?end|"
+    r"from[-\s]?scratch|frozen|freeze|test[-\s]?time\s+optimization|"
+    r"distillation"
+    r")\b|"
+    r"(免训练|无需训练|零训练|仅推理|推理时优化|测试时优化|LoRA|适配器|微调|"
+    r"全量微调|全量训练|端到端|从头训练|冻结|蒸馏)",
+    re.I,
+)
 STATUS_VALUES = {"未报告", "不适用", "not reported", "n/a", "na", "none"}
+BULLET_MIN_WIDTH = 75.0
+BULLET_MAX_WIDTH = 100.0
+INSPIRATION_TAIL_LENGTH = 16
+INSPIRATION_TAIL_REPEAT_LIMIT = 3
+INSPIRATION_NEAR_DUPLICATE_RATIO = 0.78
+ARXIV_PDF_RE = re.compile(r"arxiv\.org/pdf/", re.I)
+PDF_URL_RE = re.compile(r"\.pdf(?:$|[?#])|/pdf(?:/|$|\?)", re.I)
+VENUE_OR_PUBLISHER_PDF_RE = re.compile(
+    r"("
+    r"openaccess\.thecvf\.com|thecvf\.com|cv-foundation\.org|ecva\.net|"
+    r"openreview\.net/(?:pdf|attachment)|proceedings\.neurips\.cc|papers\.nips\.cc|"
+    r"proceedings\.mlr\.press|dl\.acm\.org/(?:doi/)?pdf|ieeexplore\.ieee\.org|"
+    r"computer\.org/csdl|link\.springer\.com|springer\.com|aaai\.org|ijcai\.org|"
+    r"aclanthology\.org|bmvc\d*\.org|bmva-archive\.org"
+    r")",
+    re.I,
+)
+SUPPLEMENT_STATUS_RE = re.compile(
+    r"(\b(?:Supplement|Supplementary|Appendix|Suppl\.?|Supp\.?)\b|w/o\. supplement)",
+    re.I,
+)
+STATUS_MARKER_RE = re.compile(r"(未报告|不适用|not reported|n/a|na|none)", re.I)
+UNRESOLVED_MARKERS_RE = re.compile(
+    r"(待核验|\bcandidate\b|\bTODO\b|\bTBD\b|pending\s+(?:verification|source|check)|to\s+verify)",
+    re.I,
+)
+VERBOSE_MODEL_METADATA_RE = re.compile(
+    r"\|\s*(?:Open[-\s]?source\s+backbone|Backbone|Training|Open[-\s]?source\s+baselines?)\s*[:：]",
+    re.I,
+)
 FORBIDDEN_PLACEHOLDERS = (
     "配图待补",
     "图注待补",
@@ -59,27 +106,6 @@ FORBIDDEN_PLACEHOLDERS = (
     "image pending",
     "caption pending",
 )
-DRAFT_STATUS_PATTERNS = (
-    (re.compile(r"待核验"), "Formal paper-card delivery must not contain `待核验`; verify against the official source and resolve it. If the original source cannot be obtained after all official acquisition/extraction routes fail, report a blocker instead of shipping a card."),
-    (re.compile(r"\bcandidate\s*/", re.I), "Formal paper-card delivery must not contain candidate-status markers."),
-    (re.compile(r"\b(?:todo|tbd|pending)\b", re.I), "Formal paper-card delivery must not contain TODO/TBD/pending verification markers."),
-    (re.compile(r"(?:核验|验证)\s*(?:TODO|TBD|pending|待办)", re.I), "Formal paper-card delivery must not contain unresolved verification TODOs."),
-)
-BAD_CAPTION_FILLER_PATTERNS = (
-    (re.compile(r"方法或实验概览"), "Figure caption must translate the original caption, not say `方法或实验概览`."),
-    (re.compile(r"method\s+or\s+experiment\s+overview", re.I), "Figure caption must translate the original caption, not say `method or experiment overview`."),
-    (re.compile(r"用于说明(?:论文)?的?(?:核心流程|输入输出关系|关键模块|方法流程|实验概览)"), "Figure caption must not include generic `用于说明...` filler."),
-    (re.compile(r"核心流程、输入输出关系和关键模块"), "Figure caption must not include generic process/module filler."),
-    (re.compile(r"原始\s*caption\s*已在图中保留", re.I), "Do not use retained-original-caption prose instead of translating the caption."),
-    (re.compile(r"便于回溯核验"), "Figure caption must not add empty verification prose."),
-    (re.compile(r"该图来自官方论文\s*PDF\s*裁图"), "Use a short source tag such as `来源：PDF 截图`, not verbose PDF-crop prose."),
-    (re.compile(r"完整翻译原始\s*caption|这里应放原始\s*caption", re.I), "Replace caption-template text with the complete Chinese translation of the official caption."),
-)
-ALLOWED_SOURCE_LABEL_RE = re.compile(
-    r"(?:来源|源于)\s*[:：]?\s*(?:用户截图|HTML|html|MinerU\s*PDF\s*截图|mineru\s*的?\s*pdf\s*截图|PDF\s*截图|pdf\s*截图)",
-    re.I,
-)
-SOURCE_LABEL_RE = re.compile(r"(?:来源|源于)\s*[:：]?", re.I)
 
 
 def elements_text(block: dict) -> str:
@@ -102,6 +128,85 @@ def elements_text(block: dict) -> str:
         elements = block[key].get("elements") or []
         return "".join((element.get("text_run") or {}).get("content", "") for element in elements)
     return ""
+
+
+def visual_width(text: str) -> float:
+    """Approximate Feishu visual width in Chinese-character-equivalent units."""
+    width = 0.0
+    for char in text.strip():
+        if char.isspace():
+            continue
+        width += 0.5 if ord(char) < 128 else 1.0
+    return width
+
+
+def bullet_body_text(text: str, label: str) -> str | None:
+    match = re.match(rf"^{re.escape(label)}\s*[:：]\s*(.*)$", text.strip())
+    return match.group(1).strip() if match else None
+
+
+def normalize_inspiration(text: str) -> str:
+    return re.sub(r"[^0-9a-z\u3400-\u9fff]+", "", text.casefold())
+
+
+def inspiration_reuse_issues(entries: list[tuple[str, str]]) -> list[dict[str, object]]:
+    normalized = [(title, normalize_inspiration(body)) for title, body in entries]
+    issues: list[dict[str, object]] = []
+
+    exact_groups: dict[str, list[str]] = defaultdict(list)
+    tail_groups: dict[str, list[str]] = defaultdict(list)
+    for title, body in normalized:
+        if not body:
+            continue
+        exact_groups[body].append(title)
+        if len(body) >= INSPIRATION_TAIL_LENGTH:
+            tail_groups[body[-INSPIRATION_TAIL_LENGTH:]].append(title)
+
+    exact_titles: set[str] = set()
+    for titles in exact_groups.values():
+        if len(titles) < 2:
+            continue
+        exact_titles.update(titles)
+        for title in titles:
+            issues.append({
+                "title": title,
+                "code": "inspiration_duplicate",
+                "message": f"`启发` duplicates another card verbatim across {len(titles)} cards; derive it independently from this paper.",
+            })
+
+    repeated_tail_titles: set[str] = set()
+    for titles in tail_groups.values():
+        if len(titles) < INSPIRATION_TAIL_REPEAT_LIMIT:
+            continue
+        repeated_tail_titles.update(titles)
+        for title in titles:
+            issues.append({
+                "title": title,
+                "code": "inspiration_repeated_tail",
+                "message": f"`启发` reuses the same {INSPIRATION_TAIL_LENGTH}-character ending across {len(titles)} cards; replace the shared template with paper-specific reasoning.",
+            })
+
+    near_duplicate_titles: set[str] = set()
+    for index, (title_a, body_a) in enumerate(normalized):
+        if title_a in exact_titles or title_a in repeated_tail_titles or not body_a:
+            continue
+        for title_b, body_b in normalized[index + 1 :]:
+            if title_b in exact_titles or title_b in repeated_tail_titles or not body_b:
+                continue
+            ratio = difflib.SequenceMatcher(None, body_a, body_b).ratio()
+            if ratio < INSPIRATION_NEAR_DUPLICATE_RATIO:
+                continue
+            for title, other in ((title_a, title_b), (title_b, title_a)):
+                if title in near_duplicate_titles:
+                    continue
+                near_duplicate_titles.add(title)
+                issues.append({
+                    "title": title,
+                    "code": "inspiration_near_duplicate",
+                    "message": f"`启发` is {ratio:.0%} similar to `{other}`; rewrite it from this paper's own mechanism, limitation, or open question.",
+                })
+
+    return issues
 
 
 def text_elements(block: dict) -> list[dict]:
@@ -148,21 +253,43 @@ def cvf_slug_title(pdf_url: str) -> str | None:
     return title or None
 
 
-def pdf_links(block: dict) -> list[str]:
+def linked_urls(block: dict) -> list[str]:
     urls: list[str] = []
     for element in text_elements(block):
         text_run = element.get("text_run") or {}
         style = text_run.get("text_element_style") or {}
         link = style.get("link") or {}
         url = link.get("url") or ""
-        if re.search(r"\.pdf(?:$|[?#])", url):
+        if url:
             urls.append(url)
     return urls
 
 
+def pdf_links(block: dict) -> list[str]:
+    return [
+        url
+        for url in linked_urls(block)
+        if PDF_URL_RE.search(url) or VENUE_OR_PUBLISHER_PDF_RE.search(url)
+    ]
+
+
+def compact_model_suffix(dataset_line: str) -> str:
+    value = re.sub(r"^Dataset:\s*", "", dataset_line, flags=re.I)
+    parts = [part.strip() for part in value.split("|")]
+    suffixes: list[str] = []
+    for part in parts[1:]:
+        if re.match(r"^Simulation\s*[:：]", part, flags=re.I):
+            continue
+        if re.search(r"[:：]", part):
+            continue
+        if part:
+            suffixes.append(part)
+    return " | ".join(suffixes)
+
+
 def dataset_entries(dataset_line: str) -> list[str]:
     value = re.sub(r"^Dataset:\s*", "", dataset_line, flags=re.I)
-    dataset_part = re.split(r"\s*\|\s*(?:Base|Simulation)\s*[:：]", value, maxsplit=1, flags=re.I)[0]
+    dataset_part = re.split(r"\s*\|\s*", value, maxsplit=1)[0]
     dataset_part = dataset_part.strip()
     if not dataset_part or dataset_part.lower() in STATUS_VALUES:
         return []
@@ -170,64 +297,27 @@ def dataset_entries(dataset_line: str) -> list[str]:
     return [part.strip() for part in parts if part.strip()]
 
 
-def metadata_component(dataset_line: str, name: str) -> str | None:
-    match = re.search(rf"\|\s*{re.escape(name)}\s*[:：]\s*([^|]+)", dataset_line, flags=re.I)
-    return match.group(1).strip() if match else None
-
-
-def comma_entries(value: str) -> list[str]:
-    if not value or value.lower() in STATUS_VALUES:
-        return []
-    return [part.strip() for part in re.split(r"\s*,\s*", value) if part.strip()]
-
-
 def check_dataset_line(dataset_line: str, card_text: str, details: list[dict[str, object]], title: str) -> None:
     def add(code: str, message: str) -> None:
         details.append({"title": title, "code": code, "message": message})
 
-    card_context = card_text.replace(dataset_line, "")
-    if re.search(r"\bbase(?:\s+model)?\s*[:：]", dataset_line, flags=re.I) and not re.search(r"\|\s*Base\s*[:：]", dataset_line, flags=re.I):
-        add("base_format", "Base-model metadata must be appended on the Dataset line as `| Base:`, not as a loose `Base:` field.")
     if re.search(r"simluation\s*[:：]", dataset_line, flags=re.I):
         add("simulation_spelling", "Use `Simulation:` in the Dataset metadata line, not `Simluation:`.")
     if re.search(r"simulation\s*[:：]", dataset_line, flags=re.I) and not re.search(r"\|\s*Simulation\s*[:：]", dataset_line):
         add("simulation_format", "Simulation metadata must be appended as `| Simulation:` on the Dataset line.")
+    if VERBOSE_MODEL_METADATA_RE.search(dataset_line):
+        add("verbose_model_metadata", "Do not use verbose model metadata labels such as `Open-source backbone:`, `Backbone:`, `Training:`, or `Open-source baselines:`; use a compact suffix like `| FLUX.1-dev，LoRA 微调`.")
     entries = dataset_entries(dataset_line)
-    dataset_value = re.sub(r"^Dataset:\s*", "", dataset_line, flags=re.I)
-    dataset_part = re.split(r"\s*\|\s*(?:Base|Simulation)\s*[:：]", dataset_value, maxsplit=1, flags=re.I)[0].strip()
-    if dataset_part.lower() not in STATUS_VALUES and re.search(r"｜|、|，|;|；|\s/\s", dataset_part):
-        add("dataset_separator", "Separate Dataset metadata names with ASCII comma plus space, e.g. `Dataset: H3.6M, 3DPW, SURREAL`; put extra datasets in `实现`.")
     if len(entries) > 3:
         add("dataset_too_many", "Dataset metadata must list at most three visible dataset names; put additional datasets in `实现` if needed.")
-    base_value = metadata_component(dataset_line, "Base")
-    if base_value is not None:
-        if base_value.lower() not in STATUS_VALUES and re.search(r"｜|、|，|;|；|\s/\s", base_value):
-            add("base_separator", "Separate Base metadata names with ASCII comma plus space, e.g. `| Base: FLUX.1-dev, HunyuanVideo`; put extra base-model details in `实现`.")
-        if len(comma_entries(base_value)) > 3:
-            add("base_too_many", "Base metadata must list at most three visible base model names; put additional base-model chains or variants in `实现`.")
-    if BASE_MODEL_HINTS_RE.search(card_text) and not re.search(r"\|\s*Base\s*[:：]", dataset_line):
-        add("base_model_missing", "Card mentions a known open-source/pretrained base model; Dataset metadata should include `| Base:` or explicitly mark `Base: 未报告` when the base is involved but not reported.")
-    simulation_value = metadata_component(dataset_line, "Simulation")
-    if simulation_value is not None and simulation_value.lower() in STATUS_VALUES and not SIMULATION_CONTEXT_RE.search(card_context):
-        add("simulation_not_relevant", "`Simulation:` is a conditional field. Do not write `Simulation: 未报告` / `N/A` / `不适用` when the paper does not clearly involve simulation; omit the field entirely.")
-    if SIMULATION_CONTEXT_RE.search(card_context) and not re.search(r"\|\s*Simulation\s*[:：]", dataset_line):
-        add("simulation_missing", "Card mentions a known simulator/environment; Dataset metadata should include `| Simulation:` or explicitly mark `Simulation: 未报告`.")
-
-
-def check_draft_status_markers(text: str, details: list[dict[str, object]], title: str) -> None:
-    for pattern, message in DRAFT_STATUS_PATTERNS:
-        if pattern.search(text):
-            details.append({"title": title, "code": "draft_status_forbidden", "message": message})
-
-
-def check_caption_quality(text: str, details: list[dict[str, object]], title: str) -> None:
-    if not text.strip():
-        return
-    for pattern, message in BAD_CAPTION_FILLER_PATTERNS:
-        if pattern.search(text):
-            details.append({"title": title, "code": "caption_filler_forbidden", "message": message})
-    if SOURCE_LABEL_RE.search(text) and not ALLOWED_SOURCE_LABEL_RE.search(text):
-        details.append({"title": title, "code": "caption_source_label", "message": "Caption source must use a short controlled label: `来源：用户截图`, `来源：HTML`, `来源：MinerU PDF 截图`, or `来源：PDF 截图`."})
+    backbone_needed = BACKBONE_HINTS_RE.search(card_text) or (
+        FOUNDATION_MODEL_NAMES_RE.search(card_text) and TRAINING_MODE_HINTS_RE.search(card_text)
+    )
+    suffix = compact_model_suffix(dataset_line)
+    if backbone_needed and not (suffix and (FOUNDATION_MODEL_NAMES_RE.search(suffix) or STATUS_MARKER_RE.search(suffix))):
+        add("compact_open_source_backbone_missing", "Card mentions a backbone/base/foundation model; Dataset metadata should append a compact suffix such as `| FLUX.1-dev，LoRA 微调`, or mark `开源基座未报告/不适用` in that suffix.")
+    if TRAINING_MODE_HINTS_RE.search(card_text) and not (suffix and (TRAINING_MODE_HINTS_RE.search(suffix) or STATUS_MARKER_RE.search(suffix))):
+        add("compact_training_missing", "Card mentions training-free/fine-tuning/adapter/LoRA/frozen-backbone mode; Dataset metadata should append it compactly, e.g. `| FLUX.1-dev，LoRA 微调`.")
 
 
 def iter_descendants(block: dict, by_id: dict[str, dict]):
@@ -311,6 +401,7 @@ def main() -> int:
     ]
 
     details: list[dict[str, object]] = []
+    inspirations: list[tuple[str, str]] = []
     for card_pos, index in enumerate(card_indices):
         heading = by_id.get(children[index], {})
         title = elements_text(heading).strip()
@@ -318,8 +409,6 @@ def main() -> int:
         if index + 1 >= len(children):
             details.append({"title": title, "code": "metadata_missing", "message": "No block after card heading."})
             continue
-        card_text_all = "\n".join(elements_text(by_id.get(block_id, {})).strip() for block_id in children[index:next_card_index])
-        check_draft_status_markers(card_text_all, details, title)
         meta_block = by_id.get(children[index + 1], {})
         meta_text = elements_text(meta_block)
         lines = meta_text.split("\n")
@@ -339,10 +428,16 @@ def main() -> int:
             details.append({"title": title, "code": "project_slot", "message": "Metadata line 3 must contain Project status."})
         if not ("Code" in lines[2] or "w/o. verified code" in lines[2] or "w/o. code" in lines[2]):
             details.append({"title": title, "code": "code_slot", "message": "Metadata line 3 must contain Code status."})
+        for pdf_url in pdf_links(meta_block):
+            if ARXIV_PDF_RE.search(pdf_url):
+                continue
+            if VENUE_OR_PUBLISHER_PDF_RE.search(pdf_url) and not SUPPLEMENT_STATUS_RE.search(lines[2]):
+                details.append({"title": title, "code": "supplement_link_missing", "message": "When using an official venue/publisher/conference PDF instead of an arXiv PDF, add `[Supplement](...)`, `[Appendix](...)`, or `w/o. supplement` on metadata line 3."})
         if not lines[3].startswith("Dataset:"):
             details.append({"title": title, "code": "dataset", "message": "Metadata line 4 must start with `Dataset:`."})
         else:
-            check_dataset_line(lines[3], card_text_all, details, title)
+            card_text = "\n".join(elements_text(by_id.get(block_id, {})).strip() for block_id in children[index:next_card_index])
+            check_dataset_line(lines[3], card_text, details, title)
         for pdf_url in pdf_links(meta_block):
             slug_title = cvf_slug_title(pdf_url)
             if slug_title and token_count(slug_title) > token_count(title) + 2:
@@ -372,9 +467,6 @@ def main() -> int:
                     details.append({"title": title, "code": "figure_placeholder_forbidden", "message": f"Formal paper-card delivery must not contain `{placeholder}`; add a verified figure/caption or mark the whole page as draft/blocker."})
         for image in card_images:
             caption = image_caption_text(image)
-            if caption:
-                check_draft_status_markers(caption, details, title)
-                check_caption_quality(caption, details, title)
             caption_casefolded = caption.casefold()
             for placeholder in FORBIDDEN_PLACEHOLDERS:
                 if placeholder.casefold() in caption_casefolded:
@@ -385,18 +477,35 @@ def main() -> int:
             details.append({"title": title, "code": "image_missing", "message": "Formal paper-card delivery requires a native image block with complete caption, or a formula-caption fallback. `配图待补` is not accepted."})
         for offset, block in enumerate(media_blocks):
             block_text = elements_text(block).strip()
-            if block.get("block_type") == 2 and block_text.startswith("图 ") and "图注" in block_text:
-                check_caption_quality(block_text, details, title)
-                if not contains_formula_marker(block_text):
-                    details.append({"title": title, "code": "separate_caption_paragraph", "message": "No-formula figure captions must be native image captions, not separate paragraphs after the image."})
+            if block.get("block_type") == 2 and block_text.startswith("图 ") and "图注" in block_text and not contains_formula_marker(block_text):
+                details.append({"title": title, "code": "separate_caption_paragraph", "message": "No-formula figure captions must be native image captions, not separate paragraphs after the image."})
 
-        card_texts = [
-            elements_text(by_id.get(block_id, {})).strip()
-            for block_id in children[index + 2 : next_card_index]
-        ]
+        card_blocks: list[dict] = []
+        for block_id in children[index + 2 : next_card_index]:
+            block = by_id.get(block_id, {})
+            card_blocks.append(block)
+            card_blocks.extend(iter_descendants(block, by_id))
+        card_texts = [elements_text(block).strip() for block in card_blocks]
+        if any(UNRESOLVED_MARKERS_RE.search(text) for text in card_texts):
+            details.append({"title": title, "code": "unresolved_verification_marker", "message": "Formal paper-card delivery must not contain `待核验`, `candidate`, TODO/TBD, or pending-verification markers; verify the source or keep the whole item as an explicit draft/blocker outside final delivery."})
+        if any(UNRESOLVED_MARKERS_RE.search(image_caption_text(image)) for image in card_images):
+            details.append({"title": title, "code": "unresolved_caption_marker", "message": "Native figure captions must not contain unresolved verification markers such as `待核验`, TODO/TBD, or pending-verification text."})
         for bullet in REQUIRED_BULLETS:
             if not any(text.startswith(f"{bullet}:") or text.startswith(f"{bullet}：") for text in card_texts):
                 details.append({"title": title, "code": "required_bullet", "message": f"Missing fixed bullet slot `{bullet}`."})
+        for label in [*REQUIRED_BULLETS, "核心创新 1", "核心创新 2"]:
+            body = next((body for text in card_texts if (body := bullet_body_text(text, label)) is not None), None)
+            if body is None:
+                if label.startswith("核心创新"):
+                    details.append({"title": title, "code": "method_innovation", "message": f"Missing nested `{label}` bullet under 方法."})
+                continue
+            width = visual_width(body)
+            if width < BULLET_MIN_WIDTH:
+                details.append({"title": title, "code": "bullet_too_short", "message": f"`{label}` body width is {width:.1f}; rewrite from the official paper to reach the 75–100 two-line budget."})
+            elif width > BULLET_MAX_WIDTH:
+                details.append({"title": title, "code": "bullet_too_long", "message": f"`{label}` body width is {width:.1f}; condense it to the 75–100 two-line budget."})
+            if label == "启发":
+                inspirations.append((title, body))
         if any(re.match(r"^边界\s*/\s*启发\s*[:：]", text) for text in card_texts):
             details.append({"title": title, "code": "legacy_bullet", "message": "Use separate `局限` and `启发` bullet slots instead of the legacy combined `边界 / 启发` slot."})
         limitation_text = next(
@@ -406,10 +515,11 @@ def main() -> int:
         if limitation_text is None:
             pass
         elif not limitation_text:
-            details.append({"title": title, "code": "limitation_empty", "message": "`局限` should state author-reported limitations, `作者未明确报告局限`, or verified `未报告` after checking the official source."})
+            details.append({"title": title, "code": "limitation_empty", "message": "`局限` should state author-reported limitations or `作者未明确报告局限`."})
         elif not re.search(r"作者|未报告|未明确报告|Not reported|N/A", limitation_text, flags=re.I):
-            details.append({"title": title, "code": "limitation_source_marker", "message": "`局限` should distinguish author-reported limitations from agent analysis, or explicitly state `作者未明确报告局限` / verified `未报告`."})
+            details.append({"title": title, "code": "limitation_source_marker", "message": "`局限` should distinguish author-reported limitations from agent analysis, or explicitly state `作者未明确报告局限`."})
 
+    details.extend(inspiration_reuse_issues(inspirations))
     result = {"cards": len(card_indices), "issues": len(details), "details": details}
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 1 if details else 0

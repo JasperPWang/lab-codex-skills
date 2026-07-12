@@ -1,11 +1,11 @@
 ---
 name: research-dev-standards
-description: Enforces evidence-based reasoning, test-driven development, tmux-first long-running sessions, Docker-first reproducible experiment environments, strict step order, small incremental changes, and pre-completion review (tensor shapes and core logic). Maintains RoadMap.md, docs/Experiment.md, and Q&A archives. Use when working on research/training code, configuring GPU/server experiment environments, running or documenting experiments, or when the user mentions 科研开发规范, 代码规范, 实验环境, Docker first, tmux first, Docker, tmux, or similar workflow rules.
+description: Enforces minimum-viable experimental design, evidence-based reasoning, test-driven development, tmux-first long-running sessions, Docker-first reproducible experiment environments, small incremental changes, and pre-completion review. Use whenever a research idea is being turned into an experiment, including feasibility checks, exploratory or pilot experiments, experiment design, baselines, ablations, resource budgeting, research/training code, GPU/server environments, experiment execution, or experiment documentation; also trigger when the user mentions 想法验证, 探索性实验, 预实验, 实验设计, 最小可行性, 最小可行实验, 科研开发规范, Docker first, tmux first, Docker, or tmux.
 ---
 
-# 科研开发规范（UniGAvatar）
+# 科研开发与实验设计规范（Lab Codex）
 
-在协助本仓库科研与开发时，默认遵循以下规范；与用户明确指令冲突时，以用户指令为准。
+在协助科研与开发时，默认遵循以下规范；与用户明确指令冲突时，以用户指令为准。
 
 ## 一、基础原则
 
@@ -28,6 +28,38 @@ description: Enforces evidence-based reasoning, test-driven development, tmux-fi
 
 - 避免单次提交中堆叠大量未验证的模块、损失项或配置分叉。
 - 优先小范围改动 → 验证 → 再下一处。
+
+### 探索性实验：先过最小可行性门
+
+- 当用户提出任何新研究想法、方法改动或实验设想时，先设计**最小可行实验**（Minimum Viable Experiment, MVE），再决定是否实现完整系统或启动大规模训练。
+- 在开始任何实验之前，首先回答：**这个最小实验要验证什么？成功的标准是什么？** 若不能给出清晰、可测量的答案，停止执行并继续收敛实验问题。
+- 把“最小”理解为：以最低资源成本获得足以改变下一步决策的可信证据；不要把它误解为代码最少、样例最少或做一个无法代表真实问题的玩具演示。
+- 优先验证整个方向中**风险最高、最可能使项目失效的核心假设**。若实验同时混入多个新机制，先拆成能单独归因的实验。
+- 未明确核心假设、判定阈值、资源上限和结果分支时，不进入高成本执行阶段。
+
+设计实验前，先给出一张**最小可行实验卡**：
+
+1. **第一问题：这个最小实验要验证什么？成功的标准是什么？** 分别写出一句可证伪的验证目标和一个预先确定、可测量的成功阈值；不得用“效果不错”“看起来可行”等主观表述代替。
+2. **最高风险假设**：指出哪个前提一旦不成立，后续系统即失去继续投入的价值。
+3. **最小实验**：只保留检验该假设所必需的数据、模块、训练步骤和输出；说明删掉了哪些非必要部分。
+4. **对照与基线**：至少提供一个最弱但有效的 baseline、control 或 sanity check，使结果能够归因，而不只是证明代码能运行。
+5. **其余判据**：在第一问题已经定义成功标准的基础上，再预先写明反驳和无法判定的可测量条件；判据尽量接近二元，但必须保留“证据不足”分支。
+6. **资源上限**：预先限定时间、GPU 小时、样本量、分辨率、训练步数和允许尝试的配置数。默认先问：“如果只有一天，怎样获得最有判别力的结果？”
+7. **最低复现证据**：保留代码版本、可复制命令、配置、数据切片、随机种子、环境、日志、原始输出和产物路径；可以降低系统完整度，不得降低证据完整度。
+8. **决策分支**：实验前写清结果为支持、反驳或无法判定时分别采取的下一步，以及停止继续投入的条件。
+
+执行最小化时遵循以下顺序：
+
+- 先用极少样本完成数据流、维度、损失、指标和可视化的 smoke test；涉及学习时优先做单 batch 过拟合检查。
+- 在不破坏核心假设的前提下，优先复用预训练模型、冻结 backbone、缓存特征、降低分辨率或序列长度、缩小数据子集，并考虑 LoRA / Adapter 等参数高效微调。
+- 只改变一个关键机制，固定其余变量；不要用同时加入多个模块的结果声称某一机制有效。
+- 最小实验通过预设门槛后，才允许扩大数据、模型、训练时长或系统复杂度，并且每轮只扩大一个主要维度。
+
+根据结果作出明确处理：
+
+- **支持**：把结论限制在当前数据、指标和资源边界内；下一轮只增加一层复杂度，并设置新的门槛。
+- **反驳**：先区分原理失败、实现失败和测量失败，再决定修正、转向或终止；不得把一次未跑通直接等同于科学假设被推翻。
+- **无法判定**：优先提高实验的判别力、检查方差与测量敏感性；不得默认通过扩大算力掩盖设计问题。
 
 ### 研究循环
 
@@ -71,8 +103,18 @@ description: Enforces evidence-based reasoning, test-driven development, tmux-fi
 
 ### 实验记录：`docs/Experiment.md`（根目录 `Experiment.md` 为入口）
 
-- 每次重要实验结束后**补充条目**。
-- 建议包含：实验目的、**完整或可复制命令**、Docker 镜像/Compose 文件/容器入口、关键超参与环境说明、运行前预测、主要结果（指标/现象）、失败样本/原始输出观察、更新后的判断、下一步最小动作、**产物路径**（检查点、日志、图表、视频等）。
+- 每次重要实验都要在**运行前创建条目**，预先写下验证目标、成功标准、设置和预测；实验结束后再补充结果与判断。不得只在看到结果后回填实验目的或修改成功标准。
+- 每条记录在标题之后的第一个块必须是 `结论` callout，并严格回答：
+
+  ```markdown
+  > [!结论]
+  > **第一问题：这个最小实验要验证什么？成功的标准是什么？**
+  > - 验证目标：<一句可证伪的陈述>
+  > - 成功标准：<预先确定的指标、阈值或明确的可观察条件>
+  ```
+
+- 在第一问题 callout 之前不得先写命令、模型结构、超参数或结果。该 callout 必须在运行前冻结；看到结果后不得回改验证目标或成功标准，目标发生变化时应创建新的实验条目。若两个答案无法写清楚，将实验保持为“待设计”，不要启动训练或批量运行。
+- 后续依次记录：最高风险假设、最小实验、对照与基线、反驳/无法判定条件、资源上限、运行前预测、**完整或可复制命令**、Docker 镜像/Compose 文件/容器入口、关键超参与环境说明、主要结果（指标/现象）、失败样本/原始输出观察、更新后的判断、下一步最小动作、**产物路径**（检查点、日志、图表、视频等）。
 
 ### Q&A 归档
 
@@ -85,10 +127,14 @@ description: Enforces evidence-based reasoning, test-driven development, tmux-fi
 
 开始复杂任务前可快速对照：
 
+- [ ] 实验记录是否在运行前创建，并在标题后的第一个 `结论` callout 回答“验证什么、成功标准是什么”？
 - [ ] 结论是否有代码/运行/实验依据？
 - [ ] 是否有测试或可重复验证步骤？
 - [ ] 是否按步骤执行，未擅自跳步？
 - [ ] 改动是否小步、可回滚？
+- [ ] 新想法是否先写出最小可行实验卡，而不是直接搭建完整系统？
+- [ ] 是否锁定最高风险假设，并设置可测量判据、资源上限与停止条件？
+- [ ] 是否具备 baseline / control / sanity check，能够区分原理、实现和测量失败？
 - [ ] 实验/分析是否写下 `假设 / 设置 / 预测 / 结果 / 更新后的判断 / 下一步最小动作`？
 - [ ] 长任务是否先进入 `tmux` 会话，而不是裸跑在 SSH shell？
 - [ ] 实验环境是否优先走 Docker/Compose，而不是散装到宿主机？
@@ -100,4 +146,5 @@ description: Enforces evidence-based reasoning, test-driven development, tmux-fi
 
 ## 附加资源
 
-- 仓库内若存在根目录 `skills.md` 与本文重复时，以 **`.cursor/skills/research-dev-standards/SKILL.md`** 为代理侧权威副本；可择机将 `skills.md` 改为指向本 skill 的简短说明以避免双源漂移。
+- 以 **`.tools/skills/research-dev-standards/SKILL.md`** 为 Lab Codex 的权威副本；`~/.codex/skills/research-dev-standards` 仅作为兼容 symlink。
+- 若研究仓库内存在重复的根目录 `skills.md`，将其改为指向本 skill 的简短说明，避免双源漂移。
