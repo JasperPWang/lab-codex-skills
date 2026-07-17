@@ -8,7 +8,7 @@ description: Orchestrates AI research agent workflows (paper deep-dive, survey b
 基于既有科研工作流调研报告组织的跨平台入口。历史源文档保留在飞书：
 <FEISHU_OR_LARK_URL>
 
-All durable document writes must also use [`research-doc-workflow`](../research-doc-workflow/SKILL.md). The source of a workflow may be Feishu, but the destination is selected from Feishu, Notion, or Obsidian according to the user's current target.
+All durable document writes must also use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) plus the matching platform adapter (`feishu-doc-workflow`, `notion-doc-workflow`, or `obsidian-doc-workflow`). The source of a workflow may be Feishu, but the destination is selected from Feishu, Notion, or Obsidian according to the user's current URL or explicit instruction.
 
 ## Canonical Paper Card Gate
 
@@ -81,7 +81,7 @@ workflows.
 | 用户意图 | Skill |
 |----------|-------|
 | 中文科研文档、Notion/Obsidian/飞书页面、wiki 笔记、中文技术说明的语言规范 | [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md) plus the task-specific skill below |
-| 选择、迁移或写入 Feishu / Notion / Obsidian | [`research-doc-workflow`](../research-doc-workflow/SKILL.md) plus the task-specific content skill |
+| 选择、迁移或写入 Feishu / Notion / Obsidian | [`research-doc-workflow`](../research-doc-workflow/SKILL.md) + matching `*-doc-workflow` + the task-specific content skill |
 | 任意 paper card / 论文卡片生成、补全、审核、同步 | [`paper-card-delivery`](../paper-card-delivery/SKILL.md) plus the task-specific skill below |
 | 精读 PDF、MinerU、中英笔记、paper card | [`paper-deep-dive`](../paper-deep-dive/SKILL.md) |
 | 领域综述、taxonomy、文献树、challenge-insight | [`survey-builder`](../survey-builder/SKILL.md) |
@@ -114,7 +114,7 @@ Deep-dive  Builder   Pack    Stats    Nature/LaTeX
 
 - 实验与训练：始终叠加 `research-dev-standards`（`Experiment.md`、`RoadMap.md`、小步验证）
 - `repro-pack` 产物应能支撑 `Experiment.md` 中的「可复制命令 + 产物路径」
-- 文档同步：统一通过 `research-doc-workflow` 选择 Feishu、Notion 或 Obsidian；只有飞书目标才叠加 `feishu-doc-workflow` 和本地 `lark-cli`
+- 文档同步：统一通过 `research-doc-workflow` 按用户链接/说明选择 Feishu、Notion 或 Obsidian，并叠加对应适配器：`feishu-doc-workflow`、`notion-doc-workflow`、`obsidian-doc-workflow`
 
 ## 阶段门（大型任务前自检）
 

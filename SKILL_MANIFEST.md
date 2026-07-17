@@ -1,17 +1,24 @@
 # Skill Manifest
 
-This repository is a lab skill bundle. It intentionally keeps user-maintained
-skills and vendored/downloaded skills in one place so teammates can clone one
-repository and expose the skills to Codex with `scripts/link-to-codex-skills.sh`.
+This repository is a lab **agent skill** bundle (Codex, Cursor, Antigravity, and any loader that reads `SKILL.md`). It keeps user-maintained skills and vendored/downloaded skills in one place so teammates can clone one repository and expose skills via the install / link scripts.
 
 ## Canonical Location
 
-The canonical working copy on this machine is:
+On the maintainer machine the working copy is:
 
 `WorldModelVault/.tools/skills`
 
-`~/.codex/skills` should contain symlinks to this directory, not independent
-copies.
+Agent discovery paths (`~/.codex/skills`, project `.cursor/skills`, project `.agents/skills`, etc.) should contain **symlinks** to this directory, not independent copies.
+
+## Document Backends
+
+Content skills are Markdown-first. Route durable writes with `research-doc-workflow`, then the matching adapter:
+
+| Backend | Adapter |
+| --- | --- |
+| Feishu / Lark | `feishu-doc-workflow` |
+| Notion | `notion-doc-workflow` |
+| Obsidian / Markdown | `obsidian-doc-workflow` |
 
 ## User-Maintained Lab Skills
 
@@ -21,6 +28,8 @@ copies.
 - `daily-research-review`
 - `experiment-report-writing`
 - `feishu-doc-workflow`
+- `notion-doc-workflow`
+- `obsidian-doc-workflow`
 - `intern-interview-intake`
 - `lark-whiteboard`
 - `obsidian-clipping-ai-summary`
@@ -86,7 +95,7 @@ Other research/workflow skills:
 
 ## Compatibility Aliases
 
-The install script creates these compatibility aliases in `~/.codex/skills`:
+The install / link scripts create these aliases in each discovery root:
 
 - `feishu-cli` -> `feishu-doc-workflow`
 - `llm-wiki` -> `llm-wiki-skill`

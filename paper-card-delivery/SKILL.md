@@ -17,7 +17,7 @@ For formal delivery, every paper card must include a verified method/process fig
 
 Paper card is a lightweight reader index after source verification. It is not a full deep dive, not a PDF-to-Markdown manuscript, not a complete translation, and not a substitute for `paper-deep-dive`. If the user asks to 深读 / detailed-read / dive into one paper, use `paper-deep-dive` and create the paper card as only one component of that larger package.
 
-Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) for platform selection, hierarchy, image/caption representation, and post-write verification. Only use `feishu-doc-workflow` when the actual target is Feishu/Lark.
+Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) for platform selection, hierarchy, image/caption representation, and post-write verification. After the platform is resolved, also use the matching adapter: [`feishu-doc-workflow`](../feishu-doc-workflow/SKILL.md) for Feishu/Lark, [`notion-doc-workflow`](../notion-doc-workflow/SKILL.md) for Notion, or [`obsidian-doc-workflow`](../obsidian-doc-workflow/SKILL.md) for Obsidian/vault Markdown.
 
 For any reader-facing Chinese prose in the card, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). This card skill adds paper-card-specific structure; the broader Chinese-first terminology standard lives there.
 

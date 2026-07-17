@@ -11,7 +11,7 @@ This skill preserves source text. It is not a summary, AI note, interpretation, 
 
 Default output is a durable page or Markdown note on the user-selected platform containing the actual source text in original order plus a faithful Chinese translation. If the source is English, write each meaningful English block followed by its Chinese translation. If the source is already Chinese or mixed-language, preserve the original and translate only the non-Chinese portions that need translation.
 
-Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) to choose and verify Feishu, Notion, or Obsidian delivery. Do not default to Feishu when no Feishu target is supplied.
+Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) and the matching platform adapter (`feishu-doc-workflow`, `notion-doc-workflow`, or `obsidian-doc-workflow`) to choose and verify Feishu, Notion, or Obsidian delivery. Resolve the destination from the user's URL or explicit instruction; do not silently default to Feishu.
 
 For Chinese translation blocks and any Chinese metadata/provenance notes, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Preserve English source blocks exactly; apply the Chinese-first terminology rule only to the Chinese translation or Chinese notes.
 
@@ -40,7 +40,7 @@ Respect access boundaries. Do not bypass paywalls or private access. If the sour
 
 ## Destination Placement
 
-Preserve the platform of an existing target. For a new archive, follow `research-doc-workflow`: use Obsidian/Markdown for personal local source archives by default, Notion for collaborative or database-oriented archives, and Feishu only when explicitly targeted or required by the surrounding project.
+Preserve the platform of an existing target. For a new archive, follow `research-doc-workflow`: resolve Feishu / Notion / Obsidian from the user's URL or explicit instruction; if none is given, ask one concise destination question instead of silently choosing a platform.
 
 If the user supplies an existing page/note, update that target. Otherwise create the archive under the most relevant existing hub, database, folder, or MOC for the chosen platform. For research-method articles used in the operating-review workflow, use that platform's review hub when appropriate:
 

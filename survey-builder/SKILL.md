@@ -17,7 +17,7 @@ For Chinese survey prose, taxonomy descriptions, challenge-insight explanations,
 
 ## Canonical Platform Delivery Gate
 
-Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) to deliver the same Markdown-first survey structure to Feishu/Lark, Notion, or Obsidian. Keep headings, tables, lists, links, and prose identical; adapt only tree widgets, page/database hierarchy, captions, properties/frontmatter, and verification. Do not require a Feishu page when the user supplied a Notion or Obsidian target.
+Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) and the matching platform adapter (`feishu-doc-workflow`, `notion-doc-workflow`, or `obsidian-doc-workflow`) to deliver the same Markdown-first survey structure to Feishu/Lark, Notion, or Obsidian. Keep headings, tables, lists, links, and prose identical; adapt only tree widgets, page/database hierarchy, captions, properties/frontmatter, and verification. Do not require a Feishu page when the user supplied a Notion or Obsidian target.
 
 ## Borrowed Research Method Layer
 
@@ -32,7 +32,7 @@ This is the user's canonical literature-tree workflow. It may borrow useful rese
 - Translate the borrowed method output into the user's survey artifacts:
   literature tree, challenge-insight tree, novelty tree, paper matrix, reading
   route, research gaps, and one collection-style `Paper Cards` page.
-- Keep paper-card creation under `paper-card-delivery`, platform hierarchy and native blocks under `research-doc-workflow`, and Chinese prose under `chinese-technical-writing`.
+- Keep paper-card creation under `paper-card-delivery`, platform hierarchy and native blocks under `research-doc-workflow` plus the matching `*-doc-workflow`, and Chinese prose under `chinese-technical-writing`.
 
 Canonical method reference:
 - Before building or revising a literature survey, literature tree, novelty tree, or challenge-insight tree for the user's research wiki, use the user's Feishu method page as the canonical example unless a more specific template is provided: `如何构建literature tree（如何进行literature review，构建novelty tree和challenge-insight tree）`, <FEISHU_OR_LARK_URL> doc token `<DOC_TOKEN>`.
@@ -80,8 +80,8 @@ On every platform, the parent/MOC page must be the main literature-review entry 
 Platform mapping:
 
 - Feishu/Lark: use three native editable mind maps on the parent page through `feishu-doc-workflow` and `lark-whiteboard`.
-- Notion: use a structured parent page with toggle/heading trees, linked database views, relations, or an embedded editable artifact supported by the workspace. Keep the three tree semantics visible on the parent page.
-- Obsidian: use Mermaid or Canvas when editable and supported, plus a linked Markdown outline/MOC so the tree remains searchable and diffable. Store paper cards as a collection note unless the user explicitly requests atomic per-paper notes.
+- Notion: use a structured parent page with toggle/heading trees, linked database views, relations, or an embedded editable artifact supported by the workspace, via `notion-doc-workflow`. Keep the three tree semantics visible on the parent page.
+- Obsidian: use Mermaid or Canvas when editable and supported, plus a linked Markdown outline/MOC so the tree remains searchable and diffable, via `obsidian-doc-workflow`. Store paper cards as a collection note unless the user explicitly requests atomic per-paper notes.
 
 When repairing an older survey that already has a separate `Tree Maps` child artifact, expose the Tree Maps content from the main entry first and keep the old child only as a non-primary legacy copy unless the user explicitly asks to delete it. Do not duplicate a native editable tree with an equivalent outline by default; add a compact textual fallback only when the native representation is not searchable/editable enough or the user requests it.
 

@@ -37,4 +37,6 @@ rsync -a --delete \
 python3 "$SCRIPT_DIR/sanitize-public-export.py" "$OUT_DIR"
 
 echo "exported clean bundle to: $OUT_DIR"
-echo "next: cd \"$OUT_DIR\" && git init && git add ."
+echo "This bundle supports any agent that loads SKILL.md (Codex, Cursor, Antigravity, …)."
+echo "Document backends: Feishu (feishu-doc-workflow), Notion (notion-doc-workflow), Obsidian (obsidian-doc-workflow)."
+echo "next: sync into the GitHub clone of lab-codex-skills, commit, and push."

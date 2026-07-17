@@ -11,7 +11,7 @@ For any generated Chinese wiki page, query answer, clipping distillation, source
 
 ## Canonical Platform Delivery Gate
 
-Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) whenever a wiki source, meeting note, paper card, deep dive, or review may be delivered to Feishu/Lark, Notion, or Obsidian. This skill owns the Obsidian/Markdown knowledge model; it must not force an Obsidian request through Feishu first.
+Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) whenever a wiki source, meeting note, paper card, deep dive, or review may be delivered to Feishu/Lark, Notion, or Obsidian. For Obsidian/vault writes, also use [`obsidian-doc-workflow`](../obsidian-doc-workflow/SKILL.md) for format and verification; this skill owns the Obsidian/Markdown knowledge model and must not force an Obsidian request through Feishu first.
 
 ## Canonical Paper Card Gate
 
@@ -114,7 +114,7 @@ Daily 输入层包括：
 - 本 skill 不再定义 paper card 的正文格式、metadata 字段、图像选择、图注标准、排序或验证门槛；这些统一以 [`paper-card-delivery`](../paper-card-delivery/SKILL.md) 为准。
 - 无论论文来自 `0-Daily` 截图、clipping、`1-Meetings` 链接、Zotero、`2-Learnings/EmbodiedWorld/` 还是 `3-Projects/`，只要要生成、补全、审核或同步 paper card，都必须先使用 `paper-card-delivery` 的六槽位格式与 source-grounded 验证流程。
 - 本 skill 只补充 Research-Wiki / local vault 归档边界；本地 Markdown 图片资产、文件命名、相对路径、缺图状态、候选状态等 paper-card 规则也统一按 `paper-card-delivery` 执行。
-- 写入或同步到任一平台时，必须同时使用 `research-doc-workflow`；paper-card 的图片位置、图注、布局验证和迁移残留检查按 `paper-card-delivery` 的目标平台分支执行。
+- 写入或同步到任一平台时，必须同时使用 `research-doc-workflow` 与对应 `*-doc-workflow`；paper-card 的图片位置、图注、布局验证和迁移残留检查按 `paper-card-delivery` 的目标平台分支执行。
 
 Meeting 论文处理完成后，`1-Meetings/assets/` 只保留最终会被 meeting 文档引用的流程图或必要图像；下载的 PDF、整页渲染截图、临时裁图和其他中间文件必须删除。具体 paper-card 图片资产命名和清理规则按 `paper-card-delivery` 执行。
 
@@ -145,7 +145,7 @@ Meeting 输入层包括：
 
 Meeting 总结默认包含两层：**保守纪要** 和 **会后头脑风暴**。保守纪要只写可由转写、图像、论文链接或原文校验的信息；会后头脑风暴明确标注为研究发散，用来把当天论文、组内项目和更大的研究主线连接起来。
 
-Meeting 使用 `research-doc-workflow` 选择目标平台，并保留现有会议库的平台。当前任务发生在本地 vault 且用户没有提供外部目标时，优先写入 Obsidian；提供 Notion 或飞书页面时则更新对应平台，不建立无必要的平行副本。
+Meeting 使用 `research-doc-workflow` 选择目标平台并叠加对应适配器，并保留现有会议库的平台。用户给出 Notion/飞书链接时更新对应平台；给出 vault 路径或明确写 Obsidian 时用 `obsidian-doc-workflow`；无目标时只追问一句目的地，不建立无必要的平行副本。
 
 一次组会、一次文献整理、一次导师讨论或一次科研交流，对应一个按日期组织的 durable meeting page/note。内容保留日期、简述、关键论文/链接/图片、Paper Cards、保守纪要、会后头脑风暴和待办。标题使用 `YYYY-MM-DD 简短主题`，主题应根据当日核心内容命名，不使用无信息量的固定尾缀。Meeting 页面是输入层，不代表已纳入 Research-Wiki。如果材料来自 Zotero collection，而 collection 本身跨越多个日期，应优先按日期子 collection 名或明确记录中的日期拆成多个日期页面；没有日期子 collection 时，再参考条目的 `dateAdded`。不要把导出日期当成组会日期。
 

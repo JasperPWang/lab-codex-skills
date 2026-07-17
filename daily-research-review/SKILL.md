@@ -18,7 +18,7 @@ For reader-facing Chinese review prose and TODOs, also use [`chinese-technical-w
 
 ## Platform Placement
 
-Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) for destination selection and durable writes. Preserve an existing review hub's platform; do not create a parallel Feishu copy when the active review system is Notion or Obsidian.
+Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) and the matching `*-doc-workflow` adapter for destination selection and durable writes. Preserve an existing review hub's platform; do not create a parallel Feishu copy when the active review system is Notion or Obsidian.
 
 If the user brings a research-method article or web source into the review context and asks for `原文`, `提取原文`, or `英文原文与中文译文`, use [`bilingual-source-archive`](../bilingual-source-archive/SKILL.md) as a side path. Do not fold the source into the daily review as a summary unless the user explicitly asks for a review takeaway.
 
@@ -31,8 +31,8 @@ Keep this logical hierarchy on every platform:
 Map it natively:
 
 - Feishu/Lark: wiki parent, review hub, and dated child page through `feishu-doc-workflow`.
-- Notion: review hub plus dated subpage or database record with date/status properties.
-- Obsidian: review MOC/index plus dated Markdown note in the established review folder, with frontmatter and links following neighboring notes.
+- Notion: review hub plus dated subpage or database record with date/status properties through `notion-doc-workflow`.
+- Obsidian: review MOC/index plus dated Markdown note in the established review folder through `obsidian-doc-workflow`, with frontmatter and links following neighboring notes.
 
 Before writing, fetch or read the hub/index and dated entries. If today's entry exists, update it; otherwise create it in the same system. Verify after writing that:
 
