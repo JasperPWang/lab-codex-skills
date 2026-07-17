@@ -26,6 +26,15 @@ Skills are ordinary directories with a `SKILL.md`. Install scripts create **syml
 2. Run `bash install.sh` so Codex / Cursor / Antigravity discovery roots stay in sync on this machine.
 3. Export and **push** to [lab-codex-skills](https://github.com/JasperPWang/lab-codex-skills) the same day—do not leave lab-facing changes only in the vault.
 4. On other Macs: let iCloud sync the vault **or** `git pull` the clone, then run `install.sh` again so symlinks refresh.
+5. On GPU servers (`3090`, `4090`, `A800`, `A6000`): each keeps `~/lab-codex-skills` + `~/.codex/skills` links. From a Mac that can SSH:
+
+```bash
+bash ".tools/skills/scripts/sync-to-gpu-servers.sh"
+# or a subset:
+bash ".tools/skills/scripts/sync-to-gpu-servers.sh" 4090 A800
+```
+
+Hosts that can reach GitHub use `git pull` + `install.sh`. **3090** often cannot reach GitHub; the script falls back to **rsync** from this machine. There is also a Codex-era union syncer at `.tools/scripts/sync-codex-skills-union-fast.py` (default hosts `4090 A800 A6000`, excludes `3090` unless passed).
 
 ### Note / document backends
 
