@@ -20,6 +20,13 @@ Skills are ordinary directories with a `SKILL.md`. Install scripts create **syml
 
 `bash install.sh` links Codex always; when run from WorldModelVault’s `.tools/skills/`, it also links Cursor and Antigravity.
 
+### After every skill edit (required)
+
+1. Edit only the canonical `.tools/skills/` (or this repo root when working from the GitHub clone).
+2. Run `bash install.sh` so Codex / Cursor / Antigravity discovery roots stay in sync on this machine.
+3. Export and **push** to [lab-codex-skills](https://github.com/JasperPWang/lab-codex-skills) the same day—do not leave lab-facing changes only in the vault.
+4. On other Macs: let iCloud sync the vault **or** `git pull` the clone, then run `install.sh` again so symlinks refresh.
+
 ### Note / document backends
 
 Research **content** skills are Markdown-first and platform-neutral. [`research-doc-workflow`](research-doc-workflow/SKILL.md) routes the same structure to the destination you name (URL or explicit path). Thin adapters apply only format deltas:
