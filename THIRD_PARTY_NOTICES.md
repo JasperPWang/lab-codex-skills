@@ -111,6 +111,7 @@ Practical note:
 Included skills:
 
 - `drawio` — official jgraph skill-cli style workflow
+- `drawio-diagram-builder` — Will-hxw research diagram builder (XML + browser preview loop)
 - `drawio-skill` — Agents365-ai extended diagram toolkit
 
 Recorded sources:
@@ -120,6 +121,10 @@ Recorded sources:
   - commit: `8b03f1e57fe3fbeb373e3dc459824f6624a86d0c`
   - lab note: `shared/{xml,mermaid,style}-reference.md` vendored under `drawio/shared/`;
     `SKILL.md` reference URLs rewritten to relative paths for offline / GPU use
+- `https://github.com/Will-hxw/drawio-diagram-builder-skill`
+  - path: `skills/drawio-diagram-builder/`
+  - commit: `a922507ccd51815f4e8764846d640a65b5fb6f7e`
+  - recorded skill version: `0.4.1`
 - `https://github.com/Agents365-ai/drawio-skill`
   - path: `skills/drawio-skill/`
   - commit: `6f33563adce24450003d1cb61111ebbcc5579f28`
@@ -128,13 +133,19 @@ Recorded sources:
 License evidence in this bundle:
 
 - `drawio/LICENSE`: Apache License 2.0
+- `drawio-diagram-builder/LICENSE`: MIT
+- `drawio-diagram-builder/assets/icons/tabler/LICENSE`: MIT (Tabler Icons)
 - `drawio-skill/LICENSE`: MIT
 
 Practical note:
 
-- Both skills expect the native draw.io desktop CLI (`draw.io` / `drawio`) for
-  PNG/SVG/PDF export. Agents365 `drawio-skill` optionally uses Graphviz (`dot`)
-  for `scripts/autolayout.py`. Review upstream licenses before commercial reuse.
+- `drawio` and `drawio-skill` expect the native draw.io desktop CLI (`draw.io` /
+  `drawio`) for PNG/SVG/PDF export. Agents365 `drawio-skill` optionally uses
+  Graphviz (`dot`) for `scripts/autolayout.py`.
+- `drawio-diagram-builder` primarily uses Python preview scripts plus a
+  diagrams.net iframe (`embed.diagrams.net`); desktop CLI export is optional.
+  Browser automation and internet access are required for the iterative preview
+  loop. Review upstream licenses before commercial reuse.
 
 ## OpenAI, Plugin, And Runtime Skills
 

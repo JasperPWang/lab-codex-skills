@@ -86,6 +86,7 @@ Other research/workflow skills:
 
 - `cite-verify`
 - `drawio`
+- `drawio-diagram-builder`
 - `drawio-skill`
 - `feynman-learning`
 - `grant-writer`
