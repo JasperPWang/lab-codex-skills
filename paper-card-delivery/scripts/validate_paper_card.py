@@ -27,7 +27,7 @@ CJK_RE = re.compile(r"[\u3400-\u9fff]")
 COMMON_RESIDUE_PATTERNS = [
     r"\bEW_IMG",
     r"图像：",
-    r"Image:\s",
+    r"(?<![a-zA-Z])Image:\s",
     r"/Users/",
     r"WorldModelVault",
 ]
