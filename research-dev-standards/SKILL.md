@@ -101,9 +101,11 @@ description: Enforces minimum-viable experimental design, evidence-based reasoni
 - 在讨论与实现功能过程中**同步更新**。
 - 记录：当前分支相关功能、已知问题、待办与优先级（简明、可执行）。
 
-### 实验记录：`docs/Experiment.md`（根目录 `Experiment.md` 为入口）
+### 实验记录：Notion（不再维护 `docs/Experiment.md` / 根目录 `Experiment.md`）
 
-- 每次重要实验都要在**运行前创建条目**，预先写下验证目标、成功标准、设置和预测；实验结束后再补充结果与判断。不得只在看到结果后回填实验目的或修改成功标准。
+- 实验记录的权威落点是 **Notion 实验页**；不要新建或继续更新仓库内 `Experiment.md`，除非用户明确要求临时例外。
+- 写作结构与验收以 `experiment-report-writing` 为准：章节标题用简短英文序号（`1. Settings`、`2. Preprocess`、`3. Quantity`、`4. Quality`、`5. Next`、`6. Pause`、`7. Appendix`），正文默认中文；结论 callout 用灰色背景；`1. Settings` 只写方法改动 + 压缩 `实验metadata`（对齐 Var. Geometry Prior 风格），不堆负责人/机器/长假设/评测流程；平台写入走 `research-doc-workflow` → `notion-doc-workflow`。
+- 每次重要实验都要在**运行前创建 Notion 条目/页面**，预先写下验证目标、成功标准、设置和预测；实验结束后再补充结果与判断。不得只在看到结果后回填实验目的或修改成功标准。
 - 每条记录在标题之后的第一个块必须是 `结论` callout，并严格回答：
 
   ```markdown
@@ -114,7 +116,7 @@ description: Enforces minimum-viable experimental design, evidence-based reasoni
   ```
 
 - 在第一问题 callout 之前不得先写命令、模型结构、超参数或结果。该 callout 必须在运行前冻结；看到结果后不得回改验证目标或成功标准，目标发生变化时应创建新的实验条目。若两个答案无法写清楚，将实验保持为“待设计”，不要启动训练或批量运行。
-- 后续依次记录：最高风险假设、最小实验、对照与基线、反驳/无法判定条件、资源上限、运行前预测、**完整或可复制命令**、Docker 镜像/Compose 文件/容器入口、关键超参与环境说明、主要结果（指标/现象）、失败样本/原始输出观察、更新后的判断、下一步最小动作、**产物路径**（检查点、日志、图表、视频等）。
+- 后续依次记录：状态、最高风险假设、最小实验、对照与基线、反驳/无法判定条件、资源上限、运行前预测、**完整或可复制命令**、Docker 镜像/Compose 文件/容器入口、关键超参与环境说明、主要结果（指标/现象）、失败样本/原始输出观察、更新后的判断、下一步最小动作、**产物路径**（检查点、日志、图表、视频等）。失败或已暂停时还必须有暂停记录。
 
 ### Q&A 归档
 
@@ -142,7 +144,7 @@ description: Enforces minimum-viable experimental design, evidence-based reasoni
 - [ ] 是否检查了原始输出和失败样本，而不只看平均指标？
 - [ ] 是否有单命令运行、画图、config 或小数据验证来缩短发现错误的时间？
 - [ ] 完成前是否核对维度与形状与核心逻辑？
-- [ ] 是否更新了 `RoadMap.md` / `docs/Experiment.md` / Q&A 归档（如适用）？
+- [ ] 是否更新了 `RoadMap.md` / Notion 实验记录 / Q&A 归档（如适用）？
 
 ## 附加资源
 

@@ -53,8 +53,8 @@ Assume Markdown parity first. Convert only what Notion cannot represent the same
 | Inline code | For paths, filenames, commands, config keys: Notion inline `code` with default/black color (`annotations.color="default"`); do not color code gray/brown/red |
 | Images | Native image blocks + native captions; no duplicate caption paragraph after a successful native caption |
 | Wikilinks | Convert `[[Note]]` to Notion page links or plain titles; do not leave Obsidian wikilink chrome |
-| References | Keep `[n]` plain labels; append ` \| [url](url)` with display text equal to URL; do not turn References into numbered `1.` lists |
-| Body citations | Render `[[n](pdf-url)]` so the number is clickable and targets the same PDF URL as References |
+| References | Keep `[n]` plain labels; append `. URL [url](url)` (or ` URL [url](url)` after an existing period) with display text equal to URL; do not turn References into numbered `1.` lists |
+| Body citations | Goal form is `[[n](pdf-url)]` / `[[n](url), [m](url)]`: only the **digits** are links; outer `[]` and commas stay plain chrome. Notion’s Markdown importer often absorbs the opening `[` into the link text (`[6` linked) and may treat adjacent `[[` as a wikilink—after Markdown write-back, verify via the Blocks API and PATCH `rich_text` so linked segments are digit-only (`6`, not `[6`) |
 | Editable trees | Nested headings/toggles, linked subpages, or supported embeds; not Feishu whiteboard tokens |
 
 ## Forbidden Cross-Platform Residue

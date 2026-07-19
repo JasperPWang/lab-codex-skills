@@ -112,8 +112,8 @@ Deep-dive  Builder   Pack    Stats    Nature/LaTeX
 
 ## 与本仓库的衔接
 
-- 实验与训练：始终叠加 `research-dev-standards`（`Experiment.md`、`RoadMap.md`、小步验证）
-- `repro-pack` 产物应能支撑 `Experiment.md` 中的「可复制命令 + 产物路径」
+- 实验与训练：始终叠加 `research-dev-standards`（Notion 实验记录、`RoadMap.md`、小步验证）与 `experiment-report-writing`
+- `repro-pack` 产物应能支撑 Notion 实验页中的「可复制命令 + 产物路径」
 - 文档同步：统一通过 `research-doc-workflow` 按用户链接/说明选择 Feishu、Notion 或 Obsidian，并叠加对应适配器：`feishu-doc-workflow`、`notion-doc-workflow`、`obsidian-doc-workflow`
 
 ## 阶段门（大型任务前自检）
