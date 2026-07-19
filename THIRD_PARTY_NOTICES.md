@@ -106,6 +106,36 @@ Practical note:
 - The vendored GPL-3.0 component is not relicensed by this bundle. Preserve its
   license file and attribution.
 
+## Draw.io Diagram Skills
+
+Included skills:
+
+- `drawio` — official jgraph skill-cli style workflow
+- `drawio-skill` — Agents365-ai extended diagram toolkit
+
+Recorded sources:
+
+- `https://github.com/jgraph/drawio-mcp`
+  - path: `plugins/claude-code/skills/drawio/` (identical to Codex plugin copy)
+  - commit: `8b03f1e57fe3fbeb373e3dc459824f6624a86d0c`
+  - lab note: `shared/{xml,mermaid,style}-reference.md` vendored under `drawio/shared/`;
+    `SKILL.md` reference URLs rewritten to relative paths for offline / GPU use
+- `https://github.com/Agents365-ai/drawio-skill`
+  - path: `skills/drawio-skill/`
+  - commit: `6f33563adce24450003d1cb61111ebbcc5579f28`
+  - recorded skill version: `1.34.0`
+
+License evidence in this bundle:
+
+- `drawio/LICENSE`: Apache License 2.0
+- `drawio-skill/LICENSE`: MIT
+
+Practical note:
+
+- Both skills expect the native draw.io desktop CLI (`draw.io` / `drawio`) for
+  PNG/SVG/PDF export. Agents365 `drawio-skill` optionally uses Graphviz (`dot`)
+  for `scripts/autolayout.py`. Review upstream licenses before commercial reuse.
+
 ## OpenAI, Plugin, And Runtime Skills
 
 This repository does not vendor OpenAI bundled/runtime/plugin-cache skills such

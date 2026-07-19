@@ -85,6 +85,8 @@ Nature-style academic workflows:
 Other research/workflow skills:
 
 - `cite-verify`
+- `drawio`
+- `drawio-skill`
 - `feynman-learning`
 - `grant-writer`
 - `latex-writer`
