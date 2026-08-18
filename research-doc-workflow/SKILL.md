@@ -19,7 +19,7 @@ Resolve the target in this order:
 2. URL or path in the request (`feishu.cn` / `larksuite.com` → Feishu; `notion.so` → Notion; vault `.md` path / WorldModelVault folder → Obsidian).
 3. Platform of an **existing** durable document being updated (never silently migrate).
 
-The user normally supplies a link or an explicit destination. If none of the above resolves a single platform, ask one concise destination question. Do **not** default to Feishu (or any other platform) and do not silently duplicate across platforms.
+The user normally supplies a link or an explicit destination. If none of the above resolves a single platform, ask one concise destination question. For a new `deep dive` without an explicit destination, use Notion. Do not silently duplicate across platforms.
 
 Never silently migrate, duplicate, or delete an existing durable document. A platform change requires an explicit target or a user-approved migration task.
 
@@ -31,6 +31,7 @@ After resolving the platform, also load the matching adapter:
 
 - Wiki resolution, fetch-before-write, narrow block edits, native images/captions/formulas/whiteboards, hierarchy preservation, and fetch-after-write verification.
 - Use `lark-whiteboard` only when an editable Feishu whiteboard or mind map is required.
+- New `deep dive` work is not routed to Feishu; use Notion as the durable target. This route remains for non-deep-dive Feishu documents and explicit legacy repairs.
 
 ### Notion → [`notion-doc-workflow`](../notion-doc-workflow/SKILL.md)
 
@@ -55,6 +56,8 @@ Assume Markdown parity first. Convert only the features that are not represented
 | Callout | Native callout when supported | Native callout when supported | Keep `> [!type]` callout |
 | Inline/display math | Map to native equation blocks without changing TeX | Map to inline/block equations | Keep `$...$` / `$$...$$` |
 | Image caption | Native image caption | Native image caption | Vault convention or meaningful Markdown alt text; avoid duplicate caption paragraph |
+| Author email | Ordinary visible text; do not intentionally add a link | Ordinary visible text; Notion may auto-link it automatically | Ordinary visible text |
+| Resource links | Deep-dive Chinese manuscript only: visible text equals URL; otherwise use task-appropriate labels | Deep-dive Chinese manuscript only: visible text equals URL; otherwise use task-appropriate labels | Use task-appropriate labels |
 | Structured metadata | Compact native text/properties | Database/page properties | YAML frontmatter |
 | Paper-card metadata | One native text block with four hard-break lines | One paragraph with exactly three `<br>` hard breaks | Four physical Markdown lines |
 | References | `[n]` plain text + ` \| [url](url)` (display = URL); no `1.` lists | Same semantic form in rich text; no ordered-list renumbering | Same Markdown form |
@@ -75,6 +78,12 @@ Do not perform platform-specific rewrites merely for visual styling. Require sem
 6. Preserve the Markdown directly where possible. Convert only unsupported callouts, captions, properties/frontmatter, hierarchy, diagrams, citation chrome, or upload references to native target primitives.
 7. Make the narrowest safe update. Preserve user notes and trusted existing media unless replacement is requested.
 8. Re-fetch or re-read the durable result. Run content and platform validators, then report the actual destination and any unsupported native feature.
+
+### Imported PDF Translation Repair
+
+When a PDF translated by `pdf2zh-next` has been manually imported into Notion or Feishu, classify it as a draft conversion and route it through the task-specific content skill's repair gate. The adapter must preserve the imported media where reliable, but repair platform representation: page title, opening links, heading hierarchy, paragraph breaks, inline/display equations, native figure captions, table layout, references, and citation URLs. For numbered paper headings, derive the native heading depth from the number (`2` → top level, `2.1` → subsection, `2.1.1` → sub-subsection) and use one punctuation convention throughout: default `2. Title` / `2.1. Subtitle`, or preserve a consistently punctuation-free source style. Manual import is a valid input path; it is not a completion signal. Verify by fetching or re-reading the durable page after repair.
+
+For imported author metadata, write email addresses as ordinary visible text and do not intentionally add Markdown or `mailto:` links or code formatting. Notion may auto-link a bare email automatically. Only for the opening resource block of a deep-dive Chinese manuscript, omit a standalone `来源` label and make each link's visible text equal to its URL; do not apply this to English manuscripts or general research documents. For imported tables, explicitly check for garbled characters, broken rows/columns, duplicated pipe-table remnants, repeated cell fragments, and captions fused to table data; preserve one authoritative native table and add an official PDF/HTML screenshot when editable extraction is unreliable.
 
 ## Migration Rules
 

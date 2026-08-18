@@ -19,7 +19,7 @@ For any paper card / 论文卡片 work, also use [`paper-card-delivery`](../pape
 
 ## Canonical Paper Deep Dive Gate
 
-For any single-paper deep dive / 深读 / 详细解析 work, also use [`paper-deep-dive`](../paper-deep-dive/SKILL.md). That skill is the single canonical delivery standard for PDF/HTML extraction, main-entry `Paper Card` / `论文解析树` / `精读稿`, linked artifacts `英文原文稿` and `原文中译稿`, paper-card creation, manuscript fidelity, and completion gates. Keep this skill's Research-Wiki placement rules, but do not define, relax, or finalize deep-dive deliverables from this skill alone.
+For any single-paper deep dive / 深读 / 详细解析 work, also use [`paper-deep-dive`](../paper-deep-dive/SKILL.md). That skill is the single canonical delivery standard for PDF/HTML extraction, a main entry containing the complete `原文中译稿`, child artifacts `英文原文稿` and `精读稿`, paper-card creation, manuscript fidelity, and completion gates. Keep this skill's Research-Wiki placement rules, but do not define, relax, or finalize deep-dive deliverables from this skill alone.
 
 这个 skill 用来让 Codex 直接维护一个可长期积累的 Markdown wiki：原始资料保持不可变，Codex 增量生成和更新 wiki，Obsidian 只是可选的浏览器。
 

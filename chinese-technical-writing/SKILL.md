@@ -16,6 +16,7 @@ Use this skill for Chinese Feishu/Lark pages, Notion pages/databases, Obsidian/L
 Keep English when it is genuinely a name, identifier, or source-fidelity object:
 
 - paper titles, method/model/system names, dataset/benchmark names, code/repo names, organization names, and product names;
+- named architectures, model families, pretrained models, and named components such as Transformer, DINO, CLIP, NeRF, LoRA, SAM, and Gaussian Splatting; keep the official English name even when a Chinese translation exists;
 - standard acronyms and symbols such as SMPL-X, 3DGS, CLIP, PSNR, LPIPS, FID, FPS, GPU, API, $L_2$, and $\mathcal{L}$;
 - code identifiers, file paths, commands, config keys, CLI flags, class/function names, and quoted error messages;
 - exact original English text in `英文原文稿`, bilingual source archives, citations, block quotes, paper abstracts copied as source text, and other source-preserving sections;
@@ -24,7 +25,7 @@ Keep English when it is genuinely a name, identifier, or source-fidelity object:
 
 ## Chinese-First Rule
 
-For ordinary Chinese prose, translate technical concepts into Chinese. If the English term helps search or disambiguation, write it only on first use as:
+For ordinary Chinese prose, translate generic technical concepts into Chinese. Do not translate official names of architectures, models, methods, datasets, benchmarks, systems, or components. If a retained English name needs explanation, add a short Chinese gloss on first use, for example `Transformer（基于自注意力的网络架构）`; do not mechanically turn the name into a Chinese phrase. If an English term is generic rather than a name and helps search or disambiguation, write it only on first use as:
 
 ```text
 中文术语（English term）
@@ -43,6 +44,7 @@ Avoid:
 - `parametric human estimation 需要处理 pose 和 camera。`
 - `这个方法主要解决 perspective distortion。`
 - `模型没有显式利用 scene geometry。`
+- `Transformer` 和 `DINO` 应保留为官方名称；可以写成 `Transformer架构` 或 `DINO预训练模型`，但不要替换成非官方中文名称。
 
 ## Preferred Translations
 
@@ -94,7 +96,7 @@ Before delivering a Chinese document, check:
 - Chinese prose does not contain avoidable English phrase islands.
 - First-use English parentheses are used only when useful, not after every term.
 - Method/model/dataset/code names, acronyms, formulas, and source quotes are preserved.
-- Repeated generic English words such as `baseline`, `ablation`, `metric`, `benchmark`, `pipeline`, and `framework` have been replaced with clear Chinese unless they are official names.
+- Repeated generic English words such as `baseline`, `ablation`, `metric`, `benchmark`, `pipeline`, and `framework` have been replaced with clear Chinese unless they are official names. Named architectures and models such as `Transformer` and `DINO` remain in English.
 - Captions, bullets, summaries, TODOs, and interpretation sections read naturally in Chinese.
 
 ## Validation Script

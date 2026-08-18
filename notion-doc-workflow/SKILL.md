@@ -81,6 +81,28 @@ Content and field rules: [`paper-card-delivery`](../paper-card-delivery/SKILL.md
 - Notion mapping: one parent page plus required subpages or database entries; native equations/images; editable outline or supported embed for trees—not Feishu mind-map boards unless the user explicitly wants an export image.
 - Preserve existing Notion layout and media unless the user asks to restructure.
 
+### Manually Imported `pdf2zh-next` Pages
+
+Treat a manually imported translated PDF as a draft. For a deep-dive translation page:
+
+For the `pdf2zh-next` imported-page repair path, the existing Chinese manuscript page is the primary deliverable. Do not require or create `英文原文稿` and `精读稿` child pages unless the user explicitly requests them. Apply the source-fidelity, formula, figure/caption, table, appendix, reference/citation, and read-back checks to the Chinese page itself. This exception does not change the requirements for new Notion deep dives created from source materials.
+
+- rename the page to the verified Chinese paper title; keep the official English title in the opening block;
+- add the latest arXiv PDF, Project Page, and Code links above the abstract when those resources exist; do not add child-artifact links by default on this imported-page repair path;
+- restore heading levels from the source paper, repair PDF-induced paragraph splits and duplicate headers/footers, and inspect all major sections;
+- normalize numbered headings at every depth from their prefixes rather than imported font levels: `N` is a top-level heading, `N.M` a subsection, `N.M.K` a sub-subsection, and the same component-count rule continues deeper. Convert full-width heading punctuation `．` to ASCII `.` before parsing, so `4．2．方法` becomes `4.2. 方法`. In ordinary structural text, convert `／` to `/`, `－` to `-`, and citation/list brackets `［］` to `[]`; protect formulas, code, URLs, paths, and backslash-escaped sequences before cleanup and restore them exactly. Preserve unrelated Chinese punctuation in prose. Use one punctuation style throughout, defaulting to `N. Title` / `N.M. Subtitle` unless the source consistently uses `N Title` / `N.M Subtitle`;
+- convert inline/display formulas to native Notion equations where possible, preserving exact TeX when native conversion is unavailable;
+- use native image captions for complete translated figure captions and do not leave duplicate caption paragraphs;
+- before writing native image captions, sanitize parser-sensitive escaped citation markers such as `\[33\]` inside the caption only (use ordinary visible parentheses if required); keep the manuscript body citations unchanged and verify the caption survives fetch/read-back;
+- keep author email addresses as non-link text; because Notion auto-links bare email addresses, use inline code or another visible non-link representation when the user requests plain text;
+- keep author emails as ordinary visible text; do not intentionally add Markdown/`mailto:` links or code formatting. Notion may auto-link a bare email during rendering;
+- for the opening resource block of a deep-dive Chinese manuscript only, omit a standalone `来源` label and make each link's visible text equal to its URL; do not apply this rule to English manuscripts or general Notion documents;
+- keep table cells in English, translate only table titles/notes, and preserve an original screenshot when an imported table is visually unreliable;
+- audit imported tables for garbled cells, broken row/column boundaries, duplicated pipe-table remnants, fused captions, and repeated table data. Keep one authoritative native table, repair it against the official PDF/HTML, and use an official table screenshot when the editable extraction cannot be trusted;
+- in References, allow the cited paper title to be translated, but keep authors, venue, year, pages, identifiers, URLs, and other metadata in the source language; restore one reference per paragraph and the shared body-citation PDF URL map.
+
+After repair, fetch the page again and verify title, links, headings, formulas, captions, tables, references, and citation URLs. Do not report the import as a completed deep dive until this read-back passes.
+
 ## Workspace Hygiene
 
 - Keep downloads, MinerU outputs, and fetch dumps under `.tools/tmp/<task-slug>/` (or system temp), not the vault root.

@@ -6,7 +6,7 @@ description: Orchestrates AI research agent workflows (paper deep-dive, survey b
 # AI Research Workflow
 
 基于既有科研工作流调研报告组织的跨平台入口。历史源文档保留在飞书：
-<FEISHU_OR_LARK_URL>
+https://gxt1fwqtrod.feishu.cn/wiki/IsLdweoiDiNVdOkUYljcLMdrnpf
 
 All durable document writes must also use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) plus the matching platform adapter (`feishu-doc-workflow`, `notion-doc-workflow`, or `obsidian-doc-workflow`). The source of a workflow may be Feishu, but the destination is selected from Feishu, Notion, or Obsidian according to the user's current URL or explicit instruction.
 
@@ -16,7 +16,7 @@ Whenever a workflow will create, normalize, audit, or sync paper cards, first us
 
 ## Canonical Paper Deep Dive Gate
 
-Whenever a workflow will create, audit, repair, or route a single-paper deep dive, use [`paper-deep-dive`](../paper-deep-dive/SKILL.md). That skill is the only delivery standard for what counts as a completed deep dive: main entry `Paper Card` / `论文解析树` / source-order `精读稿`, complete `英文原文稿`, complete `原文中译稿`, source-fidelity formulas/captions/references, and target-platform read-back verification. This router may choose the skill stack, but it must not define a looser deep-dive artifact or call a partial package complete.
+Whenever a workflow will create, audit, repair, or route a single-paper deep dive, use [`paper-deep-dive`](../paper-deep-dive/SKILL.md). That skill is the only delivery standard for what counts as a completed deep dive: main entry with a paper-like opening block and complete `原文中译稿`, exactly two child pages for `英文原文稿` and `精读稿`, source-fidelity formulas/captions/references, and target-platform read-back verification. This router may choose the skill stack, but it must not define a looser deep-dive artifact or call a partial package complete.
 
 ## Canonical Chinese Technical Writing Gate
 
@@ -63,7 +63,7 @@ workflows.
 - For durable document work, final structure, hierarchy, images, captions, formulas, links, and verification are controlled by `research-doc-workflow`, its selected platform adapter, and the task-specific personal skill.
 - For paper deep dives, route final delivery through `paper-deep-dive`. Borrow `nature-reader` ideas such as block-level source
   maps, original / Chinese correspondence, figure/table placement, terminology
-  consistency, and uncertainty notes, but convert them into the required cross-platform package: main entry with `Paper Card`, `论文解析树`, and source-order `精读稿`, plus complete `英文原文稿` and `原文中译稿` artifacts; do not publish a partial or alternate reader as the finished deep dive.
+  consistency, and uncertainty notes, but convert them into the required cross-platform package: main entry with the complete `原文中译稿`, plus child pages for complete `英文原文稿` and source-order `精读稿`; do not publish a partial or alternate reader as the finished deep dive.
 - For surveys and literature organization, borrow `deep-research` ideas such as
   research-question clarification, source verification, contradiction checks,
   synthesis, and gap analysis, but convert them into the user's literature tree,
