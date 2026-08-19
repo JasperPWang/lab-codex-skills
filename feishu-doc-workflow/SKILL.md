@@ -121,17 +121,39 @@ When syncing paper cards to Feishu, use only reliable paper figures as card imag
 
 ## Meeting Notes
 
-When organizing dated research-group meeting pages in Feishu, use the user's dated Feishu child page as the durable source and destination. Do not create or keep full meeting content in the local Obsidian vault unless the user explicitly asks.
+When organizing dated research-group meeting pages in Feishu, use the user's dated Feishu wiki page under `Meetings` as the durable destination. Do not create or keep full meeting content in the local Obsidian vault unless the user explicitly asks. Keep the finished page structure and section order stable across meetings; only the input layout and evidence sources may change.
 
-- Name dated meeting pages with a zero-padded date plus short topic keywords, following sibling-page style: `YYYY-MM-DD <topic keywords>`, for example `2026-06-30 3D场景编辑实验复盘`. Do not leave the page as a bare date such as `2026-6-30` unless the user explicitly asks. Infer the topic keywords from the personal notes, transcript title, PDF links, or dominant discussion topic; keep the H1 aligned, e.g. `<page title>｜组会整理报告`. After renaming or overwriting, verify both the document title and the Wiki node title.
-- Expect two raw inputs on the dated child page: the user's personal notes and the Doubao / 豆包 transcript `.txt`. The personal notes are the primary source for importance, paper links, figures, live thoughts, teacher feedback, and intended interpretation. The transcript is secondary evidence for chronology, missing discussion details, exact wording, TODOs, and speaker-flow reconstruction.
-- If the personal notes and transcript conflict, trust the personal notes first. Mark transcript-only or uncertain claims as `转写疑似` / `待核验` rather than turning them into facts.
-- Preserve both raw materials in the Feishu page. Write the organized report above or before the raw sections, and keep clear source sections such as `原始材料：个人笔记` and `原始材料：豆包转写`. Do not delete or overwrite the user's raw notes or transcript.
-- Use this default report structure: `组会整理报告`, `Paper Cards`, `保守纪要`, `讨论脉络 / 老师反馈`, `会后头脑风暴`, `TODO`, `原始材料：个人笔记`, `原始材料：豆包转写`.
+### Input layout (current)
+
+Expect this incoming layout before organization:
+
+- **Main dated page** = the user's personal notes (PDF links, screenshots/figures, short insights, live thoughts). The title may still be a bare date such as `20260818`.
+- **Child files / pages** = Qwen / 千问 exports, typically `原文_*.docx` (timestamped transcript) and `纪要_*.docx` (structured summary, often with one overview figure). Older meetings may still use Doubao / 豆包 transcript files; treat them as the same raw-material class.
+
+Do not leave personal notes only on the main page after organization. Before overwriting the main page with the report:
+
+1. Create a wiki child page named `notes` under the dated meeting page if it does not already exist.
+2. Move / copy the main-page personal notes into that `notes` child, preserving native images, links, and wording.
+3. Keep the Qwen `原文` / `纪要` children (or legacy Doubao transcript) in place; do not delete them.
+
+### Evidence priority
+
+- Personal notes (`notes`) are primary for importance, paper links, figures, live thoughts, teacher feedback, and intended interpretation.
+- Qwen `纪要` is the preferred structural draft for agenda segmentation, TODOs, and high-level claims. Prefer it over rebuilding the whole summary from the transcript alone.
+- Qwen `原文` (or Doubao transcript) is secondary evidence for chronology, missing discussion details, exact wording, speaker-flow reconstruction, and verifying or correcting the `纪要`.
+- If personal notes conflict with Qwen materials, trust the personal notes first. If `纪要` and `原文` conflict, prefer `原文` for factual wording and mark uncertain `纪要`-only claims as `转写疑似` / `待核验` rather than turning them into facts.
+
+### Finished page contract
+
+- Name dated meeting pages with a zero-padded date plus short topic keywords, following sibling-page style: `YYYY-MM-DD <topic keywords>`, for example `2026-06-30 3D场景编辑实验复盘`. Do not leave the page as a bare date such as `2026-6-30` / `20260818` unless the user explicitly asks. Infer the topic keywords from the personal notes, Qwen title, PDF links, or dominant discussion topic; keep the H1 aligned, e.g. `<page title>｜组会整理报告`. After renaming or overwriting, verify both the document title and the Wiki node title.
+- Write the organized report on the dated main page. Preserve raw materials via links and/or dedicated sections; do not delete the `notes` child or the Qwen/Doubao children.
+- Use this default report structure (do not reorder or rename these sections): `组会整理报告`, `Paper Cards`, `保守纪要`, `讨论脉络 / 老师反馈`, `会后头脑风暴`, `TODO`, `原始材料：个人笔记`, `原始材料：千问纪要与原文` (legacy pages may still say `原始材料：豆包转写`).
+- Near the top of `组会整理报告`, insert the Qwen `纪要` overview figure when present, with a Chinese caption that states it comes from the Qwen meeting summary. This is content supplementation to the stable structure, not a new section.
+- Build the meeting summary from **personal notes + Qwen 纪要 + Qwen 原文** together. Do not regenerate the whole summary from the transcript alone when a usable Qwen `纪要` exists; use the `纪要` as the skeleton and the `原文` / notes to correct, deepen, and ground it.
 - For a paper-discussion meeting, organize the analytical layer as a mechanism interrogation: concrete bottleneck, strongest version of the authors' argument, key assumptions, design-to-bottleneck causal map, decisive evidence, alternative explanations, counterfactual module removal, failure boundary, and the next discriminating question. Preserve the meeting's actual chronology and raw materials, and use a compact table, flow, or a few meaningful subheadings only when the source supports them; do not manufacture nine empty sections. Distinguish author claims, speaker claims, experimental support, and organizer inference.
-- For papers mentioned in the personal notes or transcript, create or normalize paper cards using `paper-card-delivery` as the canonical content standard. Use the user's provided PDF links and figures when present, preserve image dimensions with full-detail metadata, and mark missing `Dataset`, `定义`, `结论`, `局限`, or `启发` as `待核验` unless official sources have been checked.
-- Treat `保守纪要` and `会后头脑风暴` differently. The conservative notes must stay grounded in the personal notes, transcript, paper links, and visible figures. The brainstorm section may intentionally connect the meeting to JEPA, world models, 3DGS, avatar, long-tail learning, music generation, origami art, or other group topics, but it must be labeled as brainstorming rather than transcript fact.
-- End with concrete TODOs from the meeting plus any follow-up paper-card verification tasks. Fetch after writing and verify that the report sections exist, raw-material sections remain, image dimensions are preserved, and the wiki child page title/hierarchy did not change.
+- For papers mentioned in the personal notes, Qwen materials, or transcript, create or normalize paper cards using `paper-card-delivery` as the canonical content standard. Use the user's provided PDF links and figures when present, preserve image dimensions with full-detail metadata, and mark missing `Dataset`, `定义`, `结论`, `局限`, or `启发` as `待核验` unless official sources have been checked.
+- Treat `保守纪要` and `会后头脑风暴` differently. The conservative notes must stay grounded in the personal notes, Qwen summary/transcript, paper links, and visible figures. The brainstorm section may intentionally connect the meeting to JEPA, world models, 3DGS, avatar, long-tail learning, music generation, origami art, or other group topics, but it must be labeled as brainstorming rather than transcript fact.
+- End with concrete TODOs from the meeting plus any follow-up paper-card verification tasks. Fetch after writing and verify that the report sections exist, the `notes` child still holds the personal notes, Qwen/Doubao children remain, image dimensions/captions are preserved, and the wiki child-page hierarchy did not collapse.
 
 ## Legacy Single Paper Deep Dive
 
@@ -155,7 +177,7 @@ When the user explicitly asks to repair or create a Feishu deep dive, use the us
   - Child page 3: Chinese close-reading page (`中文精读稿`), with section-level reading notes following the paper's original structure, plus local method decomposition, figure/table guide, key assumptions, experiments, limitations, and research implications inside the corresponding original sections.
 - At the beginning of paper-related Feishu documents, use the same compact link style as `paper-card-delivery` metadata instead of verbose source lists: `[PDF](...)｜[Project](...)｜[Code](...)`, with missing items written as `w/o. project page`, `w/o. verified code`, etc. Keep the link row near the title / metadata block and avoid separate long URL paragraphs unless the user explicitly asks for a source audit.
 - Before writing the notes, read/parse the paper and search for current context when needed: arXiv/OpenReview/conference page, project page, GitHub, author page, follow-up papers, critiques, benchmarks, and directly related concurrent work.
-- Prefer MinerU for PDF-to-Markdown parsing. On this machine, use `/Users/wangpu/Library/Mobile Documents/iCloud~md~obsidian/Documents/WorldModelVault/.tools/mineru-md.sh` first, backed by `/Users/wangpu/Library/Application Support/WorldModelVault/envs/mineru-env/bin/mineru` (`mineru 3.3.1` verified). Use Docling / Marker / PyMuPDF / pdfplumber only if MinerU fails or there is no PDF.
+- Prefer MinerU for PDF-to-Markdown parsing. On this machine, use `$WORLD_MODEL_VAULT/.tools/mineru-md.sh` first, backed by `$WORLD_MODEL_VAULT_MINERU_BIN` (`mineru 3.3.1` verified). Use Docling / Marker / PyMuPDF / pdfplumber only if MinerU fails or there is no PDF.
 - Treat MinerU output as a conversion draft, not the final authority. For arXiv papers, check the MinerU draft against arXiv HTML whenever available before publishing Feishu pages. Verify section order, paragraph continuity, formulas, figures, captions, tables, appendices, citations, and references. If arXiv HTML is unavailable or incomplete, use official LaTeX source, publisher HTML, or the official PDF as the authority.
 - References must be repaired before publishing. Do not leave bibliography entries as fragmented paragraphs or bullets; use a numbered bibliography, keep one reference per numbered item, and preserve body citation markers so the manuscript reads like the original paper.
 - Do not upload or store a PDF when a stable arXiv PDF exists, unless the user explicitly requests a PDF copy or the source is unstable/non-arXiv.
@@ -184,7 +206,7 @@ For paper deep dives and complete manuscript pages, formulas are source-fidelity
 When organizing a Feishu survey / research-map page, use a parent-page plus subpage structure by default:
 
 - Use [`survey-builder`](../survey-builder/SKILL.md) as the canonical source for literature-tree, challenge-insight, mechanism-comparison, and research-entry-point semantics. This Feishu section only controls native mind-map rendering, hierarchy, image/block preservation, and read-back verification; do not weaken or duplicate the survey's mechanism-evidence audit here.
-- Treat the user's Feishu page `如何构建literature tree（如何进行literature review，构建novelty tree和challenge-insight tree）` as the canonical method/example for literature organization and novelty discovery: `https://gxt1fwqtrod.feishu.cn/wiki/TbpBwmANXiXKQVkr38scb1tKnpq` (doc token `LC0WdpnZ3oUHjCxAWipcWvYSnac`). When building or revising literature trees, novelty trees, challenge-insight trees, or research-map pages, read/reference this page first unless the user gives a more specific template.
+- Treat the user's Feishu page `如何构建literature tree（如何进行literature review，构建novelty tree和challenge-insight tree）` as the canonical method/example for literature organization and novelty discovery: `<FEISHU_OR_LARK_URL>` (doc token `<DOC_TOKEN>`). When building or revising literature trees, novelty trees, challenge-insight trees, or research-map pages, read/reference this page first unless the user gives a more specific template.
 - Use its novelty taxonomy when organizing papers:
   - Type 1 novelty: seminal work for a milestone task.
   - Type 2 novelty: seminal work for a novel pipeline or representation.

@@ -112,7 +112,7 @@ Daily 输入层包括：
 论文卡片处理：
 
 - 本 skill 不再定义 paper card 的正文格式、metadata 字段、图像选择、图注标准、排序或验证门槛；这些统一以 [`paper-card-delivery`](../paper-card-delivery/SKILL.md) 为准。
-- 无论论文来自 `0-Daily` 截图、clipping、`1-Meetings` 链接、Zotero、`2-Learnings/EmbodiedWorld/` 还是 `3-Projects/`，只要要生成、补全、审核或同步 paper card，都必须先使用 `paper-card-delivery` 的六槽位格式与 source-grounded 验证流程。
+- 无论论文来自 `0-Daily` 截图、clipping、`1-Meetings` 链接、Zotero、`2-Learnings/EmbodiedWorld/` 还是 `3-Projects/`，只要要生成、补全、审核或同步 paper card，都必须先使用 `paper-card-delivery` 的七条固定 bullet 格式与 source-grounded 验证流程。
 - 本 skill 只补充 Research-Wiki / local vault 归档边界；本地 Markdown 图片资产、文件命名、相对路径、缺图状态、候选状态等 paper-card 规则也统一按 `paper-card-delivery` 执行。
 - 写入或同步到任一平台时，必须同时使用 `research-doc-workflow` 与对应 `*-doc-workflow`；paper-card 的图片位置、图注、布局验证和迁移残留检查按 `paper-card-delivery` 的目标平台分支执行。
 
@@ -139,11 +139,16 @@ Deep dive 标准只保留在 [`paper-deep-dive`](../paper-deep-dive/SKILL.md)。
 
 Meeting 输入层包括：
 
-- 豆包总结记录：会议总结、转写、要点提炼。它们是快速入口，不是最终证据。
+- 个人笔记：飞书日期主页上的 PDF 链接、截图/方法图、短 insight、现场判断。整理前必须迁到同日期下的 `notes` 子页，主页留给整理报告。
+- 千问纪要与原文：通常是日期页子文件 `纪要_*.docx` 与 `原文_*.docx`。纪要是结构化草稿（常含总览图），原文是带时间戳转写。旧会议可能仍是豆包转写；同类处理。
 - 拍摄图像：slides、白板、论文截图、方法图、实验表格等。需要先识别文字和结构。
 - 论文链接信息：arXiv、DOI、OpenReview、会议页、代码仓库、项目页等。
 
-Meeting 总结默认包含两层：**保守纪要** 和 **会后头脑风暴**。保守纪要只写可由转写、图像、论文链接或原文校验的信息；会后头脑风暴明确标注为研究发散，用来把当天论文、组内项目和更大的研究主线连接起来。
+证据优先级：个人笔记 > 千问纪要（组织骨架）> 千问原文/豆包转写（核对措辞与补细节）。不要在已有可用千问纪要时只凭原文重做整场总结。
+
+Meeting 总结默认包含两层：**保守纪要** 和 **会后头脑风暴**。保守纪要只写可由笔记、千问纪要/原文、图像、论文链接或原文校验的信息；会后头脑风暴明确标注为研究发散，用来把当天论文、组内项目和更大的研究主线连接起来。
+
+飞书组会整理的页面结构与章节顺序以 [`feishu-doc-workflow`](../feishu-doc-workflow/SKILL.md) 的 Meeting Notes 为准，保持稳定：`组会整理报告`、`Paper Cards`、`保守纪要`、`讨论脉络 / 老师反馈`、`会后头脑风暴`、`TODO`、原始材料链接。千问纪要总览图作为开头内容补充，不新增章节。
 
 Meeting 使用 `research-doc-workflow` 选择目标平台并叠加对应适配器，并保留现有会议库的平台。用户给出 Notion/飞书链接时更新对应平台；给出 vault 路径或明确写 Obsidian 时用 `obsidian-doc-workflow`；无目标时只追问一句目的地，不建立无必要的平行副本。
 
@@ -157,11 +162,11 @@ Meeting 使用 `research-doc-workflow` 选择目标平台并叠加对应适配�
 - 先写用户选择平台的 meeting 页面；只有当 meeting 中的内容需要长期进入 Research-Wiki 时，再从该页面蒸馏 `raw/sources/meeting-extracts/YYYY-MM-DD.md`，不要把完整会议纪要复制进 Research-Wiki。
 - 如果 meeting 页面已经基于 `个人研究名片` 做了讲者匹配，蒸馏进 Research-Wiki 时保留这个身份锚点，例如 `speaker`、`research_card` 或正文中的人物链接。它用于追溯某个观点/项目/论文线索来自谁，不等于该人物主页，也不替代原始会议证据。
 - 如果讲者只由转写或模型推断得到，保留 `讲者待核验` / `可能为 <name>（待核验）`，不要把不确定归因写成 stable claim。缺失的研究名片应进入 meeting TODO，而不是阻塞会议整理。
-- 豆包总结中的关键信息需要和图像、论文链接或原论文互相校验。
-- 如果图像或链接中识别到论文线索，自动进入论文追踪流程：搜索论文资源，总结论文，判断与世界模型研究的相关性；正式 meeting 文档中的论文应优先按 `paper-card-delivery` 补成 source-grounded paper card。
+- 千问纪要/豆包总结中的关键信息需要和图像、论文链接或原论文互相校验。
+- 如果图像或链接中识别到论文线索，自动进入论文追踪流程：搜索论文资源，总结论文，判断与世界模型研究的相关性；正式 meeting 文档中的论文应优先按 `paper-card-delivery` 补成 source-grounded paper card。注意是七条固定 bullet，不是六槽位。
 - 与世界模型高度相关的论文资源总结可进入 `raw/sources/papers/`；组会启发、科研通法、问题意识进入 `raw/sources/meeting-extracts/`。
 - 未验证事实主张进入 `reviews.md` 或以 `status: review` 保存。
-- 推荐 meeting 文档结构：frontmatter、简述、论文列表、Paper Cards、保守纪要/讨论脉络、横向结论、会后头脑风暴、待办。
+- 推荐 meeting 文档结构：frontmatter、简述、论文列表、Paper Cards、保守纪要/讨论脉络、横向结论、会后头脑风暴、待办。飞书正式整理页遵循 `feishu-doc-workflow` 固定章节。
 - `会后头脑风暴` 必须与保守纪要分开写，避免把发散判断伪装成已发生讨论或论文事实。开头写清楚“这一节不是保守纪要，而是研究发散”。
 - 头脑风暴不只服务 JEPA / world model；它也应主动连接组内其他课题，例如动作理解、长尾识别、3DGS/PBR、PEFT/LoRA/Adapter、机器人策略、多模态融合、实验设计和论文写作方法论。也可以另设“个人兴趣连接”，把音乐生成、折纸艺术等用户长期兴趣作为灵感来源，但不要误写成组内课题。
 - 头脑风暴可固定回答这些问题：这篇论文预测的是 pixel、token、latent、object state、reward 还是 action？它的状态表示是隐式还是显式？prediction 是训练期辅助任务还是测试时决策模块？如果改成 JEPA/world-model/PEFT/3DGS/PBR/长尾识别等组内范式，context、target、loss、模块、数据和指标应如何改？它能否转化为组内可做实验？是否能和个人兴趣如音乐生成、折纸艺术形成概念类比或创作灵感？限制来自数据、任务定义、物理假设、评价指标、baseline 还是计算资源？
