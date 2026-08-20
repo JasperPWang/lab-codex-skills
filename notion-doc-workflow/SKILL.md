@@ -37,12 +37,18 @@ If the environment exposes no Notion write path, state the blocker explicitly.
 3. Fetch the current page/database state before editing.
 4. Prepare one canonical Markdown draft for the shared body, then convert only Notion-required deltas below.
 5. Write with the smallest safe change. Prefer appending or replacing a known span over rebuilding the whole page.
-6. **Mandatory after any Markdown write that contains numeric body citations** (`[[n](url)]` / multi-cite clusters): run the citation rich_text fixer so Notion does not leave `[n` as the link text:
+6. **Notion body citations — write-time escape (required):** canonical drafts still use `[[n](url)]` / `[[n](url), [m](url)]`. Immediately before any Notion Markdown write (`ntn pages create|edit`, MCP markdown update), escape the outer opening bracket so the first cite is not stored as link text `[n`:
+   ```bash
+   python3 ".tools/skills/notion-doc-workflow/scripts/prepare-notion-citation-markdown.py" draft.md -o notion-ready.md
+   # writes \[[n](url)] / \[[n](url), [m](url)] — verified: link text is digits only
+   ```
+   Do **not** write bare `[[n](url)]` into Notion: single or multi cluster, the importer always absorbs the first `[` into the first link.
+7. **Mandatory after any Markdown write that contains numeric body citations:** run the citation rich_text fixer as a safety net (covers older pages and any write that skipped step 6):
    ```bash
    python3 ".tools/skills/notion-doc-workflow/scripts/fix-notion-citation-rich-text.py" <page-id-or-url>
    ```
    Do not treat Markdown re-fetch alone as proof that link ranges are correct; verify via Blocks API / this script (`--check-only` must exit 0).
-7. Re-fetch native blocks/properties and verify. Run any content-skill validator that applies to Notion drafts when available.
+8. Re-fetch native blocks/properties and verify. Run any content-skill validator that applies to Notion drafts when available.
 
 ## Notion Format Deltas
 
@@ -59,7 +65,7 @@ Assume Markdown parity first. Convert only what Notion cannot represent the same
 | Images | Native image blocks + native captions; no duplicate caption paragraph after a successful native caption |
 | Wikilinks | Convert `[[Note]]` to Notion page links or plain titles; do not leave Obsidian wikilink chrome |
 | References | Keep `[n]` plain labels; append `. URL [url](url)` (or ` URL [url](url)` after an existing period) with display text equal to URL; do not turn References into numbered `1.` lists |
-| Body citations | Goal form is `[[n](pdf-url)]` / `[[n](url), [m](url)]`: only the **digits** are links; outer `[]` and commas stay plain chrome. Notion’s Markdown importer **always** tends to absorb the opening `[` into the first link text (`[6` linked) and may treat adjacent `[[` as a wikilink. **Markdown write-back alone never finishes citations.** After every such write, run `scripts/fix-notion-citation-rich-text.py <page>` (or equivalent Blocks API PATCH) until linked segments are digit-only (`6`, not `[6`). The fixer also splits `text.content` >2000 chars and sanitizes nested/overlong `link.url` (>2000) that would otherwise 400 the PATCH. Rare fully mangled cite blobs (`[[[[9](url)](url)…`) may still need a one-block manual rewrite. Delivery is incomplete while `--check-only` reports bad links. |
+| Body citations | Reader goal: plain outer `[]`, digit-only link text (`6`, not `[6`). Canonical draft: `[[n](pdf-url)]` / `[[n](url), [m](url)]`. **Notion write form:** escape the outer `[` → `\[[n](url)]` / `\[[n](url), [m](url)]` via `scripts/prepare-notion-citation-markdown.py` (single and multi: the first cite is always the one Notion corrupts). After write, still run `scripts/fix-notion-citation-rich-text.py <page>` until `--check-only` exits 0. The fixer splits `text.content` >2000 and sanitizes nested/overlong `link.url`. Rare mangled blobs (`[[[[9](url)](url)…`) may need a one-block manual rewrite. |
 | Editable trees | Nested headings/toggles, linked subpages, or supported embeds; not Feishu whiteboard tokens |
 
 ## Forbidden Cross-Platform Residue

@@ -192,7 +192,7 @@ def count_bad(blocks: list[dict[str, Any]]) -> tuple[int, int]:
         for x in rt:
             pt = x.get("plain_text") or ""
             link = (x.get("text") or {}).get("link")
-            if link and re.fullmatch(r"\[\d+", pt):
+            if link and re.fullmatch(r"\[+\d+", pt):
                 bad += 1
             if link and re.fullmatch(r"\d+", pt):
                 good += 1
