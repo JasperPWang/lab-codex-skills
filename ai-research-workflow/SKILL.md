@@ -6,7 +6,7 @@ description: Orchestrates AI research agent workflows (paper deep-dive, survey b
 # AI Research Workflow
 
 基于既有科研工作流调研报告组织的跨平台入口。历史源文档保留在飞书：
-https://gxt1fwqtrod.feishu.cn/wiki/IsLdweoiDiNVdOkUYljcLMdrnpf
+<FEISHU_OR_LARK_URL>
 
 All durable document writes must also use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) plus the matching platform adapter (`feishu-doc-workflow`, `notion-doc-workflow`, or `obsidian-doc-workflow`). The source of a workflow may be Feishu, but the destination is selected from Feishu, Notion, or Obsidian according to the user's current URL or explicit instruction.
 

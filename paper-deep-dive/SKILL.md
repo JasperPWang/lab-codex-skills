@@ -153,8 +153,8 @@ Paper-card content standards live in [`paper-card-delivery`](../paper-card-deliv
 
 For future deep dives, first create a MinerU conversion draft when a PDF is available. Use it as the source-order manuscript scaffold for `<paper short name>｜英文原文稿`, `<paper short name>｜原文中译稿`, and the child-page `精读稿`.
 
-- Preferred wrapper in this vault: `/Users/wangpu/Library/Mobile Documents/iCloud~md~obsidian/Documents/WorldModelVault/.tools/mineru-md.sh`
-- MinerU binary on this machine: `/Users/wangpu/Library/Application Support/WorldModelVault/envs/mineru-env/bin/mineru`
+- Preferred wrapper in this vault: `$WORLD_MODEL_VAULT/.tools/mineru-md.sh`
+- MinerU binary on this machine: `$WORLD_MODEL_VAULT_MINERU_BIN`
 - Verified local version: `mineru 3.3.1`
 - Store MinerU outputs, downloaded PDFs, supplementary/appendix PDFs, official HTML snapshots/pages, arXiv HTML, LaTeX source, and temporary figure assets under `.tools/tmp/codex/<task-slug>/`; delete them after the target artifacts are written and verified successfully.
 - MinerU is a conversion draft, not the authoritative final text. When an official HTML version exists, always check the MinerU draft against it before publishing target artifacts. For arXiv papers, arXiv HTML is the preferred HTML check; for non-arXiv papers, use publisher/proceedings/OpenReview/CVF HTML when available. Verify section order, paragraph continuity, equations, figures, captions, tables, appendices, citations, and references. If HTML is unavailable or incomplete, use official LaTeX source or the official PDF as the authority and record that HTML could not be used.

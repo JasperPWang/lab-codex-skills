@@ -115,6 +115,15 @@ Read the repaired page again as a separate QA pass. Do not assume Round 1 fixed 
 
 Search specifically for `Invalid equation`, malformed `$`, duplicated `$$`, `[n` used as link text, missing `]`, `待补`, `TODO`, `EW_IMG_`, raw `file://`, MinerU paths, duplicate captions, broken table pipes, untranslated generic technical terms, and page-order jumps. Correct every confirmed issue against the source. If a visual or formula cannot be reliably represented natively, keep the exact source LaTeX or an official PDF/HTML image as the fallback and label the fallback.
 
+After any Notion Markdown write that inserts or rewrites numeric body citations, run the mandatory rich_text fixer from `notion-doc-workflow` before claiming Round 2 complete:
+
+```bash
+python3 ".tools/skills/notion-doc-workflow/scripts/fix-notion-citation-rich-text.py" <chinese-page-id-or-url>
+python3 ".tools/skills/notion-doc-workflow/scripts/fix-notion-citation-rich-text.py" <chinese-page-id-or-url> --check-only
+```
+
+`--check-only` must exit 0. Markdown export that shows `[[n](url)]` is not sufficient: Notion often still stores the first cluster link as `[n`.
+
 Two rounds means two full source/read-back cycles, not two passes over the same stale export.
 
 ### 6. Verify the package
@@ -127,7 +136,7 @@ Before delivery, verify all of the following in Notion:
 - figures and captions are present and in the correct relative positions;
 - tables are present and readable;
 - inline formulas render as inline formulas; display formulas are centered/native where supported and preserve numbering;
-- body citations use plain outer brackets and digit-only link text;
+- body citations use plain outer brackets and digit-only link text (Blocks API / `fix-notion-citation-rich-text.py --check-only` must pass; do not trust Markdown export alone);
 - references are numbered paragraphs, not accidental bullet lists;
 - appendix and supplementary content is present;
 - no raw local paths, temporary filenames, or migration artifacts remain;

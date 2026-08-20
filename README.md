@@ -248,7 +248,7 @@ Use short daily prompts. The agent should select the skill stack and only ask wh
 ```
 
 ```text
-对这篇论文做完整 deep dive，必须满足 paper-deep-dive 交付标准：主入口 Paper Card、可编辑论文解析树、按原文顺序的精读稿；完整英文原文稿与原文中译稿；公式保留 LaTeX；参考文献与正文引用按 deep-dive 链接合同；目标平台用对应 *-doc-workflow 写入并回读验证。
+对这篇论文做完整 deep dive，必须满足 paper-deep-dive 交付标准：主入口开头按论文形式放置英文标题、中文标题、英文作者与单位，以及最新 arXiv PDF、Project Page、Code 三条链接；随后放置完整原文中译稿，并链接两个子页面（英文原文稿、按原文顺序的精读稿）；公式保留 LaTeX；参考文献与正文引用按 deep-dive 链接合同；目标平台用对应 *-doc-workflow 写入并回读验证。
 <PDF_OR_ARXIV_OR_PROJECT_URL>
 目标：<FEISHU_OR_NOTION_URL_OR_OBSIDIAN_PATH>
 ```

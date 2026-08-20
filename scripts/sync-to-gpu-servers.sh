@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Sync lab-codex-skills to GPU SSH hosts (3090 / 4090 / A800 / A6000).
-# Prefer git pull on hosts that can reach GitHub; fall back to rsync from this machine for 3090.
+# Sync lab-codex-skills to GPU SSH hosts (3090 / 4090 / 4090-single / A800 / A6000).
+# Prefer git pull on hosts that can reach GitHub; fall back to rsync from this machine when needed.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -8,7 +8,7 @@ SKILL_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 HOSTS=("$@")
 if [[ ${#HOSTS[@]} -eq 0 ]]; then
-  HOSTS=(3090 4090 A800 A6000)
+  HOSTS=(4090 4090-single A800 A6000 3090)
 fi
 
 SSH=(ssh -o BatchMode=yes -o ConnectTimeout=15)

@@ -37,7 +37,12 @@ If the environment exposes no Notion write path, state the blocker explicitly.
 3. Fetch the current page/database state before editing.
 4. Prepare one canonical Markdown draft for the shared body, then convert only Notion-required deltas below.
 5. Write with the smallest safe change. Prefer appending or replacing a known span over rebuilding the whole page.
-6. Re-fetch native blocks/properties and verify. Run any content-skill validator that applies to Notion drafts when available.
+6. **Mandatory after any Markdown write that contains numeric body citations** (`[[n](url)]` / multi-cite clusters): run the citation rich_text fixer so Notion does not leave `[n` as the link text:
+   ```bash
+   python3 ".tools/skills/notion-doc-workflow/scripts/fix-notion-citation-rich-text.py" <page-id-or-url>
+   ```
+   Do not treat Markdown re-fetch alone as proof that link ranges are correct; verify via Blocks API / this script (`--check-only` must exit 0).
+7. Re-fetch native blocks/properties and verify. Run any content-skill validator that applies to Notion drafts when available.
 
 ## Notion Format Deltas
 
@@ -54,7 +59,7 @@ Assume Markdown parity first. Convert only what Notion cannot represent the same
 | Images | Native image blocks + native captions; no duplicate caption paragraph after a successful native caption |
 | Wikilinks | Convert `[[Note]]` to Notion page links or plain titles; do not leave Obsidian wikilink chrome |
 | References | Keep `[n]` plain labels; append `. URL [url](url)` (or ` URL [url](url)` after an existing period) with display text equal to URL; do not turn References into numbered `1.` lists |
-| Body citations | Goal form is `[[n](pdf-url)]` / `[[n](url), [m](url)]`: only the **digits** are links; outer `[]` and commas stay plain chrome. Notion’s Markdown importer often absorbs the opening `[` into the link text (`[6` linked) and may treat adjacent `[[` as a wikilink—after Markdown write-back, verify via the Blocks API and PATCH `rich_text` so linked segments are digit-only (`6`, not `[6`) |
+| Body citations | Goal form is `[[n](pdf-url)]` / `[[n](url), [m](url)]`: only the **digits** are links; outer `[]` and commas stay plain chrome. Notion’s Markdown importer **always** tends to absorb the opening `[` into the first link text (`[6` linked) and may treat adjacent `[[` as a wikilink. **Markdown write-back alone never finishes citations.** After every such write, run `scripts/fix-notion-citation-rich-text.py <page>` (or equivalent Blocks API PATCH) until linked segments are digit-only (`6`, not `[6`). Delivery is incomplete while `--check-only` reports bad links. |
 | Editable trees | Nested headings/toggles, linked subpages, or supported embeds; not Feishu whiteboard tokens |
 
 ## Forbidden Cross-Platform Residue
