@@ -49,7 +49,8 @@ def ntn_api(path: str, method: str | None = None, data: dict | None = None) -> d
         tmp = Path("/tmp/ntn_cite_fix_body.json")
         tmp.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
         cmd += ["-d", f"@{tmp}"]
-    r = subprocess.run(cmd, capture_output=True, text=True)
+    # Never inherit caller stdin — ntn may try to parse it as JSON.
+    r = subprocess.run(cmd, capture_output=True, text=True, stdin=subprocess.DEVNULL)
     if r.returncode != 0:
         raise RuntimeError((r.stderr or r.stdout or "ntn api failed").strip())
     return json.loads(r.stdout) if r.stdout.strip() else {}
@@ -83,11 +84,70 @@ def default_annotations() -> dict[str, Any]:
 
 
 def is_bad_cite_link(item: dict[str, Any]) -> re.Match[str] | None:
+    """Match link text like `[7` or mangled `[[[[9` (one or more opening brackets)."""
     pt = item.get("plain_text") or ""
     link = (item.get("text") or {}).get("link")
     if not link:
         return None
-    return re.fullmatch(r"\[(\d+)", pt)
+    return re.fullmatch(r"\[+(\d+)", pt)
+
+
+MAX_TEXT = 2000
+MAX_URL = 2000
+
+
+def sanitize_cite_url(url: str) -> str | None:
+    """Notion rejects link.url longer than 2000 chars.
+
+    Markdown corruption sometimes nests the same cite URL many times
+    (`https://…pdf)](https://…` / percent-encoded). Prefer the first
+    bare http(s) URL that fits the limit.
+    """
+    if not url:
+        return None
+    if len(url) <= MAX_URL and ")](" not in url and "%5D(" not in url.upper():
+        return url
+    # First absolute URL up to a nested-markdown boundary
+    m = re.search(r"https?://[^\s\]\)%]+", url)
+    if not m:
+        m = re.search(r"https?://\S+?", url)
+    if not m:
+        return None
+    candidate = m.group(0)
+    # Trim trailing junk from nested markdown / encoding
+    candidate = re.split(r"\)\]\(|%5D\(|%29%5D", candidate, maxsplit=1, flags=re.I)[0]
+    candidate = candidate.rstrip(")]'\"")
+    if 0 < len(candidate) <= MAX_URL:
+        return candidate
+    return None
+
+
+def chunk_text_items(
+    content: str, link: dict | None, ann: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """Notion limits each rich_text text.content to 2000 chars."""
+    safe_link = link
+    if link and link.get("url") and len(link["url"]) > MAX_URL:
+        cleaned = sanitize_cite_url(link["url"])
+        safe_link = {"url": cleaned} if cleaned else None
+    if not content:
+        return [
+            {
+                "type": "text",
+                "text": {"content": "", "link": safe_link},
+                "annotations": ann,
+            }
+        ]
+    items: list[dict[str, Any]] = []
+    for i in range(0, len(content), MAX_TEXT):
+        items.append(
+            {
+                "type": "text",
+                "text": {"content": content[i : i + MAX_TEXT], "link": safe_link},
+                "annotations": ann,
+            }
+        )
+    return items
 
 
 def fix_rich_text(rt: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], int]:
@@ -98,6 +158,7 @@ def fix_rich_text(rt: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], int]:
         link = (x.get("text") or {}).get("link")
         ann = x.get("annotations") or default_annotations()
         if m and link:
+            cleaned = sanitize_cite_url(link.get("url") or "")
             out.append(
                 {
                     "type": "text",
@@ -108,22 +169,18 @@ def fix_rich_text(rt: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], int]:
             out.append(
                 {
                     "type": "text",
-                    "text": {"content": m.group(1), "link": {"url": link["url"]}},
+                    "text": {
+                        "content": m.group(1),
+                        "link": {"url": cleaned} if cleaned else None,
+                    },
                     "annotations": ann,
                 }
             )
             fixes += 1
             continue
         content = (x.get("text") or {}).get("content", x.get("plain_text") or "")
-        out.append(
-            {
-                "type": "text",
-                "text": {"content": content, "link": link},
-                "annotations": ann,
-            }
-        )
+        out.extend(chunk_text_items(content, link, ann))
     return out, fixes
-
 
 def count_bad(blocks: list[dict[str, Any]]) -> tuple[int, int]:
     bad = good = 0
@@ -167,6 +224,7 @@ def main() -> int:
 
     patched_blocks = 0
     total_fixes = 0
+    failed_blocks = 0
     for b in blocks:
         t = b.get("type")
         node = b.get(t) or {}
@@ -181,7 +239,13 @@ def main() -> int:
         body: dict[str, Any] = {t: {"rich_text": new_rt}}
         if "color" in node:
             body[t]["color"] = node["color"]
-        ntn_api(f"v1/blocks/{b['id']}", method="PATCH", data=body)
+        try:
+            ntn_api(f"v1/blocks/{b['id']}", method="PATCH", data=body)
+        except Exception as e:
+            failed_blocks += 1
+            print(f"FAIL {b['id']} fixes={fixes}: {e}", file=sys.stderr)
+            time.sleep(0.2)
+            continue
         patched_blocks += 1
         total_fixes += fixes
         print(f"patched {b['id']} fixes={fixes}")
@@ -191,7 +255,7 @@ def main() -> int:
     bad1, good1 = count_bad(blocks2)
     print(
         f"after: patched_blocks={patched_blocks} total_fixes={total_fixes} "
-        f"bad_[n_links={bad1} digit_only_links={good1}"
+        f"failed_blocks={failed_blocks} bad_[n_links={bad1} digit_only_links={good1}"
     )
     if bad1:
         print("FAIL: residual bad citation link texts remain", file=sys.stderr)
