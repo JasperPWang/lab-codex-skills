@@ -9,9 +9,9 @@ Use this workflow when the user adds interview-experience, internship, recruitin
 
 ## Destination Routing
 
-- `Intern` album, 面经, JD, offer, recruiting, company interview question, and internship/research-intern application screenshots go to: `$WORLD_MODEL_VAULT/3-Projects/Intern/世界模型实习招聘与面试资料.md`
-- `Research Intake` album screenshots that are paper leads, project links, research methods, workshop notes, study/research screenshots, or general research intake go under: `$WORLD_MODEL_VAULT/0-Daily/Screenshots/`
-- The default rolling summary for Research Intake is: `$WORLD_MODEL_VAULT/0-Daily/Screenshots/Research Intake 截图整理.md`
+- `Intern` album, 面经, JD, offer, recruiting, company interview question, and internship/research-intern application screenshots go to: `/Users/wangpu/Library/Mobile Documents/iCloud~md~obsidian/Documents/WorldModelVault/3-Projects/Intern/世界模型实习招聘与面试资料.md`
+- `Research Intake` album screenshots that are paper leads, project links, research methods, workshop notes, study/research screenshots, or general research intake go under: `/Users/wangpu/Library/Mobile Documents/iCloud~md~obsidian/Documents/WorldModelVault/0-Daily/Screenshots/`
+- The default rolling summary for Research Intake is: `/Users/wangpu/Library/Mobile Documents/iCloud~md~obsidian/Documents/WorldModelVault/0-Daily/Screenshots/Research Intake 截图整理.md`
 - If a screenshot clearly belongs to another existing note, update that note instead and mention the path.
 - If a screenshot contains both interview/recruiting content and research intake, split the summary into the appropriate destinations.
 

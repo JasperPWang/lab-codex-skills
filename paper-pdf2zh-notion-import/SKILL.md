@@ -86,6 +86,8 @@ Do not paste the PDF into the body of the destination page. Do not use a browser
 
 The imported Chinese page is only a draft. Perform two distinct repair rounds, with a fresh read-back between them.
 
+**Write-back safety requirement.** Never use the raw serialized text returned by a Notion connector as page content. If a connector response wraps the page in JSON, parse the outer JSON first, then extract only the content between the actual `<content>` markers. Before any full-page write, verify that the extracted string starts with the page's paper content rather than connector metadata or another app's accessibility tree. Prefer native Notion editing or targeted replacements; do not use `replace_content` when the source extraction is not independently validated.
+
 #### Round 1: structural and source-fidelity repair
 
 Compare the imported page with the original PDF and official HTML/LaTeX. Repair:

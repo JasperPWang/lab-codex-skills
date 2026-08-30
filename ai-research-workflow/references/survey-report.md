@@ -1,6 +1,6 @@
 # AI Research Skills 调研摘要
 
-源文档（飞书 Wiki）：<FEISHU_OR_LARK_URL>
+源文档（飞书 Wiki）：https://gxt1fwqtrod.feishu.cn/wiki/IsLdweoiDiNVdOkUYljcLMdrnpf
 
 ## 10 个调研 skill 分类
 
