@@ -86,7 +86,9 @@ Do not paste the PDF into the body of the destination page. Do not use a browser
 
 The imported Chinese page is only a draft. Perform two distinct repair rounds, with a fresh read-back between them.
 
-**Write-back safety requirement.** Never use the raw serialized text returned by a Notion connector as page content. If a connector response wraps the page in JSON, parse the outer JSON first, then extract only the content between the actual `<content>` markers. Before any full-page write, verify that the extracted string starts with the page's paper content rather than connector metadata or another app's accessibility tree. Prefer native Notion editing or targeted replacements; do not use `replace_content` when the source extraction is not independently validated.
+**Write-back safety requirement.** Never use the raw serialized text returned by a Notion connector as page content. If a connector response wraps the page in JSON, parse the outer JSON first, then extract only the content between the actual `<content>` markers. Before any write, verify that the extracted string starts with the page's paper content rather than connector metadata or another app's accessibility tree.
+
+**Hard no-whole-page-rebuild rule.** An already imported PDF page is a structured document, not a Markdown reconstruction target. Unless the user explicitly authorizes destructive replacement, never use `replace_content`, whole-page Markdown replacement, or a full-page delete-and-recreate operation. Default to native block edits or targeted replacements by known block ID/span. Before each repair batch, save a recovery snapshot of page properties and the complete block tree, including block types, images, equations, tables, captions, links, and text. Keep each batch small and re-fetch immediately after writing. If block counts, heading levels, image/equation/table counts, captions, or untouched block IDs change unexpectedly, stop and report the mismatch; do not continue writing. If the available tool can only perform a whole-page replacement, stop and report the blocker instead of using it.
 
 #### Round 1: structural and source-fidelity repair
 
@@ -150,6 +152,9 @@ Before delivery, verify all of the following in Notion:
 - appendix and supplementary content is present;
 - no raw local paths, temporary filenames, or migration artifacts remain;
 - the page was re-read after the second repair round.
+- no whole-page replacement or delete-and-recreate operation was used without explicit user authorization;
+- each repair batch had a pre-write recovery snapshot and a post-write block-level re-fetch;
+- untouched sections retained their block types, hierarchy, media, formulas, tables, captions, and links.
 
 If any item fails, report the package as incomplete and continue repairing. Do not call the initial PDF import the final result.
 

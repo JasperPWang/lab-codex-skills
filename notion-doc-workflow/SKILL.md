@@ -36,19 +36,20 @@ If the environment exposes no Notion write path, state the blocker explicitly.
 2. Confirm the Notion destination from the user's URL or explicit instruction.
 3. Fetch the current page/database state before editing.
 4. Prepare one canonical Markdown draft for the shared body, then convert only Notion-required deltas below.
-5. Write with the smallest safe change. Prefer appending or replacing a known span over rebuilding the whole page.
-6. **Notion body citations — write-time escape (required):** canonical drafts still use `[[n](url)]` / `[[n](url), [m](url)]`. Immediately before any Notion Markdown write (`ntn pages create|edit`, MCP markdown update), escape the outer opening bracket so the first cite is not stored as link text `[n`:
+5. Write with the smallest safe change. For an existing page, especially a PDF-imported page, use native block edits or targeted replacements by known block ID/span. Never use whole-page `replace_content`, full-page Markdown replacement, or delete-and-recreate unless the user explicitly authorizes destructive replacement. If the available write path cannot address a known block or span, stop and report the blocker.
+6. Before each write batch, save a recovery snapshot of page properties and the complete block tree, including block types, hierarchy, images, equations, tables, captions, links, and text. Keep the batch small, re-fetch immediately after writing, and stop if untouched blocks or structural counts change unexpectedly.
+7. **Notion body citations — write-time escape (required):** canonical drafts still use `[[n](url)]` / `[[n](url), [m](url)]`. Immediately before any Notion Markdown write (`ntn pages create|edit`, MCP markdown update), escape the outer opening bracket so the first cite is not stored as link text `[n`:
    ```bash
    python3 ".tools/skills/notion-doc-workflow/scripts/prepare-notion-citation-markdown.py" draft.md -o notion-ready.md
    # writes \[[n](url)] / \[[n](url), [m](url)] — verified: link text is digits only
    ```
    Do **not** write bare `[[n](url)]` into Notion: single or multi cluster, the importer always absorbs the first `[` into the first link.
-7. **Mandatory after any Markdown write that contains numeric body citations:** run the citation rich_text fixer as a safety net (covers older pages and any write that skipped step 6):
+8. **Mandatory after any Markdown write that contains numeric body citations:** run the citation rich_text fixer as a safety net (covers older pages and any write that skipped step 7):
    ```bash
    python3 ".tools/skills/notion-doc-workflow/scripts/fix-notion-citation-rich-text.py" <page-id-or-url>
    ```
    Do not treat Markdown re-fetch alone as proof that link ranges are correct; verify via Blocks API / this script (`--check-only` must exit 0).
-8. Re-fetch native blocks/properties and verify. Run any content-skill validator that applies to Notion drafts when available.
+9. Re-fetch native blocks/properties and verify. Run any content-skill validator that applies to Notion drafts when available. For imported PDF pages, verify that untouched block IDs, block types, hierarchy, media, formulas, tables, captions, and links were preserved.
 
 ## Notion Format Deltas
 
