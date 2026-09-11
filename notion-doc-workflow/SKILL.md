@@ -60,7 +60,7 @@ Assume Markdown parity first. Convert only what Notion cannot represent the same
 | Hierarchy | Parent page + subpages, or database relations; do not invent Feishu wiki tokens |
 | Callouts | Native Notion callout blocks; do not leave Obsidian `> [!type]` as reader-facing text |
 | Metadata | Database/page properties for queryable fields; no YAML frontmatter in reader-facing body |
-| Paper-card metadata | One paragraph with four logical rows joined by exactly three `<br>` tags so Notion imports one paragraph with three hard breaks; never four physical Markdown lines |
+| Paper-card metadata | Full Paper Card: one paragraph with four logical rows joined by exactly three `<br>` tags. Paper Abstract Card: one resource paragraph with `Paper` / optional `Project` / optional `Code` joined by native hard breaks. Never split either metadata/resource block into separate paragraphs. |
 | Math | Native inline/block equations from TeX; keep `$...$` / `$$...$$` only in the intermediate Markdown if the importer maps them to equations |
 | Inline code | For paths, filenames, commands, config keys: Notion inline `code` with default/black color (`annotations.color="default"`); do not color code gray/brown/red |
 | Images | Native image blocks + native captions; no duplicate caption paragraph after a successful native caption |
@@ -83,9 +83,20 @@ Reader-facing Notion pages must not contain:
 
 Content and field rules: [`paper-card-delivery`](../paper-card-delivery/SKILL.md). This skill only maps them to Notion:
 
-- Title as Notion heading; metadata as one hard-break paragraph; native image + caption; then seven bullet slots.
+- Determine whether the requested unit is a full Paper Card or a Paper Abstract Card; do not mix their schemas.
+- Full Paper Card: title as Notion heading; metadata as one hard-break paragraph; native image + caption; then seven bullet slots.
 - After write, re-fetch and confirm the metadata region is **one** paragraph containing three newline/hard-break characters.
 - Verify no Obsidian asset-path labels remain in visible text.
+
+### Paper Abstract Cards on Notion
+
+- Use a Notion `heading_4` block for the exact official English title.
+- Store `Paper：https://…`, optional `Project：https://…`, and optional `Code：https://…` in one paragraph block with native line breaks. Apply rich-text links to the URL spans and verify them through the Blocks API; visible URL text without a link object is invalid.
+- Follow with one paragraph containing the complete Chinese translation of the official abstract.
+- Use native image blocks and native captions containing complete Chinese translations of the original captions. Do not add duplicate caption paragraphs.
+- One image remains a normal image block. For two images, create one native `column_list` containing two equal-width `column` blocks with one image in each. For three or more images, use successive balanced two-column rows unless preserving an existing user-designed layout.
+- Before changing an existing abstract card, fetch the complete nested block tree. Preserve correct user-authored `column_list` / `column` structures and do not flatten, recreate, or resize them merely to enforce the default.
+- After writing, re-fetch nested children and verify heading type, one resource paragraph, rich-text link objects, abstract presence, image count, column count/order, and caption association.
 
 ## Deep Dives / Surveys / Meetings
 

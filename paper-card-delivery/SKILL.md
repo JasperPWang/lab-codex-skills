@@ -1,6 +1,6 @@
 ---
 name: paper-card-delivery
-description: Canonical platform-neutral delivery standard for source-grounded research paper cards in Feishu/Lark, Notion, Obsidian/Markdown, surveys, deep dives, meeting notes, and project notes. Use whenever the user asks to整理/补全/生成/审核 paper card, 论文卡片, Paper Cards, literature survey cards, meeting paper cards, or deep-dive paper cards; also use when another research workflow will create or modify paper cards.
+description: Canonical platform-neutral delivery standard for source-grounded Paper Cards and compact Paper Abstract Cards in Feishu/Lark, Notion, Obsidian/Markdown, surveys, deep dives, meeting notes, and research trackers. Use whenever the user asks to整理/补全/生成/审核 paper card, 论文卡片, Paper Abstract Card, 论文摘要卡片, literature survey cards, meeting paper cards, or deep-dive paper cards; also use when another research workflow will create or modify either card type.
 ---
 
 # Paper Card Delivery
@@ -15,7 +15,9 @@ If a field is `待核验`, the required next action is to inspect the official f
 
 For formal delivery, every paper card must include a verified method/process figure or a user-approved figure, with a complete Chinese caption. Do not deliver cards with `配图待补`, `图注待补`, `图片待补`, `图像待补`, `待补配图`, `待补图注`, empty image slots, or text-only figure/caption TODO/TBD/pending notes. Any reader-facing sentence like `配图待补：优先从官方论文 HTML / PDF 中提取...` is a hard delivery failure, not an acceptable caveat. If the figure cannot be obtained within the current turn, continue extraction, explicitly downgrade the page to a draft, reduce scope with the user's approval, or report that the deliverable is blocked. Never mark a paper-card page complete while any card is missing its figure or figure caption.
 
-Paper card is a lightweight reader index after source verification. It is not a full deep dive, not a PDF-to-Markdown manuscript, not a complete translation, and not a substitute for `paper-deep-dive`. If the user asks to 深读 / detailed-read / dive into one paper, use `paper-deep-dive` and create the paper card as only one component of that larger package.
+Paper Card and Paper Abstract Card are distinct deliverables. A Paper Card is the verified seven-field reader index defined below. A Paper Abstract Card is a smaller research-tracker unit containing only resource links, a Chinese abstract translation, and representative figures. Do not silently expand a Paper Abstract Card into the full Paper Card schema or collapse a requested Paper Card into an abstract-only entry.
+
+Neither card is a full deep dive, PDF-to-Markdown manuscript, complete paper translation, or substitute for `paper-deep-dive`. If the user asks to 深读 / detailed-read / dive into one paper, use `paper-deep-dive` and create the requested card type only as one component of that larger package.
 
 Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) for platform selection, hierarchy, image/caption representation, and post-write verification. After the platform is resolved, also use the matching adapter: [`feishu-doc-workflow`](../feishu-doc-workflow/SKILL.md) for Feishu/Lark, [`notion-doc-workflow`](../notion-doc-workflow/SKILL.md) for Notion, or [`obsidian-doc-workflow`](../obsidian-doc-workflow/SKILL.md) for Obsidian/vault Markdown.
 
@@ -45,6 +47,35 @@ Use the same Markdown card skeleton on every platform. The fixed fields, source-
 - Obsidian/Markdown: preserve the four physical metadata lines, use a relative image path with the complete Chinese caption in meaningful alt text or the established vault caption convention, and keep assets under a stable local asset directory; run the Markdown validator with `--target obsidian`.
 
 Do not paste Feishu block tokens into Notion or Obsidian, and do not strip valid Obsidian frontmatter, wikilinks, or relative asset paths merely because the Feishu adapter would reject them.
+
+## Paper Abstract Card
+
+Use this compact type only when the user names `Paper Abstract Card` / `论文摘要卡片`, asks for an abstract-only tracking entry, or establishes an existing page as a Paper Abstract Card collection. It is deliberately different from the full Paper Card and does not inherit the seven fixed bullet fields, venue/institution row, dataset row, mechanism-reasoning presentation, or full-card validator requirements.
+
+Default visible structure:
+
+```markdown
+#### Exact Official English Paper Title
+Paper：https://arxiv.org/pdf/<id>
+Project：https://official-project-page
+Code：https://official-code-repository
+
+<官方摘要的完整中文翻译>
+
+<代表性图片及原始 caption 的完整中文翻译>
+```
+
+Rules:
+
+- Use the exact official paper title as a level-four heading.
+- Put all resources in one paragraph/block and separate them with native hard line breaks, not blank lines or separate paragraphs. The visible labels are exactly `Paper`, `Project`, and `Code`; each URL must be an actual hyperlink, not plain text.
+- `Paper` must use the direct arXiv PDF URL (`https://arxiv.org/pdf/<id>`) when an arXiv version exists. Include `Project` when an official project page exists and `Code` when verified official or author-maintained code exists. Omit unavailable optional rows instead of writing placeholder text.
+- Translate the official abstract completely into Chinese without expanding it into a method review, seven-field analysis, or speculative summary. Preserve method/model/dataset names and mathematical symbols where translation would reduce precision.
+- Prefer a teaser and a method/process figure when both are available from official sources. Every image caption must be the complete Chinese translation of that image's original official caption, including figure number, subfigure descriptions, symbols, and named methods/datasets; do not replace it with a shortened summary.
+- One image stays as a normal full-width image block. When a card contains two or more images, prefer a balanced side-by-side layout: two images use equal-width columns; three or more continue in balanced two-column rows unless the user establishes another layout. Never crop, stretch, or lower image quality merely to make the grid fit.
+- On an existing page, preserve the user's manual column widths, image choices, captions, and ordering. Fetch the native block tree before editing and do not rebuild a correct manual layout just for normalization.
+- Within a Paper Abstract Card collection, sort entries newest to oldest by first public release date unless the user specifies another chronology. Keep non-paper research-result entries only when the collection explicitly allows them; preserve their official-site source format rather than inventing an arXiv row.
+- Verify the exact title, resource destinations, abstract source, image count, native layout, and captions after writing. The full Paper Card structural validator does not apply to Paper Abstract Cards; verify their smaller contract directly against native destination blocks or the Markdown representation.
 
 ## Required Source Order
 
