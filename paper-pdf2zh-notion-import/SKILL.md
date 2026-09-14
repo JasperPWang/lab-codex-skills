@@ -50,7 +50,9 @@ Do not use `D4RT.pdf`, `D4RT.zh.mono.pdf`, `paper.pdf`, `translated.pdf`, `Babel
 1. Resolve the paper from the supplied arXiv URL, identifier, or title.
 2. Download the latest arXiv PDF and save all `pdf2zh` outputs directly under `/Users/wangpu/Downloads/`. Use a task-specific subdirectory such as `/Users/wangpu/Downloads/<task-slug>/` to avoid collisions. Do not save paper conversion outputs under the vault or `.tools/tmp/`.
 3. Record the verified English title, Chinese title, authors, arXiv ID/version, and source URL.
-4. Check the official arXiv HTML and LaTeX source when available. These are used later to correct formulas, captions, tables, references, and section hierarchy.
+4. Resolve and archive the official arXiv HTML and LaTeX source when available. They are the semantic and structural authority for the repair, not optional spot-check material. Use the rendered PDF as the authority for visual order, page completeness, figure/table placement, and layout only. Treat `pdf2zh`, OCR, MinerU, and the imported Notion blocks strictly as a draft to be reconciled against those official sources.
+5. Before editing, build a source map that inventories every source section, subsection, natural paragraph, display equation, inline formula span, figure/caption, table/title/note, algorithm, footnote, appendix/supplement item, citation, and reference. Assign stable source IDs and map each existing Notion block to one or more source IDs. Record missing, duplicated, split, fused, reordered, or corrupted blocks explicitly.
+6. If official HTML and LaTeX disagree with extracted PDF text, prefer LaTeX for logical structure, paragraph boundaries, formulas, citations, labels, and captions; use official HTML as the rendered semantic cross-check; use the PDF to resolve visual placement and completeness. Never infer a source paragraph boundary from Chinese punctuation or adjacent Notion blocks when HTML/LaTeX is available.
 5. Do not infer identity from a filename alone. If the title cannot be verified, stop before importing.
 
 ### 2. Run pdf2zh
@@ -104,6 +106,10 @@ Compare the imported page with the original PDF and official HTML/LaTeX. Repair:
 - appendices, supplementary sections, algorithms, and reference lists;
 - author emails as ordinary visible text, not intentionally linked or code-formatted.
 
+**Mandatory paragraph-boundary reconstruction.** Reconstruct the manuscript against the official HTML/LaTeX source map paragraph by paragraph. Each source natural paragraph must correspond to one coherent target paragraph unless a native figure, table, algorithm, or display-equation block necessarily interrupts it. Merge PDF column/page-break fragments; split falsely fused source paragraphs; remove repeated overlap introduced by page headers, footers, captions, or column extraction; and preserve the original paragraph order. Chinese grammar, paragraph length, punctuation, and visual adjacency are only anomaly detectors and may not serve as the final authority. Do not preserve a `pdf2zh` block boundary merely because it already exists in Notion.
+
+**Mandatory full-content reconciliation.** Apply the same source map to headings, prose, inline and display math, figures/captions, tables/titles/notes, algorithms, footnotes, appendices/supplements, citations, and References. A repair that validates only block counts or selected formulas is incomplete. For every source ID, record exactly one of: mapped and verified; intentionally excluded by the user; or unresolved with an explicit reason.
+
 Use HTML/LaTeX to correct formulas, captions, references, and structure; use the PDF to verify visual placement and page completeness. Preserve images already present unless the source comparison proves they are wrong or missing. Never remove an image just to simplify formatting.
 
 #### Round 2: independent audit and correction
@@ -137,6 +143,8 @@ python3 ".tools/skills/notion-doc-workflow/scripts/fix-notion-citation-rich-text
 
 Two rounds means two full source/read-back cycles, not two passes over the same stale export.
 
+Round 2 must independently re-run the source-map coverage and paragraph-boundary comparison from fresh official HTML/LaTeX and fresh Notion blocks. A heuristic scan for short blocks, unfinished Chinese sentences, or unchanged media counts is insufficient. The completion record must include source-paragraph count, mapped target-paragraph count, split/fused/duplicate/reordered mismatch counts, and unresolved source IDs; all mismatch and unresolved counts must be zero unless the user explicitly accepted a documented exception.
+
 ### 6. Verify the package
 
 Before delivery, verify all of the following in Notion:
@@ -155,6 +163,9 @@ Before delivery, verify all of the following in Notion:
 - no whole-page replacement or delete-and-recreate operation was used without explicit user authorization;
 - each repair batch had a pre-write recovery snapshot and a post-write block-level re-fetch;
 - untouched sections retained their block types, hierarchy, media, formulas, tables, captions, and links.
+- an official HTML/LaTeX-derived source map exists and covers the complete source package;
+- every source natural paragraph has been reconciled to the target page, with zero unexplained split, fused, duplicated, omitted, or reordered paragraphs;
+- completion was not inferred from Chinese sentence heuristics, block-count preservation, or PDF text extraction alone.
 
 If any item fails, report the package as incomplete and continue repairing. Do not call the initial PDF import the final result.
 

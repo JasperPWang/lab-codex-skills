@@ -26,6 +26,7 @@ Content skills are Markdown-first. Route durable writes with `research-doc-workf
 - `bilingual-source-archive`
 - `chinese-technical-writing`
 - `daily-research-review`
+- `weekly-research-summary`
 - `experiment-report-writing`
 - `feishu-doc-workflow`
 - `notion-doc-workflow`

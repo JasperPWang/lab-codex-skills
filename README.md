@@ -175,6 +175,7 @@ Use short daily prompts. The agent should select the skill stack and only ask wh
 | Mock review / rebuttal | `帮我从审稿人角度审一下/回审稿意见` | `academic-paper-reviewer`, `nature-reviewer`, `nature-response` |
 | Grant / proposal | `帮我搭这个基金/博士课题 proposal` | `grant-writer` |
 | Daily review | `帮我做今天的科研经营复盘` | `daily-research-review` |
+| Weekly summary | `帮我写/规范化这周的周总结或 GPT Weekly Pick` | `weekly-research-summary`, `research-doc-workflow`, `notion-doc-workflow` |
 
 ## Downloaded Skills Worth Using
 
@@ -217,6 +218,11 @@ Use short daily prompts. The agent should select the skill stack and only ask wh
 ```text
 帮我把这个方向整理成 literature tree：
 <RESEARCH_TOPIC_OR_PAGE_URL_OR_OBSIDIAN_PATH>
+```
+
+```text
+帮我规范化这周的 Week Summary / GPT Weekly Pick（修公式与标题层级）：
+<NOTION_WEEK_PAGE_URL>
 ```
 
 ### Feishu / Lark

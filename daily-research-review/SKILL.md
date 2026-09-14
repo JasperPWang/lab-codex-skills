@@ -14,7 +14,9 @@ Treat the review as a personal research-company operating review, not a diary. T
 
 Default language is Chinese. Use English terms when they are the natural technical labels.
 
-For reader-facing Chinese review prose and TODOs, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md): keep method names, acronyms, project names, and simulation terms when they are names, but translate ordinary technical concepts into Chinese instead of mixing raw English phrases into Chinese sentences.
+Also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md) for reader-facing Chinese review prose and TODOs: keep method names, acronyms, project names, and simulation terms when they are names, but translate ordinary technical concepts into Chinese instead of mixing raw English phrases into Chinese sentences.
+
+For weekly literature picks / Week Summary pages, use [`weekly-research-summary`](../weekly-research-summary/SKILL.md) instead of this skill.
 
 ## Platform Placement
 

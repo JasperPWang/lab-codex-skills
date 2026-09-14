@@ -28,9 +28,17 @@ Prefer the available Notion connector / MCP / API tools in the current agent env
 3. Apply the narrowest update that preserves trusted blocks.
 4. Re-fetch and verify title, parent/database, properties, section order, links, media, formulas, and content presence.
 
+## Page Icon System
+
+For every Notion page creation, hierarchy build, or explicit icon-cleanup task, read and apply [`references/icon-system.md`](references/icon-system.md). New pages should receive an icon during creation whenever their role or topic can be identified. Use the reference's precedence rules so repeated page types receive the same icon across different repositories.
+
+Preserve an existing icon by default. Do not normalize or replace it unless the user explicitly asks to standardize existing icons. When filling missing icons in a subtree, enumerate the full requested subtree, skip archived/in-trash pages, update only the page `icon` property, and verify that title, parent, and blocks remain unchanged.
+
 If the environment exposes no Notion write path, state the blocker explicitly.
 
 ## Shared Write Workflow
+
+For migrations into Notion, follow [research-doc-workflow → Migration Rules](../research-doc-workflow/SKILL.md#migration-rules): “迁移” includes the source root and all descendants by default. Enumerate the source subtree before writing, recreate it as native Notion subpages, and verify every mapped page and parent relationship. A successful root-page write is not completion of a subtree migration.
 
 1. Read the task-specific content skill and keep its semantic contract unchanged.
 2. Confirm the Notion destination from the user's URL or explicit instruction.
@@ -63,7 +71,7 @@ Assume Markdown parity first. Convert only what Notion cannot represent the same
 | Paper-card metadata | Full Paper Card: one paragraph with four logical rows joined by exactly three `<br>` tags. Paper Abstract Card: one resource paragraph with `Paper` / optional `Project` / optional `Code` joined by native hard breaks. Never split either metadata/resource block into separate paragraphs. |
 | Math | Native inline/block equations from TeX; keep `$...$` / `$$...$$` only in the intermediate Markdown if the importer maps them to equations |
 | Inline code | For paths, filenames, commands, config keys: Notion inline `code` with default/black color (`annotations.color="default"`); do not color code gray/brown/red |
-| Images | Native image blocks + native captions; no duplicate caption paragraph after a successful native caption |
+| Images | Native image blocks + native captions; no duplicate caption paragraph after a successful native caption. When converting a web video to GIF, also use `web-video-to-gif`; default to an uncropped 960 px-wide asset and preserve the full source unless the user explicitly requests an excerpt. |
 | Wikilinks | Convert `[[Note]]` to Notion page links or plain titles; do not leave Obsidian wikilink chrome |
 | References | Keep `[n]` plain labels; append `. URL [url](url)` (or ` URL [url](url)` after an existing period) with display text equal to URL; do not turn References into numbered `1.` lists |
 | Body citations | Reader goal: plain outer `[]`, digit-only link text (`6`, not `[6`). Canonical draft: `[[n](pdf-url)]` / `[[n](url), [m](url)]`. **Notion write form:** escape the outer `[` → `\[[n](url)]` / `\[[n](url), [m](url)]` via `scripts/prepare-notion-citation-markdown.py` (single and multi: the first cite is always the one Notion corrupts). After write, still run `scripts/fix-notion-citation-rich-text.py <page>` until `--check-only` exits 0. The fixer splits `text.content` >2000 and sanitizes nested/overlong `link.url`. Rare mangled blobs (`[[[[9](url)](url)…`) may need a one-block manual rewrite. |
@@ -101,18 +109,18 @@ Content and field rules: [`paper-card-delivery`](../paper-card-delivery/SKILL.md
 ## Deep Dives / Surveys / Meetings
 
 - Structure and completion standards come from `paper-deep-dive`, `survey-builder`, or the relevant content skill.
-- Notion mapping: one parent page plus required subpages or database entries; native equations/images; editable outline or supported embed for trees—not Feishu mind-map boards unless the user explicitly wants an export image.
+- Deep-dive Notion mapping: one self-contained main page whose primary body is the complete `原文中译稿`, followed by a clearly separated, embedded `精读稿` section containing the Paper Card, editable tree, source-order close reading, and mechanism synthesis. `英文原文稿` and standalone `精读稿` child pages are optional and explicit-only. Use native equations/images and an editable outline or supported embed for trees—not Feishu mind-map tokens.
 - Preserve existing Notion layout and media unless the user asks to restructure.
 
 ### Manually Imported `pdf2zh-next` Pages
 
 Treat a manually imported translated PDF as a draft. For a deep-dive translation page:
 
-For the `pdf2zh-next` imported-page repair path, the existing Chinese manuscript page is the primary deliverable. Do not require or create `英文原文稿` and `精读稿` child pages unless the user explicitly requests them. Apply the source-fidelity, formula, figure/caption, table, appendix, reference/citation, and read-back checks to the Chinese page itself. This exception does not change the requirements for new Notion deep dives created from source materials.
+For the `pdf2zh-next` imported-page repair path, the existing Chinese manuscript page is the primary deliverable. Do not require or create `英文原文稿` and `精读稿` child pages unless the user explicitly requests them. Apply the source-fidelity, formula, figure/caption, table, appendix, reference/citation, required `精读部分`, and read-back checks to the Chinese page itself. This is the same one-page delivery structure used for new Notion deep dives.
 
 - rename the page to the verified Chinese paper title; keep the official English title in the opening block;
 - add the latest arXiv PDF, Project Page, and Code links above the abstract when those resources exist; do not add child-artifact links by default on this imported-page repair path;
-- restore heading levels from the source paper, repair PDF-induced paragraph splits and duplicate headers/footers, and inspect all major sections;
+- restore heading levels from the source paper and reconstruct every paragraph boundary from the official HTML/LaTeX source map. Repair PDF-induced paragraph splits, falsely fused paragraphs, reordered columns, duplicated overlap, headers, and footers across the complete manuscript rather than sampling only major sections. Use Chinese punctuation and adjacency only to locate candidates; never use them as the final boundary authority when HTML/LaTeX is available;
 - normalize numbered headings at every depth from their prefixes rather than imported font levels: `N` is a top-level heading, `N.M` a subsection, `N.M.K` a sub-subsection, and the same component-count rule continues deeper. Convert full-width heading punctuation `．` to ASCII `.` before parsing, so `4．2．方法` becomes `4.2. 方法`. In ordinary structural text, convert `／` to `/`, `－` to `-`, and citation/list brackets `［］` to `[]`; protect formulas, code, URLs, paths, and backslash-escaped sequences before cleanup and restore them exactly. Preserve unrelated Chinese punctuation in prose. Use one punctuation style throughout, defaulting to `N. Title` / `N.M. Subtitle` unless the source consistently uses `N Title` / `N.M Subtitle`;
 - convert inline/display formulas to native Notion equations where possible, preserving exact TeX when native conversion is unavailable;
 - use native image captions for complete translated figure captions and do not leave duplicate caption paragraphs;
@@ -126,6 +134,8 @@ For the `pdf2zh-next` imported-page repair path, the existing Chinese manuscript
 
 After repair, fetch the page again and verify title, links, headings, formulas, captions, tables, references, and citation URLs. Do not report the import as a completed deep dive until this read-back passes.
 
+For a `pdf2zh-next` repair, the final read-back must also compare fresh Notion blocks with the official HTML/LaTeX-derived source map and report zero unexplained missing, duplicate, split, fused, or reordered source paragraphs. Preserving image/table/equation counts does not prove prose fidelity. If official HTML/LaTeX is unavailable, record every attempted official route and use the best structured publisher source; PDF extraction plus heuristics is a documented fallback, not equivalent evidence.
+
 ## Workspace Hygiene
 
 - Keep downloads, MinerU outputs, and fetch dumps under `.tools/tmp/<task-slug>/` (or system temp), not the vault root.
@@ -134,8 +144,10 @@ After repair, fetch the page again and verify title, links, headings, formulas, 
 ## Acceptance Checklist
 
 - Destination is Notion (URL or explicit instruction), not a silent redirect.
+- Newly created pages and icon-cleanup targets follow `references/icon-system.md`; existing icons are preserved unless replacement was explicitly requested.
 - Content-skill contract passes without Notion-specific omissions.
 - Title, parent/database, properties, section order, links, formulas, media, and captions verified via re-fetch.
+- For migrations, the full source subtree is enumerated and mapped to verified Notion pages with matching parent-child relationships, unless the user explicitly narrowed the scope; report unresolved descendants rather than declaring completion.
 - No Feishu/Obsidian syntax residue in reader-facing content.
 - Paper-card metadata (if any) is one paragraph with three hard breaks.
 - Response names Notion and the actual write/verify status.
