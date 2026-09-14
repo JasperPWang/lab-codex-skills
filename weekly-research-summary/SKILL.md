@@ -66,18 +66,25 @@ Do not invent extra top-level sections unless the user asks. Empty required sect
 
 ### `GPT Weekly Pick`
 
-Group by GPT/session theme when the week has multiple reading threads:
+`GPT Weekly Pick` always contains these **four fixed tracks**, in this order and with these exact heading titles:
 
 ```markdown
 ## GPT Weekly Pick {toggle="true"}
-	### 会话一：<主题> {toggle="true"}
-		#### 1. <Paper Title> — <year or venue>
-		...
-	### 会话二：<主题> {toggle="true"}
-		...
+	### 每周论文推荐：HMR/3D 上游 {toggle="true"}
+	### 每周论文推荐：人场景联合重建 {toggle="true"}
+	### 每周论文推荐：人体交互生成 {toggle="true"}
+	### 每周论文推荐：物理AI {toggle="true"}
 ```
 
-If there is only one thread, paper `####` headings may sit directly under `GPT Weekly Pick`.
+Do not rename, reorder, merge, or drop these four tracks. If a track has no worthy paper that week, keep the toggle and write a one-line negative finding (e.g. 本周无达到阅读阈值的新工作), rather than deleting the section.
+
+Map GPT paste / multi-session dumps into these tracks by topic. Legacy sibling pages that used `会话一/二/三` should be normalized to the four tracks when repairing.
+
+Under each track, use paper-level headings:
+
+```markdown
+#### 1. <Paper Title> — <year or venue>
+```
 
 For each recommended paper, prefer this slot order when the source material supports it:
 
@@ -89,7 +96,7 @@ For each recommended paper, prefer this slot order when the source material supp
 6. **对你的启发**
 7. Clean resource links: arXiv abs/html + Project Page/Code when available
 
-End a session or the whole pick block with a short **本周优先级** when multiple papers compete: which to read first for which research line.
+End a track or the whole pick block with a short **本周优先级** when multiple papers compete: which to read first for which research line.
 
 ### `Paper Notes`
 
@@ -112,7 +119,7 @@ Non-paper research-method notes, mentor advice pages, or meta readings. Use call
 When the user pastes GPT weekly picks or asks to repair an existing week page:
 
 1. **Formulas**: convert mangled plain+escaped TeX (`\\\\rightarrow`, `\\\\text\\{...\\}`, doubled `MMμ\\\\mu`) into Notion `$`…`$` / `$$…$$`.
-2. **Headings**: lift flat dumps into the required toggle hierarchy; split multi-session pastes into `会话一/二/三`.
+2. **Headings**: lift flat dumps into the required toggle hierarchy; map multi-session pastes into the four fixed tracks (`HMR/3D 上游` / `人场景联合重建` / `人体交互生成` / `物理AI`).
 3. **Links**: strip `?utm_source=chatgpt.com` and similar trackers; replace proxy/anonymous viewers with canonical `https://arxiv.org/abs/...` or `/html/...`.
 4. **Media**: preserve existing images/captions when doing narrow edits. If a full-page replace is required and an image cannot be safely reattached, say so after write.
 5. **Residue**: remove ChatGPT chrome, “Anonymous View” wrappers, and cross-platform Markdown fences from reader-facing text.
@@ -130,6 +137,7 @@ When the user pastes GPT weekly picks or asks to repair an existing week page:
 
 - Hub child placement and week title are correct
 - `GPT Weekly Pick` / `Paper Notes` / `Progress & Plans` / `Reflection` exist as toggles
+- `GPT Weekly Pick` contains all four fixed tracks with the exact titles above
 - Paper slots are skim-friendly and end in a decision or priority when multiple picks exist
 - Native equations; no GPT TeX residue
 - Clean arXiv/project links; no ChatGPT tracking or proxy URLs

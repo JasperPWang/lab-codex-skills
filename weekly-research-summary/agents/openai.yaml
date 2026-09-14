@@ -1,4 +1,4 @@
 interface:
   display_name: "Weekly Research Summary"
-  short_description: "周总结：GPT Weekly Pick、论文笔记、进展计划与反思"
+  short_description: "周总结：四轨 GPT Weekly Pick、论文笔记、进展计划与反思"
   default_prompt: "Use $weekly-research-summary to create or normalize this week’s Week Summary page and GPT Weekly Pick."
