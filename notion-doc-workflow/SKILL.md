@@ -110,6 +110,7 @@ Content and field rules: [`paper-card-delivery`](../paper-card-delivery/SKILL.md
 
 - Structure and completion standards come from `paper-deep-dive`, `survey-builder`, or the relevant content skill.
 - Deep-dive Notion mapping: one self-contained main page whose primary body is the complete `原文中译稿`, followed by a clearly separated, embedded `精读稿` section containing the Paper Card, editable tree, source-order close reading, and mechanism synthesis. `英文原文稿` and standalone `精读稿` child pages are optional and explicit-only. Use native equations/images and an editable outline or supported embed for trees—not Feishu mind-map tokens.
+- Meeting notes follow [`feishu-doc-workflow`](../feishu-doc-workflow/SKILL.md) Meeting Notes even when the durable page is Notion. The dated page has exactly two children: `notes` and `原始材料：千问纪要与原文`. Do not add sibling children named `纪要` or `原文`; if a long transcript needs its own page, nest it under the archival page. The report footer is one `原始材料` section with those two mentions. When `replace_content` must keep children, include only those two `<page>` tags.
 - Preserve existing Notion layout and media unless the user asks to restructure.
 
 ### Manually Imported `pdf2zh-next` Pages
