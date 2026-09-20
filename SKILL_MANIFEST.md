@@ -22,6 +22,8 @@ Content skills are Markdown-first. Route durable writes with `research-doc-workf
 
 ## User-Maintained Lab Skills
 
+- `sivia`: pinned upstream scientific-figure workflow and CV case library, with a local runtime adapter for editable PPTX/draw.io delivery. See `sivia/SKILL.md` for provenance and runtime boundaries.
+
 - `ai-research-workflow`
 - `bilingual-source-archive`
 - `chinese-technical-writing`

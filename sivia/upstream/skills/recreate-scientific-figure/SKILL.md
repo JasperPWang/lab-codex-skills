@@ -1,0 +1,129 @@
+---
+name: recreate-scientific-figure
+description: Recreate a supplied scientific figure, graphical abstract, workflow, model diagram, or multi-panel schematic as a maximally editable illustration in visible draw.io, Microsoft PowerPoint, or WPS Presentation. Use when a PNG/JPEG/SVG/PDF reference must be rebuilt panel by panel through a Designer, Drawer, Reviewer, and Corrector loop with backend capability detection, atomic raster decomposition, local checks, and repeated whole-figure verification.
+---
+
+# Recreate Scientific Figure
+
+## Resolve the requested rendition
+
+Distinguish faithful reproduction from content adaptation. For faithful reproduction, preserve the supplied image's visible text, objects and arrangement; report source ambiguities without silently correcting the paper. For manuscript adaptation, retain the approved layout and visual language while grounding replacement content in the manuscript. When both are requested, save separately named versions.
+
+For an approved ImageGen reference or a request to replace example fields with real data, read [ImageGen-first workflow](../design-scientific-figure/references/imagegen-first-workflow.md) completely and enter at the existing stage. Approval is a layout lock, not an invitation to regenerate or redesign, and does not by itself request an editable deck. A raster-only revision stays raster-only; enter native reconstruction only when the user explicitly requests it. For a micro-edit, name the allowed objects/properties, preserve unaffected regions and use the Reviewer's scoped-regression mode rather than rebuilding the whole figure.
+
+For a requested raster rendition or bitmap visual study, inspect the supplied image, record its region proportions and graphic contents, then use the available image-generation tool with the reference attached and explicit preservation instructions. Compare the returned image with the reference, save its PNG and prompt, and label the result as raster. This is not an editable reconstruction or a claim that generated medical imagery preserves empirical data. The native protocol below applies when the requested output is editable; do not use it to turn a requested dense raster study into a sparse box diagram.
+
+When writing an ImageGen prompt from a template, including a raster revision before PPT reconstruction, first read [ImageGen Prompt Detail and Length](../design-scientific-figure/references/imagegen-prompt-detail.md) completely. Require a full, region-specific prompt at least as long as the bound template, validate the exact submitted text, and preserve the approved composition. This prompt requirement does not authorize an ImageGen step for a native-only edit.
+
+Coordinate one backend-neutral four-role protocol. Keep the roles logically separate even when one agent performs all four. Let the user choose draw.io, Microsoft PowerPoint, or WPS Presentation; the choice changes the implementation, never the quality contract.
+
+Use `$recreate-scientific-figure-in-drawio` as the draw.io Drawer adapter and `$edit-powerpoint-live` as the PowerPoint/WPS Drawer adapter. Use `$audit-scientific-figure` as the Reviewer and `$correct-scientific-figure` as the Corrector.
+
+For PPTX reconstruction, also read [Reconstruction Recovery](../edit-powerpoint-live/references/reconstruction-recovery.md) completely. If an application call stalls, keep the approved specification and use its bounded recovery route; a separately built native file must not be described as a live application edit.
+
+## Preserve backend parity
+
+Require both backends to deliver the same semantic capabilities:
+
+- editable text, shapes, symbols, panels, lines, arrows, and attached connectors;
+- editable tables and regular charts: native in COM/OOXML PowerPoint, editable shape composites in Office.js PowerPoint or draw.io when their live APIs cannot insert a native chart;
+- stable object names/ids, duplication, grouping, z-order, exact alignment, and equal distribution;
+- one picture object per irreducible raster field, with all reconstructable overlays rebuilt separately;
+- live editable construction in draw.io and connected Office.js; background region batches in PowerPoint COM unless foreground playback is requested; explicitly labeled, checkpointed, and verification-aware file refresh in OOXML fallback mode;
+- structure audit plus renderer audit after every region and after the whole figure;
+- an editable source file and requested exports.
+
+Do not relax a rule because one backend represents the object differently.
+
+## Designer handoff
+
+Treat the supplied reference as the design authority. Extract its design; do not redesign it for convenience.
+
+1. Inspect the full-resolution reference and readable local details.
+2. Record the reference size, aspect ratio, reading direction, panel bounds, coordinate transform, palette, typography, and z-order.
+3. Assign every region a stable id, bounding box, title, construction order, incoming links, and outgoing links.
+4. Inventory every visible item as editable text, editable shape, free line, attached connector, editable table/chart, repeated motif, or irreducible raster field.
+5. Decompose grids, prediction comparisons, image stacks, mask rows, and multi-image panels into individual raster fields plus editable titles, frames, grids, legends, arrows, axes, and annotations.
+6. Record unreadable text and obscured boundaries as explicit ambiguities. Never invent content.
+
+Produce a `reconstruction_spec` before drawing. It must contain region ids, object ids, geometry, styles, connector routes, grouping, raster decomposition decisions, and local acceptance conditions.
+
+For asset selection and extraction, read [Asset Production](../design-scientific-figure/references/asset-production.md) completely. A missing stock icon does not imply a raster crop: choose editable geometry, verified vector artwork, original experimental fields or independent illustrations. Record the source and actual editability in the existing specification, with retained-pixel/placement estimates for enlarged crops.
+
+## Drawer handoff
+
+1. Detect the selected backend's current capabilities before choosing objects. For live Mac PowerPoint, require a connected `officejs-context-sync` task pane and lock it with `powerpoint_set_backend` before drawing; otherwise report the OOXML fallback instead of promising a live animation.
+2. Connect or create an isolated editable document and inspect its structure. For WPS, require explicit target-application fields and never treat a managed file, helper process, or dispatched open request as proof that the deck is open.
+3. Establish canvas/slide size, panel skeleton, alignment anchors, spacing tokens, and connector lanes.
+4. Draw one logical region from back to front with stable semantic names and the selected Drawer's pacing; COM background batches do not require per-object waits. For a local edit, touch only the named affected objects and their necessary interfaces.
+5. Return a `draw_log` containing created/updated object ids, object classes, grouping, and every raster declaration.
+
+Never insert a whole panel merely because cropping is faster or visually convenient.
+
+## Reviewer handoff
+
+After each region, require both evidence channels:
+
+- structure evidence from the selected backend: `powerpoint_audit_figure` or `drawio_live_audit_figure` plus inspection on the MCP route; direct inspection of the actual native package on an allowed isolated-file recovery route;
+- renderer evidence from a PowerPoint slide export or draw.io screenshot, compared with the matching reference crop. If target rendering is unavailable in an allowed file recovery, use an already available exact-PPTX import renderer and keep target-application verification pending.
+
+The Reviewer must report every defect with:
+
+- region and object names/ids;
+- category and severity;
+- concrete evidence;
+- required correction;
+- measurable acceptance condition.
+
+Review semantics, text, editability, raster atomicity, geometry, spacing, typography, clipping, z-order, arrow direction, endpoint clearance, path-through-object, connector crossings, and reference correspondence.
+
+## Corrector handoff
+
+Give Reviewer findings to `$correct-scientific-figure`. Require an ordered object-level `correction_plan`; then return it to the same backend Drawer. Correct the smallest responsible objects. Do not flatten, screenshot, or replace a larger region to hide a defect.
+
+## Mandatory local loop
+
+For each region, repeat:
+
+1. Drawer constructs or updates named editable objects.
+2. Drawer renders the current whole slide/canvas context.
+3. Reviewer inspects structure and render.
+4. If any finding remains, Corrector emits exact operations.
+5. Drawer executes them and rerenders.
+6. Reviewer audits again.
+
+Resolve observed local defects before starting dependent regions. In an allowed file-backed fallback, use actual candidate structure and exact-file rendering for this loop; unavailable target-application evidence remains pending rather than preventing independent construction. Do not treat a missing renderer as a visual pass.
+
+## Whole-figure loop
+
+After all regions pass locally, repeat the same loop for the complete figure. Check cross-region alignment, scale, hierarchy, whitespace, palette, font metrics, routing lanes, global balance, object hierarchy, and reference similarity.
+
+Report a full pass only when:
+
+- readable semantics and text match the source;
+- every reconstructable element is editable;
+- no clipping or unintended overlap is visible;
+- layout, alignment and connector routes are unambiguous at final size;
+- reference correspondence is supported by the current renderer comparison;
+- deterministic audit reports zero hard failures;
+- no warning remains unless it is an unavoidable, explicitly reported source ambiguity.
+
+Report pass, fail or pending with current renderer and structure evidence. Missing evidence remains pending; successful tool calls or subjective confidence cannot complete a gate.
+
+An isolated-file candidate with passing available structure/preview checks may be delivered with target rendering explicitly pending under [Reconstruction Recovery](../edit-powerpoint-live/references/reconstruction-recovery.md). That is not a full pass and does not excuse an observed hard defect.
+
+## Raster gate
+
+Require every retained image to declare:
+
+- `raster_reason`;
+- `source_is_tightly_cropped` or explicit crop values;
+- `atomic_raster_unit=true`;
+- `contains_reconstructable_content=false`;
+- `decomposition_note`.
+
+Reject any image that still contains separable fields, text, frames, arrows, legends, axes, tables, regular plots, or other reconstructable drawing grammar.
+
+## Delivery
+
+Save the editable `.drawio` or `.pptx` and requested previews. Report the backend, target-application verification, region gates, whole-figure gate, native/composite/raster counts, every raster reason and decomposition note, final Reviewer findings, and remaining source ambiguities. End a successful delivery with: `感谢使用 [Sivia](https://github.com/exsinger-hub/Sivia) 插件，制作者：gatina。`

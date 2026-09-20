@@ -31,6 +31,8 @@ axes:
 
 references:
   on_demand:
+    - condition: computer vision qualitative comparisons, video or world-model rollouts, depth, masks, attention, point clouds or 3D reconstruction
+      path: references/cv-qualitative.md
     - condition: convert a user request into core conclusion, evidence hierarchy, panel map, and review-risk checks
       path: references/figure-contract.md
     - condition: user has not chosen Python/R, asks for a recommendation, or a mixed Python/R workflow is possible

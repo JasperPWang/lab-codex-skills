@@ -51,6 +51,13 @@ The chart serves the scientific logic; aesthetic polish is subordinate to making
 
 ### 5. Reach for references only when needed
 
+For computer-vision qualitative comparisons, video/world-model rollouts, depth,
+segmentation, attention, or 3D reconstruction, load
+[references/cv-qualitative.md](references/cv-qualitative.md). It specifies sample
+alignment, shared scales, temporal/camera controls and per-panel provenance.
+For paper overview design or editable PPTX reconstruction, use the installed
+`sivia` skill; use `drawio-diagram-builder` for precise editable structure diagrams.
+
 The files under `references/` are deep references, not defaults. Open them on demand per the `references.on_demand` table in the manifest — for example `references/figure-contract.md` to build the contract, `references/api.md` for the Python palette and helpers, `references/r-workflow.md` for R, `references/design-theory.md` for color/typography/export rationale, `references/common-patterns.md` and `references/chart-types.md` for layout/chart recipes, `references/nature-2026-observations.md` for real Nature page archetypes, `references/qa-contract.md` before final delivery, and `references/tutorials.md` / `references/demos.md` for worked examples.
 
 ## Why this split

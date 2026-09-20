@@ -1,0 +1,5 @@
+{
+  "current": "restart-2026/generation-summary.json",
+  "historical": "archive/generation-summary.before-restart.json",
+  "note": "Historical 24-pair wave is excluded from the current reference pool except the three specifically approved anchors."
+}
