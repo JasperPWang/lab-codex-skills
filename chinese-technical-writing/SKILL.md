@@ -82,7 +82,7 @@ If a term has no stable Chinese translation or the English form is the community
 ## Document-Specific Handling
 
 - Paper cards: also use `paper-card-delivery`; the card's metadata takeaway, caption, and seven fixed bullets must be Chinese-first.
-- Paper deep dives: preserve official source text in `英文原文稿`; enforce Chinese-first wording in the body of `原文中译稿` and parent-page `精读稿`; keep References / bibliography entries in the original English rather than translating them.
+- Paper deep dives: enforce Chinese-first wording in the body of `原文中译稿`. A `精读稿` or `英文原文稿` is written only when the user explicitly requests it; apply the same Chinese-first rule to a requested `精读稿`, and preserve official English source text in a requested `英文原文稿`. Keep References / bibliography entries in the original English rather than translating them, except that a cited paper title in a Chinese manuscript may be translated when `paper-deep-dive` allows it.
 - Bilingual source archives: do not modify the English original blocks; enforce this rule only on Chinese translation blocks or Chinese notes.
 - Feishu rich pages: normalize wording with narrow text edits; do not rewrite or damage images, grids, tables, formulas, or whiteboards just to fix language.
 - Notion pages/databases: preserve native blocks, properties, relations, equations, captions, and page links while editing prose.

@@ -1,6 +1,6 @@
 ---
 name: paper-deep-dive
-description: Canonical single-paper deep-dive delivery standard, with Notion as the durable target. Use whenever the user mentions deep dive, 深读, 详细解析, detailed-read, dive into a paper, full paper reading, 原文中译稿, or asks to audit/repair a deep-dive package. Produces one self-contained Notion main page whose primary body is the complete 原文中译稿 and whose 精读部分 contains the Paper Card, editable 论文解析树, source-order close reading, and mechanism synthesis. English-manuscript and standalone close-reading child pages are optional only when explicitly requested.
+description: Canonical single-paper deep-dive delivery standard, with Notion as the durable target. Use whenever the user mentions deep dive, 深读, 详细解析, detailed-read, dive into a paper, full paper reading, 原文中译稿, or asks to audit/repair a deep-dive package. Produces one self-contained Notion main page whose body is only the complete 原文中译稿. Do not add a 精读稿, 精读部分, Paper Card, 论文解析树, close reading, or mechanism synthesis unless the user explicitly requests that artifact in the current task. English-manuscript and close-reading pages are optional only when explicitly requested.
 ---
 
 # Paper Deep Dive
@@ -15,7 +15,7 @@ This skill is the only canonical delivery standard for single-paper deep dives. 
 
 When any user request says `deep dive`, `深读`, `详细解析`, `detailed-read`, `dive into`, `精读这篇论文`, or requests a complete `原文中译稿`, treat it as this full workflow unless the user explicitly asks for a lighter artifact such as quick summary, paper card only, partial translation, or English manuscript only. A lighter artifact must be labeled as such and must not be called a compliant deep dive.
 
-The completion standard is product-level, not effort-level. A good summary or a partial translation is still incomplete. A package is compliant when the main page contains the complete Chinese manuscript and its required 精读部分, and figures/captions, formulas, references, hierarchy, and target-platform read-back verification all pass the delivery gate below. Child pages are not part of the default completion gate.
+The completion standard is product-level, not effort-level. A good summary or a partial translation is still incomplete. A package is compliant when the main page contains the complete Chinese manuscript, and figures/captions, formulas, references, hierarchy, and target-platform read-back verification all pass the delivery gate below. A `精读稿` is not part of the default package. Do not add a main-page `精读稿` / `精读部分`, Paper Card, editable `论文解析树`, source-order close reading, or mechanism synthesis unless the user explicitly requests that artifact in the current task. Child pages are not part of the default completion gate. Missing a `精读稿` is never a completion failure.
 
 ## Canonical Platform Delivery Gate
 
@@ -27,7 +27,7 @@ When this workflow creates or modifies a paper card, also use [`paper-card-deliv
 
 ## Canonical Chinese Technical Writing Gate
 
-For `原文中译稿`, `完整中文译稿`, `精读稿`, Chinese figure captions, Chinese table captions/notes, main-entry summaries, and Chinese paper-card prose, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Preserve official English source text in `英文原文稿`, formulas, named architectures/models/methods such as `Transformer` and `DINO`, dataset names, symbols, and table cell content. Translate generic technical concepts into Chinese, but do not translate official names or force them into awkward Chinese names.
+For `原文中译稿`, `完整中文译稿`, Chinese figure captions, Chinese table captions/notes, and any explicitly requested `精读稿` or Chinese paper-card prose, also use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md). Preserve official English source text in `英文原文稿`, formulas, named architectures/models/methods such as `Transformer` and `DINO`, dataset names, symbols, and table cell content. Translate generic technical concepts into Chinese, but do not translate official names or force them into awkward Chinese names.
 
 ## Borrowed Method Layer
 
@@ -38,14 +38,14 @@ This is the user's canonical deep-dive workflow. It may borrow useful reading me
   correspondence, keep figure/table captions attached to the relevant text, and
   record uncertainty instead of guessing.
 - Do not publish the external `nature-reader` artifact contract as-is. A lone `paper.md`, `source_map.json`, `translation_notes.md`, or bilingual reader does not replace the required self-contained main page. These files may be intermediate material or part of an explicitly requested Obsidian package.
-- Use the source map as an internal scaffold for the main-page `原文中译稿` and source-grounded `精读部分`; use it for an `英文原文稿` only when the user explicitly requests that optional artifact. The final deliverable must use the selected platform's native images/captions, formulas, hierarchy, and read-back verification through `research-doc-workflow`.
-- In the main-page `精读部分`, short bilingual source snippets or block IDs may be included when they clarify a key claim, equation, or figure, but this section remains analytical material rather than a second translation.
+- Use the source map as an internal scaffold for the main-page `原文中译稿`; use it for an `英文原文稿` or a `精读稿` only when the user explicitly requests that optional artifact. The final deliverable must use the selected platform's native images/captions, formulas, hierarchy, and read-back verification through `research-doc-workflow`.
+- Do not publish the source map, bilingual snippets, or block IDs on the default manuscript page. If the user explicitly requests a `精读稿`, short bilingual source snippets or block IDs may appear there when they clarify a key claim, equation, or figure. That section remains analytical material rather than a second translation.
 
 ## Mechanism Interrogation Gate
 
 Treat deep reading as reconstruction followed by audit. First recover the strongest version of the authors' logic; only then test whether the problem is important, the assumptions are defensible, the design addresses the stated bottleneck, the evidence excludes relevant alternatives, and the conclusion stays within the evidence boundary. Do not confuse skepticism with automatic rejection.
 
-Before calling the analytical close reading complete, establish all of the following from the source package:
+This mechanism audit is an internal reading check. Do not write it into the default page. Publish it only inside a `精读稿` that the user explicitly requested in the current task. Before calling such an explicitly requested close reading complete, establish all of the following from the source package:
 
 - the concrete prior-method bottleneck and its proposed causal explanation;
 - the key assumptions and the falsifiable predictions they imply;
@@ -56,12 +56,12 @@ Before calling the analytical close reading complete, establish all of the follo
 - the data, scene, supervision, or optimization conditions under which the method should fail;
 - the smallest credible alternative design and the next question that would discriminate between explanations.
 
-Keep `作者声称`, `实验支持`, `我们的推断`, and `尚未验证` distinguishable in analytical notes. These are evidence statuses, not mandatory repeated headings. Do not inject this analysis into the source-faithful `原文中译稿`; it belongs in the main-page `精读部分`, including the editable tree and analytical close reading.
+Keep `作者声称`, `实验支持`, `我们的推断`, and `尚未验证` distinguishable in analytical notes. These are evidence statuses, not mandatory repeated headings. Do not inject this analysis into the source-faithful `原文中译稿`. If a `精读稿` was explicitly requested, put the analysis only in that separated section.
 
 ## When To Use
 
 - Reading a new paper deeply rather than only summarizing it.
-- Converting the verified paper source into one self-contained main page: complete faithful Chinese translation plus a clearly separated 精读部分 containing the paper card, editable paper-analysis tree, source-order close reading, and mechanism synthesis.
+- Converting the verified paper source into one self-contained main page whose body is the complete faithful Chinese translation. Do not append a 精读稿.
 - Preparing Notion paper pages/notes, or repairing an existing legacy page in another platform when explicitly requested.
 - Auditing whether figures, claims, assets, and citations are complete.
 
@@ -69,9 +69,9 @@ If the user says `deep dive`, `深读`, `详细解析`, `dive into`, or asks to 
 
 ## Non-Negotiable Deliverable
 
-For papers with an accessible official PDF or full-paper HTML, the sole mandatory durable artifact is the Notion main page. Its primary body is the complete faithful `原文中译稿` in source order, followed by a clearly separated, embedded section titled `精读稿`. That section contains the Paper Card, editable `论文解析树`, source-order analytical close reading, and integrated mechanism synthesis.
+For papers with an accessible official PDF or full-paper HTML, the sole mandatory durable artifact is the Notion main page. Its body is the complete faithful `原文中译稿` in source order, and it stops there. Do not append a section titled `精读稿` or `精读部分`. Do not add a Paper Card, editable `论文解析树`, source-order close reading, or mechanism synthesis to that page.
 
-`<paper short name>｜英文原文稿` and a standalone `<paper short name>｜精读稿` child page are optional artifacts. Do not create either by default. Create them only when the user explicitly requests them or supplies an existing hierarchy that must be preserved during migration/repair. Their absence is never a deep-dive completion failure.
+`<paper short name>｜英文原文稿` and `<paper short name>｜精读稿` are optional artifacts. Do not create either by default, and do not embed a `精读稿` in the main page by default. Create a `精读稿` only when the user explicitly requests it in the current task, or when repairing a page whose existing `精读稿` the user asked to keep. Absence of a `精读稿` is never a completion failure. An existing `精读稿` on a page under manuscript repair stays untouched unless the user asks to remove or revise it; do not treat that repair as a request to add or expand one.
 
 If the PDF can be downloaded or viewed, assume the complete Chinese manuscript can be produced by MinerU extraction plus official HTML / LaTeX / PDF verification. Do not use context length, page length, one-turn time, target-page size, translation workload, or "current tool path" as reasons to downgrade it into a section summary, structured outline, selected excerpts, or partial translation. Chunk the paper by sections, append incrementally, and continue until the main page is complete.
 
@@ -109,10 +109,10 @@ When the user has already translated a paper PDF with `pdf2zh-next` and manually
 
 **One-line workflow trigger:** `帮我 pdf2zh 并导入 Notion` is sufficient to invoke the full import workflow. Do not ask the user to restate the repair rules. Resolve the latest arXiv PDF, run the local conversion, import the Chinese PDF directly into the supplied Notion parent, then perform the two-round repair/read-back cycle below.
 
-**Imported-page delivery rule:** The existing imported Chinese page is the primary deliverable, matching the standard deep-dive structure. Do **not** require creation of `英文原文稿` or standalone `精读稿` child pages unless the user explicitly asks for them. Verify the Chinese manuscript against the latest official PDF and available HTML/LaTeX, repair source-order structure, formulas, figures and native captions, tables, appendices, references, and body citations, add or repair the required main-page `精读部分`, then perform target-platform read-back verification.
+**Imported-page delivery rule:** The existing imported Chinese page is the primary deliverable, and that deliverable is the Chinese manuscript only. Do **not** create `英文原文稿`, a main-page `精读稿` / `精读部分`, a Paper Card, an editable `论文解析树`, close-reading notes, or a standalone `精读稿` child page unless the user explicitly asks for that artifact in the current task. Verify the Chinese manuscript against the latest official PDF and available HTML/LaTeX, repair source-order structure, formulas, figures and native captions, tables, appendices, references, and body citations, then perform target-platform read-back verification. A missing `精读稿` is correct, not incomplete.
 
 - **A. Identify the source.** Locate the imported page and source PDF. Preserve imported figures, tables, and page order as draft material, then compare them against the source PDF and, when available, official HTML / LaTeX.
-- **B. Fix identity and navigation.** Rename the page to the verified Chinese paper title only. Keep the official English title in the opening block as an ordinary paragraph, not a heading. Add the latest arXiv PDF, Project Page, and Code links above the abstract when available. Do not add `英文原文稿` or standalone `精读稿` child links unless explicitly requested; never infer URLs from a filename.
+- **B. Fix identity and navigation.** Rename the page to the verified Chinese paper title only. Keep the official English title in the opening block as an ordinary paragraph, not a heading. Add the latest arXiv PDF, Project Page, and Code links above the abstract when available. Do not add `英文原文稿` or `精读稿` links or sections unless explicitly requested; never infer URLs from a filename.
 - **C. Repair structure.** Restore heading levels from the paper's numbered hierarchy, reconnect PDF-split paragraphs, remove duplicate headers/footers and conversion artifacts, and keep figures/tables near their source positions.
 - **C1. Normalize numbered headings at every depth.** Use the numeric prefix to determine hierarchy, not the importer’s visual level: a one-part prefix such as `N.` (`3.`, `4.`) is a top-level section; a two-part prefix such as `N.M.` (`3.1.`, `4.2.`) is its subsection; a three-part prefix such as `N.M.K.` (`3.1.1.`, `4.2.1.`) is its sub-subsection; continue the same rule for deeper prefixes. Normalize full-width heading punctuation `．` (U+FF0E) to the ASCII period `.` before parsing, so `4．2．方法` becomes `4.2. 方法`. In ordinary structural text, normalize full-width slash `／` (U+FF0F) to `/`, full-width hyphen-minus `－` (U+FF0D) to `-`, and full-width brackets `［］` (U+FF3B/U+FF3D) to `[]` when they are citation, list, or link delimiters. Protect LaTeX, code, URLs, file paths, and existing backslash-escaped sequences before this cleanup, then restore them exactly; never perform a blind global replacement. Do not replace unrelated Chinese punctuation in ordinary prose. Default to `## 3. Section title`, `### 3.1. Subsection title`, and `#### 3.1.1. Sub-subsection title`. If the source consistently omits punctuation (`3 Title`, `3.1 Subtitle`), preserve that style for the whole manuscript; never mix punctuated and unpunctuated forms or place a deeper numeric prefix above its parent.
 - **D. Repair formulas.** Restore inline formulas as native inline equations or exact `$...$` LaTeX, restore display equations and numbering, and sample early, middle, formula-heavy, and appendix sections.
@@ -121,7 +121,7 @@ When the user has already translated a paper PDF with `pdf2zh-next` and manually
 - **E1. Repair imported table corruption.** Inspect every imported table block and its surrounding text for OCR/PDF conversion residue: duplicated Markdown pipe tables after a native table, broken rows or columns, repeated cell fragments, garbled characters, malformed separators, and captions fused to table data. Keep one authoritative editable table, reconstruct rows/cells from the official PDF/HTML when the extracted structure is reliable, and otherwise add an official PDF/HTML table screenshot as the visual authority. Remove duplicate pseudo-tables and keep exactly one translated table title/note attached to the table.
 - **E2. Author contacts and resource links.** Author email addresses must be written as ordinary visible text, not intentionally wrapped in Markdown links, `mailto:` links, or code formatting. Notion may auto-link a bare email during rendering; do not add an explicit link or change its visible text to code merely to fight that platform behavior. **Only in the opening resource block of a deep-dive Chinese manuscript**, omit the heading `来源` and display each link's URL as its link text, for example `[https://arxiv.org/pdf/<id>](https://arxiv.org/pdf/<id>)`. This URL-as-label rule does not apply to English manuscripts, paper cards, or general research documents.
 - **F. Repair citations.** A Chinese-manuscript reference **title may be translated**, but authors, venue, publisher, year, volume/issue, pages, DOI/arXiv identifiers, URLs, and other bibliographic metadata remain in the source language. Keep `[n]` labels, one reference per paragraph, and restore verified PDF URLs. Body citation links must use the same URL map.
-- **G. Verify completion.** Run the full main-page completion gate and record unresolved figure, table, formula, reference, URL, hierarchy, Paper Card, editable-tree, or close-reading issues. A manually imported page is complete only after repair and fetch/read-back verification; the absence of optional child artifacts is not a failure.
+- **G. Verify completion.** Run the full main-page completion gate and record unresolved figure, table, formula, reference, URL, or hierarchy issues. A manually imported page is complete only after repair and fetch/read-back verification. Absence of a `精读稿`, Paper Card, or editable tree is not a failure. Presence of a newly added `精读稿` that the user did not request is a failure.
 
 **Two-round repair is mandatory for imported pages.** Round 1 fixes structure and source fidelity against HTML/LaTeX/PDF. Round 2 starts from a fresh Notion read-back and independently audits formulas, inline math, figure/caption placement, table integrity, references, body citation links, appendices, and conversion residue. A first-pass upload or a single visual scan is never a completed delivery.
 
@@ -134,20 +134,15 @@ When the user has already translated a paper PDF with `pdf2zh-next` and manually
 7. Create the complete faithful Chinese manuscript directly in the main page from the corrected source scaffold. It must preserve section hierarchy, paragraph correspondence, formulas, figure/table positions, citations, captions, references, appendices/supplements, and layout structure as much as the target editor allows. Translate the paper body, figure captions, table captions/notes (表注), appendix/supplement prose, and explanatory text into Chinese, but keep table cell content in the original English and keep References / bibliography entries source-faithful with the `[n] … . URL [url](url)` PDF-link contract. A partial translation is allowed only as a clearly marked WIP state.
 8. **Chinese terminology correction gate (mandatory after the Chinese manuscript draft exists):** do a dedicated second pass over `原文中译稿` for terminology only. Verify key method/model/dataset/loss/module terms are consistent; keep named architectures, models, methods, datasets, and official components such as `Transformer` and `DINO` in their official English form; add a Chinese gloss only when it improves comprehension; and translate generic technical concepts instead of leaving avoidable English phrase islands. Fix inconsistent renderings of the same term across sections. Do not mark the Chinese manuscript complete until this terminology pass is done.
 8b. **Reference / citation verification gate (mandatory for the main manuscript):** build a single `[n] → PDF URL` map (prefer arXiv PDF), apply it to References (`. URL [url](url)`) and body (`[[n](url)]`), then verify URL correctness and cross-consistency as specified in Reference and Citation Link Contract. If an optional English manuscript is published, apply and verify the same map there. For an imported PDF2ZH Chinese manuscript, the cited paper title may be translated, but all other bibliographic fields must remain source-faithful.
-9. Create or update the main reader-facing deep-dive page. The primary body is the complete `原文中译稿` and the default reading surface. Its opening must follow a paper-like title block before the abstract: official English title, Chinese title, original English author list and affiliations, then separate verified links for the latest arXiv PDF, Project Page, and Code. Continue with the source-faithful abstract and manuscript in normal paper order. After the full manuscript, add a clearly separated `精读部分`; do not interleave analysis with the translation. Do not create or link child artifacts unless explicitly requested.
-10. Create an editable `论文解析树` that follows the paper's actual reasoning: problem -> concrete bottleneck -> key assumption -> design/mechanism -> changed information or constraint -> predicted effect -> decisive evidence -> boundary. Make the information-flow view (what passes between modules) and the causal-chain view (why the design should change the result) distinguishable. Add losses/training, datasets/evaluation, limitations, and user research implications where they clarify this logic rather than as disconnected inventory branches. Use a native Feishu mind map for Feishu, a structured page/database or supported embedded artifact for Notion, and Mermaid/Canvas plus a searchable linked outline for Obsidian. Do not substitute a static screenshot when an editable representation is available.
-11. In the main-page `精读部分`, create the Paper Card first, then the editable `论文解析树`, then a source-order analytical close reading and integrated mechanism synthesis. Follow the paper's own section order and local context: Abstract / Introduction, numbered sections, named subsections, conclusion, then appendices or supplementary material. For each part, explain which claim it advances, why that step is needed, what mechanism or evidence is introduced, and what remains unresolved. Do not insert a repeated per-section heading or paragraph such as "what this means for my world-model research" / "对你的 world model 研究意味着什么". Put user-specific implications and future project ideas only in the final synthesis. This is interpretation, not part of the source-faithful translation.
-    - Inside `精读部分`, use `###` or lower-impact paragraph/list structure for source-order close-reading subsections. Do not use `####` headings for close-reading subsections because `####` is reserved for paper-card titles and is checked by `paper-card-delivery` validators.
-12. After the source-order close reading, write one integrated mechanism synthesis. Its headings may vary with the paper, but it must cover the strongest author argument, assumptions and falsifiable predictions, claim-evidence-alternative-explanation alignment, counterfactual ablation predictions, minimal necessary design, failure boundaries, and a discriminating next research question. Add user-specific transfer only at the end and only when it follows naturally from the paper.
-13. Validate the Paper Card placed inside the main-page `精读部分` using [`paper-card-delivery`](../paper-card-delivery/SKILL.md); run its validator when a local Markdown draft exists.
-14. Store figures and assets in a stable assets folder.
-15. Mark author claim, experimental support, inference, citation needed, and unresolved questions separately.
+9. Create or update the main reader-facing page. Its body is the complete `原文中译稿` and nothing after it. The opening must follow a paper-like title block before the abstract: official English title, Chinese title, original English author list and affiliations, then separate verified links for the latest arXiv PDF, Project Page, and Code. Continue with the source-faithful abstract and manuscript in normal paper order, through references and any included appendices. Stop there. Do not append `精读稿`, `精读部分`, a Paper Card, `论文解析树`, close reading, or mechanism synthesis. Do not create or link child artifacts unless explicitly requested.
+10. A `精读稿` is out of scope unless the user explicitly requests it in the current task. When they do, keep it clearly separated from the source-faithful `原文中译稿`, either as a later section on the same page or as `<paper short name>｜精读稿`. Inside that requested artifact only: create the Paper Card first, then the editable `论文解析树`, then a source-order analytical close reading and integrated mechanism synthesis. The tree follows problem -> concrete bottleneck -> key assumption -> design/mechanism -> changed information or constraint -> predicted effect -> decisive evidence -> boundary, and keeps information flow distinguishable from the causal chain. Follow the paper's own section order. Do not insert a repeated per-section heading or paragraph such as "what this means for my world-model research" / "对你的 world model 研究意味着什么". Put user-specific implications only in the final synthesis. Use `###` or lower-impact paragraph/list structure for close-reading subsections. Do not use `####` headings for those subsections because `####` is reserved for paper-card titles. Validate that Paper Card with [`paper-card-delivery`](../paper-card-delivery/SKILL.md).
+11. Store figures and assets in a stable assets folder.
 
 Paper-card content standards live in [`paper-card-delivery`](../paper-card-delivery/SKILL.md). This deep-dive skill must not duplicate or override paper-card source verification, metadata, image/caption selection, fixed bullet slots, sorting, or structural validation.
 
 ## Local MinerU Extraction
 
-For future deep dives, first create a MinerU conversion draft when a PDF is available. Use it as the source-order scaffold for the main-page `原文中译稿` and `精读部分`, and for an English manuscript only when that optional artifact is explicitly requested.
+For future deep dives, first create a MinerU conversion draft when a PDF is available. Use it as the source-order scaffold for the main-page `原文中译稿`. Use it for an English manuscript or a `精读稿` only when that optional artifact is explicitly requested.
 
 - Preferred wrapper in this vault: `$WORLD_MODEL_VAULT/.tools/mineru-md.sh`
 - MinerU binary on this machine: `$WORLD_MODEL_VAULT_MINERU_BIN`
@@ -240,35 +235,27 @@ For paper deep dives and complete manuscript pages, formulas are source-fidelity
 
 Use this fixed semantic package on every platform:
 
-- Main page: title must be the verified Chinese paper title only, including the method name when it is part of that title. Do not append status or artifact suffixes such as `原文中译稿`, `中文`, `深度笔记`, `学习页`, `Deep Dive`, `阅读笔记`, or `解析`. Its primary body is the complete faithful `原文中译稿`, followed by a clearly separated, embedded `精读稿` section containing the Paper Card, editable `论文解析树`, source-order close reading, and mechanism synthesis. Do not create child pages by default.
+- Main page: title must be the verified Chinese paper title only, including the method name when it is part of that title. Do not append status or artifact suffixes such as `原文中译稿`, `中文`, `深度笔记`, `学习页`, `Deep Dive`, `阅读笔记`, or `解析`. Its body is the complete faithful `原文中译稿` and ends with that manuscript. Do not add a `精读稿` section. Do not create child pages by default.
 - Main-entry opening block: before `摘要`, place the official English title, the Chinese title directly below it, the original English author list and affiliations, and three separate verified links in this order: `最新 arXiv PDF`, `Project Page`, `Code`. Write the English title and the Chinese title as ordinary paragraphs. Do not put either title in a heading block (`#`, `##`, `###`, `####`, or a native heading). The page property title remains the Chinese paper title, and the first body heading is `摘要` or the first numbered section. The arXiv link must point to the latest available arXiv PDF version, not merely the abstract/landing page. Project and Code links must point to the official project or repository when available.
 - Optional child artifact: `<paper short name>｜英文原文稿`, only when explicitly requested. If created, it must contain the complete original English manuscript and pass its own source/read-back verification.
-- Optional child artifact: `<paper short name>｜精读稿`, only when explicitly requested. If created, it may mirror or extract the main-page `精读部分`; the main page remains complete without it.
+- Optional artifact: `<paper short name>｜精读稿`, or a clearly separated `精读稿` section, only when the user explicitly requests it in the current task. The main page is complete without it.
 
 Platform mapping for new deep dives:
 
-- Notion (via `notion-doc-workflow`): one self-contained page containing the complete Chinese manuscript and required `精读部分`, with native image captions/equations and an editable structured tree or supported embed. Child pages are optional and explicit-only.
+- Notion (via `notion-doc-workflow`): one self-contained page containing only the complete Chinese manuscript, with native image captions and equations. Do not add a `精读稿`. Child pages and any `精读稿` are optional and explicit-only.
 - Obsidian (via `obsidian-doc-workflow`) is an optional local staging or archival surface, not the default durable deep-dive destination.
 
 Feishu deep-dive pages are legacy compatibility targets only. Do not create new Feishu deep dives or keep a synchronized Feishu copy unless the user explicitly asks.
 
 When an optional child artifact is explicitly requested, choose `<paper short name>` as the shortest unambiguous identifier already used by the paper or community.
 
-Do not create a separate `中文精读稿` or `精读稿` artifact by default. Close-reading notes, Paper Card, and editable tree belong in the main-page `精读部分`. Keep that part clearly separated from the source-faithful `原文中译稿`.
+Do not create a `中文精读稿`, `精读稿`, or main-page `精读部分` unless the user explicitly requests it in the current task. A Paper Card and editable tree belong only inside that requested artifact, kept separate from the source-faithful `原文中译稿`.
 
 Do not omit the main-entry opening title/author/resource block. Keep the English title and author affiliations source-faithful; place the Chinese title below the English title, and keep the three resource links separate from the translated manuscript prose.
 
 Remove obsolete process/status scaffolding from reader-facing main entries. Sections such as `Source Extraction`, `Deep Dive Structure Status`, long extraction inventories, local MinerU availability notes, and self-referential statements about which linked artifact is complete are working notes, not deep-dive content. Keep durable source links in a compact `来源` section when useful.
 
-Reader-facing main-page sections should be content-oriented. Typical components are:
-
-- `Paper Metadata`
-- `Faithful Chinese Manuscript`
-- `精读部分`
-  - `Paper Card`
-  - `Editable Paper Analysis Tree`
-  - `Chinese Close Reading Notes`
-- `Open Questions`
+The reader-facing main page is the faithful Chinese manuscript: opening title block, abstract, numbered sections, figures, tables, appendices when included, and references. Do not add `精读部分`, `Paper Card`, `论文解析树`, or `Open Questions` after it unless the user explicitly requested a `精读稿`.
 
 ## Guardrails
 
@@ -288,7 +275,7 @@ Reader-facing main-page sections should be content-oriented. Typical components 
 - Do not mark a deep dive complete when supplementary/appendix material has not been searched. If it exists, incorporate it into the main-page Chinese manuscript or record an explicit user exclusion; also include it in any optional English manuscript.
 - Do not create a source-link or extraction-status page as a substitute for the main-page `原文中译稿` when the official source is accessible.
 - Do not treat long papers as a reason to reduce scope. Split the manuscript and translation by source sections, append incrementally, and verify coverage before final delivery.
-- Do not create a separate `英文原文稿`, `中文精读稿`, or `精读稿` child artifact unless the user explicitly asks. Their absence is not a completion defect.
+- Do not create a separate `英文原文稿`, `中文精读稿`, or `精读稿`, and do not embed a `精读稿` after the manuscript, unless the user explicitly asks in the current task. Their absence is not a completion defect. Adding one without that request is a completion defect.
 - Do not cite figures or equations that were not actually extracted or inspected.
 - Do not present a paper card as finished unless its problem, method, implementation, conclusion, limitations, and figure claims are grounded in the official full paper; use `Not reported`, `N/A`, or `待核验` instead of guessing.
 
@@ -296,7 +283,7 @@ Reader-facing main-page sections should be content-oriented. Typical components 
 
 Before declaring a deep dive compliant, re-fetch or re-read the complete main page, then verify any explicitly requested optional artifacts separately:
 
-- The main page contains the complete `原文中译稿` plus a clearly separated, embedded `精读稿` section; the Paper Card and editable `论文解析树` are inside that section, not before or interleaved with the translation.
+- The main page contains the complete `原文中译稿` and ends with that manuscript. It does not contain `精读稿`, `精读部分`, a Paper Card, `论文解析树`, close reading, or mechanism synthesis unless the user explicitly requested a `精读稿` in the current task. When that request exists, the analytical material stays after the manuscript and is not interleaved with the translation.
 - Before `摘要`, the main entry has the English title, Chinese title, original English authors/affiliations, and separate verified links for latest arXiv PDF, Project Page, and Code in that order. The English title and the Chinese title are ordinary paragraphs, not headings.
 - The main-page `原文中译稿` mirrors the verified source scaffold section by section and paragraph by paragraph as closely as the editor allows, and has passed the terminology correction gate.
 - The source-map audit reports counts for source natural paragraphs, mapped target paragraphs, split paragraphs, fused paragraphs, duplicates, omissions, reorderings, and unresolved source IDs. Completion requires zero unexplained mismatches; block-count preservation or heuristic sentence-boundary scans are not substitutes.
@@ -311,7 +298,5 @@ Before declaring a deep dive compliant, re-fetch or re-read the complete main pa
 - Heading-number punctuation is normalized: full-width `．` is not left in numbered prefixes when the target uses ASCII Markdown/Notion heading text; ordinary Chinese punctuation outside heading prefixes is preserved.
 - Structural full-width marks such as `／`, `－`, and `［］` are normalized to ASCII `/`, `-`, and `[]` only outside protected formulas, code, URLs, paths, and escaped sequences.
 - Complex tables have passed a visual check against an official PDF/HTML screenshot; any table screenshot included in `原文中译稿` is sourced from the official rendering or is explicitly marked as a rendering fallback.
-- The editable tree and analytical close reading inside the main-page `精读部分` expose both information flow and the causal chain from bottleneck through mechanism to predicted effect and evidence.
-- The synthesis identifies the decisive evidence, relevant alternative explanations, and at least one counterfactual prediction for removing or simplifying a claimed key design.
-- The reader can explain where the paper's assumptions stop applying and why; a section-by-section paraphrase without this mechanism audit is incomplete.
+- No `精读稿` audit applies to the default page. If the user explicitly requested a `精读稿`, that artifact exposes both information flow and the causal chain from bottleneck through mechanism to predicted effect and evidence, and its synthesis identifies the decisive evidence, relevant alternative explanations, and at least one counterfactual prediction for removing or simplifying a claimed key design.
 - Any remaining missing section, figure, table, formula, or translation block is reported as an incomplete WIP item; do not call the package finished.

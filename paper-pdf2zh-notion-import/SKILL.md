@@ -97,6 +97,7 @@ The imported Chinese page is only a draft. Perform two distinct repair rounds, w
 Compare the imported page with the original PDF and official HTML/LaTeX. Repair:
 
 - verified Chinese page title and opening English title/author/resource block; the English title is an ordinary paragraph, not a heading;
+- manuscript-only scope: do not add `精读稿`, `精读部分`, a Paper Card, `论文解析树`, close reading, or mechanism synthesis; leave an existing `精读稿` untouched unless the user asks to remove or revise it;
 - heading hierarchy and source order;
 - broken paragraph joins, duplicate headers/footers, and conversion residue;
 - all figures, figure images, complete translated captions, and figure placement;

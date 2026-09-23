@@ -16,7 +16,7 @@ Whenever a workflow will create, normalize, audit, or sync paper cards, first us
 
 ## Canonical Paper Deep Dive Gate
 
-Whenever a workflow will create, audit, repair, or route a single-paper deep dive, use [`paper-deep-dive`](../paper-deep-dive/SKILL.md). That skill is the only delivery standard for what counts as a completed deep dive: main entry with a paper-like opening block and complete `原文中译稿`, exactly two child pages for `英文原文稿` and `精读稿`, source-fidelity formulas/captions/references, and target-platform read-back verification. This router may choose the skill stack, but it must not define a looser deep-dive artifact or call a partial package complete.
+Whenever a workflow will create, audit, repair, or route a single-paper deep dive, use [`paper-deep-dive`](../paper-deep-dive/SKILL.md). That skill is the only delivery standard for what counts as a completed deep dive: one main page with a paper-like opening block and the complete `原文中译稿`, and no `精读稿` unless the user explicitly requests it in the current task. Source-fidelity formulas, captions, references, and target-platform read-back verification still apply. This router may choose the skill stack, but it must not add a `精读稿` or call a partial manuscript complete.
 
 ## Canonical Chinese Technical Writing Gate
 
@@ -63,7 +63,7 @@ workflows.
 - For durable document work, final structure, hierarchy, images, captions, formulas, links, and verification are controlled by `research-doc-workflow`, its selected platform adapter, and the task-specific personal skill.
 - For paper deep dives, route final delivery through `paper-deep-dive`. Borrow `nature-reader` ideas such as block-level source
   maps, original / Chinese correspondence, figure/table placement, terminology
-  consistency, and uncertainty notes, but convert them into the required cross-platform package: main entry with the complete `原文中译稿`, plus child pages for complete `英文原文稿` and source-order `精读稿`; do not publish a partial or alternate reader as the finished deep dive.
+  consistency, and uncertainty notes, but convert them into the required package: one main page with the complete `原文中译稿` and no default `精读稿`. Do not publish a partial manuscript, an English child page, or a `精读稿` as the finished deep dive unless the user explicitly requests that extra artifact.
 - For surveys and literature organization, borrow `deep-research` ideas such as
   research-question clarification, source verification, contradiction checks,
   synthesis, and gap analysis, but convert them into the user's literature tree,

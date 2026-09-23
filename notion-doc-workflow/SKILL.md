@@ -109,7 +109,7 @@ Content and field rules: [`paper-card-delivery`](../paper-card-delivery/SKILL.md
 ## Deep Dives / Surveys / Meetings
 
 - Structure and completion standards come from `paper-deep-dive`, `survey-builder`, or the relevant content skill.
-- Deep-dive Notion mapping: one self-contained main page whose primary body is the complete `原文中译稿`, followed by a clearly separated, embedded `精读稿` section containing the Paper Card, editable tree, source-order close reading, and mechanism synthesis. `英文原文稿` and standalone `精读稿` child pages are optional and explicit-only. Use native equations/images and an editable outline or supported embed for trees—not Feishu mind-map tokens.
+- Deep-dive Notion mapping: one self-contained main page whose body is only the complete `原文中译稿`. Do not append `精读稿`, `精读部分`, a Paper Card, an editable tree, close reading, or mechanism synthesis unless the user explicitly requests a `精读稿` in the current task. `英文原文稿` and `精读稿` are optional and explicit-only. Use native equations and images. A missing `精读稿` is the required default, not an incomplete page.
 - Meeting notes follow [`feishu-doc-workflow`](../feishu-doc-workflow/SKILL.md) Meeting Notes even when the durable page is Notion. The dated page has exactly two children: `notes` and `原始材料：千问纪要与原文`. Do not add sibling children named `纪要` or `原文`; if a long transcript needs its own page, nest it under the archival page. Do not add a report footer that mentions those two children again; Notion already lists them. When `replace_content` must keep children, include only those two `<page>` tags.
 - Preserve existing Notion layout and media unless the user asks to restructure.
 
@@ -117,7 +117,7 @@ Content and field rules: [`paper-card-delivery`](../paper-card-delivery/SKILL.md
 
 Treat a manually imported translated PDF as a draft. For a deep-dive translation page:
 
-For the `pdf2zh-next` imported-page repair path, the existing Chinese manuscript page is the primary deliverable. Do not require or create `英文原文稿` and `精读稿` child pages unless the user explicitly requests them. Apply the source-fidelity, formula, figure/caption, table, appendix, reference/citation, required `精读部分`, and read-back checks to the Chinese page itself. This is the same one-page delivery structure used for new Notion deep dives.
+For the `pdf2zh-next` imported-page repair path, the existing Chinese manuscript page is the primary deliverable, and the deliverable stops at that manuscript. Do not create `英文原文稿`, a `精读稿` child page, or a main-page `精读部分` unless the user explicitly requests that artifact in the current task. Apply the source-fidelity, formula, figure/caption, table, appendix, reference/citation, and read-back checks to the Chinese manuscript itself. Do not add or repair a Paper Card, `论文解析树`, or close-reading notes as part of this repair. This is the same manuscript-only delivery used for new Notion deep dives.
 
 - rename the page to the verified Chinese paper title; keep the official English title in the opening block as an ordinary paragraph, not a heading;
 - add the latest arXiv PDF, Project Page, and Code links above the abstract when those resources exist; do not add child-artifact links by default on this imported-page repair path;
