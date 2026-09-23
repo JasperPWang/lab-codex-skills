@@ -79,11 +79,22 @@ description: Enforces minimum-viable experimental design, evidence-based reasoni
 - 配新服务器或新项目环境时，先检查：
   - 项目是否已有 `Dockerfile` / `docker-compose.yml` / `.devcontainer`；
   - 服务器是否通过 `nvidia-smi`、`docker --version`、`docker compose version`；
+  - 按下述存储规则核验数据盘和 Docker 实际存储位置，再执行可能拉取镜像的命令；
   - `docker run --rm --gpus all ... nvidia-smi` 是否能看到 GPU；
   - 代码、数据、cache、checkpoints、outputs 是否挂载到稳定目录。
 - 只有 Docker 不可用、权限不足或临时救急时，才用 conda / pip-on-host / system package 作为 fallback，并在结果中说明原因。
 - 不静默接受 Anaconda Terms of Service，不随意修改全局 conda channels，不把项目依赖散装到宿主机。
 - 环境完成的最低标准：容器内跑通项目最小验证命令，例如 `nvidia-smi`、核心 Python import、单 batch overfit、dry run 或 smoke test。
+
+### 服务器大文件与 Docker 存储：避免系统盘
+
+- 在服务器下载大文件、拉取/构建镜像或配置实验环境前，先确认实际存储位置。模型、数据集、下载残片、解压目录、包缓存、环境目录、镜像层、构建缓存、容器持久数据和大体积日志/产物默认放在已挂载的数据盘，不放在系统盘。
+- 用 `lsblk`、`findmnt -T <目标路径或已存在的父目录>` 和 `df -hT` 核对目标与 `/` 的挂载来源、文件系统、剩余空间及配额；不能仅凭 `/data`、`/mnt` 或 `/home` 目录名判定为数据盘。目标挂载缺失时停止，不能在同名空目录继续写入系统盘；同一系统磁盘上的另一分区也不能直接视作独立数据盘。
+- 未找到可写且空间足够的数据盘时，先报告路径与空间情况并向用户确认；不要静默回退到 `$HOME`、`/tmp`、`/var/tmp` 或 `/var/lib/docker`。系统程序和小型配置文件可保留默认位置，本规则重点约束大体积数据。
+- 下载临时文件与最终文件放在同一数据盘文件系统，保持原子改名条件；解压、编译和构建暂存也使用数据盘。预留压缩包、解压结果、镜像层与构建峰值的总空间。
+- 按实际工具设置缓存路径，例如 `HF_HOME`、`TORCH_HOME`、`PIP_CACHE_DIR`、`XDG_CACHE_HOME`、`TMPDIR` 及 conda 的环境/包目录；同时检查工具专用配置是否覆盖这些变量。容器内也要设置对应路径，并 bind mount 到宿主机数据盘，不能只更改宿主机变量。
+- 在任何 `docker pull`、`docker build`、Compose 启动或可能自动拉镜像的 `docker run` 前，读取 `docker info` 的实际 Docker Root Dir 并核验其挂载位置。还需核对当前使用的 containerd 镜像存储、BuildKit/buildx builder 缓存、named volumes 和容器日志的位置；这些存储可能独立于 Docker `data-root`。切换工作目录或只把 Dockerfile 放到数据盘并不能迁移镜像存储。
+- 新配置优先将 Docker/相关镜像存储和构建缓存放在数据盘；数据集、权重、checkpoint 和 outputs 显式 bind mount。现有 Docker 存储若在系统盘，先说明现状与迁移方案；未经授权，不停止共享 daemon、重启服务、迁移或删除现有镜像/volume，不用全局 prune 腾空间。配置完成后重新核验实际路径，再开始大文件操作。
 
 ### 大文件下载与断线恢复协议
 
@@ -92,7 +103,7 @@ description: Enforces minimum-viable experimental design, evidence-based reasoni
 - 服务器下载必须先进入独立的 `tmux` 会话；SSH/VPN 断开后只重新连接并恢复会话，不从头启动下载。
 - 下载工具必须支持断点续传、自动重试、连接/读取超时和退避等待；VPN 不稳定时默认降低并发，避免用高并发掩盖网络问题。
 - 下载到临时文件（例如 `.part`），完整下载并通过校验后再原子改名为最终文件；训练或实验程序不得读取未验证的临时文件。
-- 下载前检查稳定挂载点、剩余磁盘空间和解压空间；数据、模型、cache、checkpoint、日志和 outputs 不得只存在于 `/tmp`、容器临时层或 SSH 会话目录。
+- 下载前按上述规则核验非系统盘挂载点、剩余磁盘空间和解压空间；数据、模型、cache、checkpoint、日志和 outputs 不得只存在于 `/tmp`、容器临时层或 SSH 会话目录。
 - 为每个下载记录 manifest：资源名称、来源 URL、仓库 revision/tag/commit、配置或 split、预期大小、SHA256、目标路径、下载时间和工具信息。不得用未固定的 `latest` 作为实验依赖。
 - 下载完成后必须验证 SHA256；若上游未提供哈希，至少验证文件大小、压缩包完整性、目录结构和随机读取结果，并明确记录降级验证。
 - 验证通过后再做最小可用性测试：模型至少完成配置/tokenizer/权重索引读取或一次最小推理；数据集至少完成样本计数、随机读取和一个最小 batch。
@@ -156,6 +167,7 @@ description: Enforces minimum-viable experimental design, evidence-based reasoni
 - [ ] 实验环境是否优先走 Docker/Compose，而不是散装到宿主机？
 - [ ] 是否验证了容器内 GPU、核心 import、smoke test 或单 batch 运行？
 - [ ] 大文件下载是否在独立 tmux 会话中运行并支持断点续传与自动重试？
+- [ ] 下载/解压/缓存与 Docker 镜像、构建缓存、volume 的实际存储是否已核验位于数据盘，且挂载有效、空间充足？
 - [ ] 是否使用 `.part` 临时文件，并在校验通过后才改名为最终文件？
 - [ ] 是否记录了固定版本、来源、大小、SHA256、目标路径和下载日志？
 - [ ] 下载后的模型或数据集是否通过了最小读取/推理/batch 验证？
