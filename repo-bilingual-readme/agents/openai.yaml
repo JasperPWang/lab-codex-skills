@@ -1,0 +1,4 @@
+interface:
+  display_name: "仓库英中对照"
+  short_description: "维护仓库英中对照文档，统一排版、检查漏译并核验论文资源链接"
+  default_prompt: "使用 $repo-bilingual-readme 为指定仓库创建或修复完整英中对照 Markdown，保留原版并核验翻译、排序、链接与排版。"

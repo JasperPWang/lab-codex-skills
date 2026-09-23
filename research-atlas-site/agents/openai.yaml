@@ -1,0 +1,7 @@
+interface:
+  display_name: "Research Atlas Site"
+  short_description: "设计、构建并维护可持续演进的学术研究图谱网站"
+  default_prompt: "Use $research-atlas-site to design a structured academic research atlas website."
+
+policy:
+  allow_implicit_invocation: true
