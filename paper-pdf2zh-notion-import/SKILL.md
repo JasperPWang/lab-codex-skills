@@ -96,7 +96,7 @@ The imported Chinese page is only a draft. Perform two distinct repair rounds, w
 
 Compare the imported page with the original PDF and official HTML/LaTeX. Repair:
 
-- verified Chinese page title and opening English title/author/resource block;
+- verified Chinese page title and opening English title/author/resource block; the English title is an ordinary paragraph, not a heading;
 - heading hierarchy and source order;
 - broken paragraph joins, duplicate headers/footers, and conversion residue;
 - all figures, figure images, complete translated captions, and figure placement;
