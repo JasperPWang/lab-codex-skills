@@ -57,10 +57,29 @@ Do not use `D4RT.pdf`, `D4RT.zh.mono.pdf`, `paper.pdf`, `translated.pdf`, `Babel
 
 ### 2. Run pdf2zh
 
-1. Run the local `pdf2zh` workflow on the downloaded original PDF. Prefer the established local script/toolchain; do not invent a second translation tool.
-2. Retain the original PDF and the translated Chinese PDF until Notion import and verification are complete.
-3. If both mono and dual outputs exist, choose the variant according to the user's request. Default to the Chinese mono PDF for the Chinese manuscript page. The original English PDF is used for verification and is not imported unless the user explicitly requests it.
-4. Treat all pdf2zh output as draft material. It is not compliant merely because the PDF opens or the translation is readable.
+1. Run the local `pdf2zh` / `pdf2zh-next` (BabelDOC) toolchain on the downloaded original PDF. Prefer the established local binary; do not invent a second translation tool.
+2. **Hard policy: do not translate figure interiors or tables.** Lab default matches [`paper-deep-dive`](../paper-deep-dive/SKILL.md): translate body prose; keep **all table content** (headers and body cells) in the original English; keep **in-figure labels/annotations** in English. Figure/table **captions and notes** (图注/表题/表注) may be Chinese in the final Notion manuscript, but `pdf2zh` must not OCR/translate table bodies or figure interiors. Encode this in the CLI every run (do not trust GUI-saved `~/.config/pdf2zh`—defaults often leave `translate_table_text = true`):
+   - **Tables off:** always set `PDF2ZH_TRANSLATE_TABLE_TEXT=false`. Installed default is `true` and would translate table text. Never run with table OCR enabled. (CLI quirk: bare `--translate-table-text` is argparse `store_false` when default is true, so passing it also *disables*—prefer the env var for readable intent; do **not** pass the flag thinking it enables translation.)
+   - **Figures/tables protected:** keep `--figure-table-protection-threshold` at `0.9` or higher (default `0.9`; `0.95` is stricter). Official meaning: lines inside detected figures/tables are not processed.
+   - Raster text baked into figure images is never translated. If residual **vector** labels inside a figure or table cells still flip to Chinese, restore English against the original PDF in Round 1 (current BabelDOC has no separate `skip-figure-text` flag).
+3. Canonical invocation (adjust engine only if Bing fails; prefer Bing over SiliconFlowFree/Google for this lab):
+
+```bash
+PDF2ZH_TRANSLATE_TABLE_TEXT=false pdf2zh "$ORIGINAL_PDF" \
+  --bing \
+  --lang-in en \
+  --lang-out zh-CN \
+  --no-auto-extract-glossary \
+  --no-dual \
+  --figure-table-protection-threshold 0.9 \
+  --watermark-output-mode no_watermark \
+  --output "$OUTDIR"
+```
+
+   Require a `*.mono.pdf` (or the user-requested variant) under `$OUTDIR` before import. Confirm the run log / settings show table-text translation **disabled**.
+4. Retain the original PDF and the translated Chinese PDF until Notion import and verification are complete.
+5. If both mono and dual outputs exist, choose the variant according to the user's request. Default to the Chinese mono PDF for the Chinese manuscript page. The original English PDF is used for verification and is not imported unless the user explicitly requests it.
+6. Treat all pdf2zh output as draft material. It is not compliant merely because the PDF opens or the translation is readable.
 
 ### 3. Import directly into the specified Notion page
 
@@ -101,7 +120,7 @@ Compare the imported page with the original PDF and official HTML/LaTeX. Repair:
 - heading hierarchy and source order;
 - broken paragraph joins, duplicate headers/footers, and conversion residue;
 - all figures, figure images, complete translated captions, and figure placement;
-- all tables, table titles/notes, cell boundaries, and missing table images;
+- all tables, table titles/notes, cell boundaries, and missing table images; keep every table **cell** (including headers) in the original English—never leave pdf2zh-translated cell text;
 - inline and display formulas, equation numbers, symbols, superscripts, subscripts, and tags;
 - references and body citations, with citation labels as plain `[n]` chrome and only `n` as the link text when linked;
 - appendices, supplementary sections, algorithms, and reference lists;

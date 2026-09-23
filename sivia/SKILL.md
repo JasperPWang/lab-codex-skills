@@ -28,6 +28,13 @@ not evidence or the current method's topology.
 
 ## Local Runtime Adaptation
 
+For teaser and pipeline-overview styling, consult the user-approved
+[Any4D visual reference](references/any4d/style-reference.md) and inspect its
+two local original figures. Use it when its result-led teaser or layered,
+pastel architecture matches the communication task. This is a preferred
+visual example, not a universal topology or palette requirement. The case
+is maintained outside the upstream snapshot.
+
 This is a vendored skill installation, not activation of Sivia's plugin MCP
 servers. Discover available tools before choosing a construction route.
 Never assume `powerpoint_*` or `drawio_live_*` tools are registered.

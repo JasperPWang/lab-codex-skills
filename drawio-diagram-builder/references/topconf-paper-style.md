@@ -4,6 +4,12 @@ Use this guide when the user asks for a figure suitable for a computer-science p
 
 ## Fallback Style References
 
+For the user's preferred 3D/4D teaser and layered model-overview style, read
+[the Any4D case](../../sivia/references/any4d/style-reference.md) and inspect its
+local original Figure 1 and Figure 3. It includes a pixel-sampled palette and
+separate guidance for result-led teasers and method diagrams. Select it by
+communication purpose; preserve the current method's topology and real results.
+
 If the user does not provide a style image, or the style input is too weak to guide a polished paper figure, load `assets/reference-images/REFERENCE-IMAGES.md` and inspect the bundled images in `assets/reference-images/`.
 
 Use them only as style references:
