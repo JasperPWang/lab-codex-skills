@@ -16,6 +16,8 @@ When a user reports a research phenomenon, failure case, unexpected result, or d
 
 If the cause remains uncertain, proceed with a diagnostic check/experiment that separates explanations. Do not substitute an architectural proposal or an improvement MVE for cause analysis and literature investigation. A short evidence-based diagnosis is sufficient; no full survey, paper translation, or repeated user approval is required. Explicit requests to defer investigation may be handled as provisional brainstorming, with assumptions and unresolved literature clearly identified rather than treated as established findings.
 
+Treat cause analysis, related work, and diagnostic evidence as an iterative loop. Locating a failing module is not yet a mechanism explanation. Each recommended algorithm change must identify its hypothesis, evidence, predicted effect, and falsifier. Keep research priorities human-led; external autonomous-research systems are references, not an automatic stage machine or authorization to expand experiments.
+
 ## Project-Centered Workflow
 
 For a new project, an existing project's organization, baseline reproduction, or dataset intake, read [`references/project-workflow.md`](references/project-workflow.md). It owns the project-level relationship between Related Work, Reproduction, Datasets, Ideas, Evaluation, Experiments, and Handoff. Use the linked templates as starting points and fill only evidence-backed fields.
@@ -110,7 +112,7 @@ Deep-dive gate: this router only selects and composes skills. The binding contra
 ## 推荐主线（不要孤立使用）
 
 ```
-观察/问题线索 → 现象核验 + Related Work → 原因分析/诊断 → 改进假设/MVE → 固定协议实验 → 判断更新
+观察/问题线索 → 现象核验 → [原因假设 ↔ Related Work ↔ 诊断证据] → 改进假设/MVE → 固定协议实验 → 判断更新
 ```
 
 baseline 复现为现象核验和诊断提供证据；Datasets 和 Evaluation 提供共同的数据/评价契约。Handoff 将本轮证据与下一步动作接回项目入口，足够成熟的发现再进入写作。
