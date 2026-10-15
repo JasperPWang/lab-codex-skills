@@ -426,8 +426,9 @@ def main() -> int:
             details.append({"title": title, "code": "pdf_slot", "message": "Metadata line 3 must contain PDF status."})
         if not ("Project" in lines[2] or "w/o. project page" in lines[2]):
             details.append({"title": title, "code": "project_slot", "message": "Metadata line 3 must contain Project status."})
-        if not ("Code" in lines[2] or "w/o. verified code" in lines[2] or "w/o. code" in lines[2]):
-            details.append({"title": title, "code": "code_slot", "message": "Metadata line 3 must contain Code status."})
+        code_statuses = sum(part.strip() == "w.o. code" or re.fullmatch(r"Code(?:（空仓库）)?", part.strip()) is not None for part in lines[2].split("｜"))
+        if code_statuses != 1:
+            details.append({"title": title, "code": "code_slot", "message": "Metadata line 3 must contain exactly one code status: w.o. code or an official Code link, annotated （空仓库） when empty."})
         for pdf_url in pdf_links(meta_block):
             if ARXIV_PDF_RE.search(pdf_url):
                 continue

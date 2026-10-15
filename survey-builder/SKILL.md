@@ -7,6 +7,8 @@ description: "Build literature surveys from paper collections: taxonomy, literat
 
 Use this to turn a paper set into a structured survey.
 
+For a compact Related Work section inside an ongoing project, use [`ai-research-workflow/references/project-workflow.md`](../ai-research-workflow/references/project-workflow.md#related-work文献怎样影响当前项目) and its related-work matrix. Link existing paper cards and record project relevance, evidence, code and reproduction status. Apply this skill's full survey/tree deliverables when the user requests a literature survey/research map; do not expand a project index into that larger deliverable automatically.
+
 ## Canonical Paper Card Gate
 
 When a survey includes paper cards, also use [`paper-card-delivery`](../paper-card-delivery/SKILL.md). That skill is the canonical standard for official-source verification, fixed card format, figure/caption selection, sorting, and validation. Survey Builder must not finalize cards from its local summary rules alone.

@@ -369,8 +369,10 @@ def check_card(line_no: int, title: str, card: str, target: str) -> list[dict[st
             issue("pdf_slot", "PDF slot missing or not using compact PDF/w/o. PDF status.")
         if not any(token in link_line for token in ["Project", "w/o. project page"]):
             issue("project_slot", "Project slot missing or not using compact Project/w/o. project page status.")
-        if not any(token in link_line for token in ["Code", "w/o. verified code", "w/o. code"]):
-            issue("code_slot", "Code slot missing or not using compact Code/w/o. code status.")
+        code_links = re.findall(r"\[Code\]\(https?://[^)]+\)", link_line)
+        no_code = "w.o. code" in link_line
+        if len(code_links) + int(no_code) != 1:
+            issue("code_slot", "Use exactly one code status: w.o. code, [Code](url)（空仓库）, or [Code](url).")
         check_compact_link_labels(link_line, issue)
         check_pdf_link_line(link_line, issue)
         if not metadata_lines[3].startswith("Dataset:"):

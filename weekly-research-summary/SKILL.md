@@ -86,6 +86,8 @@ Under each track, use paper-level headings:
 #### 1. <Paper Title> — <year or venue>
 ```
 
+Number papers consecutively as `1.`, `2.`, `3.` within each track, restarting at `1.` in the next track. Every paper title in `GPT Weekly Pick` must be an H4 heading with this numbering, including late additions. Do not mix H4 headings with unnumbered titles, circled numerals (`①`), bulleted items, or numbered-list blocks as paper titles. Keep meaningful tags such as `【新机制】` after the Arabic numeral rather than dropping them. Reserve H4 for papers: priority notes, comparison notes, and in-card labels are bold paragraphs, not competing H4 headings. If a legacy list item owns images, equations, or other child blocks, convert it in place and verify the children remain present and correctly placed; never rebuild or delete media merely to normalize a title.
+
 For each recommended paper, prefer this slot order when the source material supports it:
 
 1. **一句话核心创新**
@@ -119,7 +121,7 @@ Non-paper research-method notes, mentor advice pages, or meta readings. Use call
 When the user pastes GPT weekly picks or asks to repair an existing week page:
 
 1. **Formulas**: convert mangled plain+escaped TeX (`\\\\rightarrow`, `\\\\text\\{...\\}`, doubled `MMμ\\\\mu`) into Notion `$`…`$` / `$$…$$`.
-2. **Headings**: lift flat dumps into the required toggle hierarchy; map multi-session pastes into the four fixed tracks (`HMR/3D 上游` / `人场景联合重建` / `人体交互生成` / `物理AI`).
+2. **Headings**: lift flat dumps into the required toggle hierarchy; map multi-session pastes into the four fixed tracks (`HMR/3D 上游` / `人场景联合重建` / `人体交互生成` / `物理AI`). Normalize every paper title to a consecutively numbered H4 within its track; do not leave a mixture of numbered, circled, unnumbered, or list-style titles.
 3. **Links**: strip `?utm_source=chatgpt.com` and similar trackers; replace proxy/anonymous viewers with canonical `https://arxiv.org/abs/...` or `/html/...`.
 4. **Media**: preserve existing images/captions when doing narrow edits. If a full-page replace is required and an image cannot be safely reattached, say so after write.
 5. **Residue**: remove ChatGPT chrome, “Anonymous View” wrappers, and cross-platform Markdown fences from reader-facing text.
@@ -138,6 +140,8 @@ When the user pastes GPT weekly picks or asks to repair an existing week page:
 - Hub child placement and week title are correct
 - `GPT Weekly Pick` / `Paper Notes` / `Progress & Plans` / `Reflection` exist as toggles
 - `GPT Weekly Pick` contains all four fixed tracks with the exact titles above
+- Each track's paper titles are H4 headings numbered `1.`, `2.`, ... without gaps or mixed title styles; non-paper notes do not use H4
+- After structural edits, existing images, captions, equations, tables, and child pages are still present and attached to the intended content
 - Paper slots are skim-friendly and end in a decision or priority when multiple picks exist
 - Native equations; no GPT TeX residue
 - Clean arXiv/project links; no ChatGPT tracking or proxy URLs

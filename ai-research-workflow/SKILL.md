@@ -1,6 +1,6 @@
 ---
 name: ai-research-workflow
-description: Orchestrates AI research agent workflows (paper deep-dive, survey builder, cite verify, repro pack) with durable delivery to Feishu/Lark, Notion, or Obsidian/Markdown. Use when the user asks for literature workflows, paper cards, survey/taxonomy, citation verification, reproducibility packages, cross-platform research documentation, or mentions AI Research Skills / 科研 skill 工作流.
+description: Orchestrates project-centered AI research workflows, including Related Work, baseline reproduction, dataset documentation, evaluation, experiment handoff, paper reading, and surveys, with durable delivery to Notion, Feishu/Lark, or Obsidian/Markdown. Use when organizing or improving a research project/workflow, adding related work/reproduction/dataset sections, or coordinating literature, experiments, and reproducibility artifacts.
 ---
 
 # AI Research Workflow
@@ -9,6 +9,12 @@ description: Orchestrates AI research agent workflows (paper deep-dive, survey b
 <FEISHU_OR_LARK_URL>
 
 All durable document writes must also use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) plus the matching platform adapter (`feishu-doc-workflow`, `notion-doc-workflow`, or `obsidian-doc-workflow`). The source of a workflow may be Feishu, but the destination is selected from Feishu, Notion, or Obsidian according to the user's current URL or explicit instruction.
+
+## Project-Centered Workflow
+
+For a new project, an existing project's organization, baseline reproduction, or dataset intake, read [`references/project-workflow.md`](references/project-workflow.md). It owns the project-level relationship between Related Work, Reproduction, Datasets, Ideas, Evaluation, Experiments, and Handoff. Use the linked templates as starting points and fill only evidence-backed fields.
+
+Keep the project as the main entry. Map existing pages/files first; add missing responsibilities without moving or duplicating established records. Experiment reports remain under `experiment-report-writing` (Notion by default), source-data protection under `research-dev-standards`, paper cards under `paper-card-delivery`, and full surveys under `survey-builder`. A compact project-related-work matrix does not require a full survey or a full deep dive for every paper.
 
 ## Canonical Paper Card Gate
 
@@ -80,6 +86,7 @@ workflows.
 
 | 用户意图 | Skill |
 |----------|-------|
+| 以 project 组织科研、补 Related Work / Reproduction / Dataset、交接与固定测评协议 | 本 skill 的 [`project-workflow`](references/project-workflow.md)，再按任务叠加下列 skill |
 | 中文科研文档、Notion/Obsidian/飞书页面、wiki 笔记、中文技术说明的语言规范 | [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md) plus the task-specific skill below |
 | 选择、迁移或写入 Feishu / Notion / Obsidian | [`research-doc-workflow`](../research-doc-workflow/SKILL.md) + matching `*-doc-workflow` + the task-specific content skill |
 | 任意 paper card / 论文卡片生成、补全、审核、同步 | [`paper-card-delivery`](../paper-card-delivery/SKILL.md) plus the task-specific skill below |
@@ -96,11 +103,10 @@ Deep-dive gate: this router only selects and composes skills. The binding contra
 ## 推荐主线（不要孤立使用）
 
 ```
-读文献 → 想问题 → 做实验 → 保真 → 写论文
-  │         │         │        │        │
-Paper RAG  Survey   Repro    Cite/    PaperSpine
-Deep-dive  Builder   Pack    Stats    Nature/LaTeX
+项目问题 → Related Work ↔ baseline 复现 → 假设/MVE → 固定协议实验 → 判断更新 → 写作
 ```
+
+Datasets 和 Evaluation 为复现及实验提供共同的数据/评价契约；Handoff 将本轮证据与下一步动作接回项目入口。论文阅读、完整 survey、复现包和写作按上表调用对应 skill。
 
 ## 优先级（来自调研报告）
 
@@ -114,6 +120,7 @@ Deep-dive  Builder   Pack    Stats    Nature/LaTeX
 
 - 实验与训练：始终叠加 `research-dev-standards`（Notion 实验记录、`RoadMap.md`、小步验证）与 `experiment-report-writing`
 - `repro-pack` 产物应能支撑 Notion 实验页中的「可复制命令 + 产物路径」
+- Related Work、Reproduction 和 Datasets 都从项目入口可达；每次运行可追溯到论文/方法、代码版本、数据派生版本和评价协议版本。模板及职责见 [`project-workflow`](references/project-workflow.md)。
 - 文档同步：统一通过 `research-doc-workflow` 按用户链接/说明选择 Feishu、Notion 或 Obsidian，并叠加对应适配器：`feishu-doc-workflow`、`notion-doc-workflow`、`obsidian-doc-workflow`
 
 ## 阶段门（大型任务前自检）

@@ -1,6 +1,6 @@
 ---
 name: research-dev-standards
-description: Enforces minimum-viable experimental design, evidence-based reasoning, test-driven development, tmux-first long-running sessions, Docker-first reproducible experiment environments, small incremental changes, and pre-completion review. Use whenever a research idea is being turned into an experiment, including feasibility checks, exploratory or pilot experiments, experiment design, baselines, ablations, resource budgeting, research/training code, GPU/server environments, experiment execution, or experiment documentation; also trigger when the user mentions 想法验证, 探索性实验, 预实验, 实验设计, 最小可行性, 最小可行实验, 科研开发规范, Docker first, tmux first, Docker, or tmux.
+description: Enforces minimum-viable experimental design, evidence-based reasoning, test-driven development, tmux-first long-running sessions, Docker-first reproducible experiment environments, small incremental changes, 3D reconstruction result rendering, and pre-completion review. Use whenever a research idea is being turned into an experiment, including feasibility checks, exploratory or pilot experiments, experiment design, baselines, ablations, resource budgeting, research/training code, GPU/server environments, experiment execution, qualitative 3D rendering/comparison, or experiment documentation; also trigger when the user mentions 想法验证, 探索性实验, 预实验, 实验设计, 最小可行性, 最小可行实验, 科研开发规范, 三维重建渲染, Docker first, tmux first, Docker, or tmux.
 ---
 
 # 科研开发与实验设计规范（Lab Codex）
@@ -110,6 +110,17 @@ description: Enforces minimum-viable experimental design, evidence-based reasoni
 - 校验失败、空间不足或下载中断时，不得把文件标记为可用；保留错误日志和恢复状态，修复后从断点继续并重新校验。
 - 下载来源应使用官方仓库或用户指定来源；切换镜像、版本、数据配置或文件格式时，必须记录原因并更新 manifest。
 
+### 三维重建结果渲染与对照
+
+- 为人体与场景三维重建制作定性图、旋转视频或优化前后对照时，读取 [`references/3d-reconstruction-rendering.md`](references/3d-reconstruction-rendering.md)。其中记录共享的几何/相机真实性约束，以及 GRAFT/PhySIC 项目的 Three.js 快捷路径和 Blender 高质量路径。
+- 渲染只展示已产出的几何与状态。保留输入顶点、面、颜色来源、实际尺度及评测口径；比较同一案例的阶段时固定人体身份、场景、相机定义和共同旋转中心。项目专属数值先核对当前配置，不能直接当作其他项目的默认参数。
+
+### 数据集原始库与项目派生副本
+
+- 下载/接入数据集或编写预处理脚本前，读取 [`references/dataset-storage.md`](references/dataset-storage.md)。在数据盘按数据集及版本保存上游原始文件（包括压缩包、分片、标注），校验后保留，不因解压、缓存清理、换项目或空间不足而删除、覆盖或原地修改；删除/替换源数据需用户另行明确授权。
+- 项目从原始库独立复制或解压到自己的目录，再预处理、训练和评测；原始库只用于校验及派生数据的读取。禁止以软链接或硬链接代替项目副本。各方法/预处理版本使用独立目录并记录来源链路；不配置只读权限或强制只读挂载。
+- 每个已下载的数据集版本目录必须同时有 `README.md` 和 `manifest.json`，说明来源、版本、许可证/访问条件、下载与校验状态、文件大小及 SHA256。项目 `dataset.md` 记录实际使用范围、目录/格式、预处理脚本与配置、样本数及 split；原始/派生目录布局及 JSON 示例见上述参考。
+
 ### 完成前审查
 
 - 在宣称功能完成前，做一次针对性审查，重点包括：
@@ -120,6 +131,8 @@ description: Enforces minimum-viable experimental design, evidence-based reasoni
 ---
 
 ## 二、文档维护（仓库根目录相对路径）
+
+项目级职责与目录/页面映射以 [`ai-research-workflow/references/project-workflow.md`](../ai-research-workflow/references/project-workflow.md) 为准：把 Related Work、Reproduction、Dataset、Evaluation 和实验记录连接到已有 project 入口。该结构只补缺，不替换下述既有 RoadMap 和 Notion 报告规范。
 
 ### 路线图：`RoadMap.md`
 
@@ -171,6 +184,8 @@ description: Enforces minimum-viable experimental design, evidence-based reasoni
 - [ ] 是否使用 `.part` 临时文件，并在校验通过后才改名为最终文件？
 - [ ] 是否记录了固定版本、来源、大小、SHA256、目标路径和下载日志？
 - [ ] 下载后的模型或数据集是否通过了最小读取/推理/batch 验证？
+- [ ] 数据集源文件是否保留完整，项目是否使用独立副本，并有 README、manifest 与预处理/split 的来源记录？
+- [ ] 三维结果图/视频是否按渲染参考核验了几何不变、相机对齐、真实 GT 标注和完整输出？
 - [ ] 是否检查了原始输出和失败样本，而不只看平均指标？
 - [ ] 是否有单命令运行、画图、config 或小数据验证来缩短发现错误的时间？
 - [ ] 完成前是否核对维度与形状与核心逻辑？

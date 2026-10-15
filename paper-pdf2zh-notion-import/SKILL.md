@@ -7,7 +7,7 @@ description: Import a paper's original and pdf2zh Chinese PDFs into Notion as a 
 
 This is the canonical workflow for importing a paper PDF and its `pdf2zh` Chinese translation into Notion. It is a delivery workflow, not merely a file upload. The imported PDF page is a draft until the Chinese manuscript has passed two independent repair/read-back rounds.
 
-Use [`paper-deep-dive`](../paper-deep-dive/SKILL.md) for source fidelity, formulas, figures, tables, references, and the final Chinese manuscript standard. Use [`notion-doc-workflow`](../notion-doc-workflow/SKILL.md) for Notion page verification. Use [`pdf`](../pdf/SKILL.md) and the local MinerU/pdf2zh tooling for extraction and translation.
+Use [`paper-deep-dive`](../paper-deep-dive/SKILL.md) for source fidelity, formulas, figures, tables, references, and the final Chinese manuscript standard. Use [`notion-doc-workflow`](../notion-doc-workflow/SKILL.md) for Notion page verification. The default is local pdf2zh translation followed by repair against arXiv HTML or LaTeX, with [`pdf`](../pdf/SKILL.md) for visual verification. MinerU is only a fallback extraction tool when neither usable HTML nor LaTeX can be found for the relevant main-paper or supplementary material; it is not a prerequisite. Reuse an existing pdf2zh/imported draft when repairing or migrating.
 
 ## Trigger
 
@@ -53,7 +53,8 @@ Do not use `D4RT.pdf`, `D4RT.zh.mono.pdf`, `paper.pdf`, `translated.pdf`, `Babel
 4. Resolve and archive the official arXiv HTML and LaTeX source when available. They are the semantic and structural authority for the repair, not optional spot-check material. Use the rendered PDF as the authority for visual order, page completeness, figure/table placement, and layout only. Treat `pdf2zh`, OCR, MinerU, and the imported Notion blocks strictly as a draft to be reconciled against those official sources.
 5. Before editing, build a source map that inventories every source section, subsection, natural paragraph, display equation, inline formula span, figure/caption, table/title/note, algorithm, footnote, appendix/supplement item, citation, and reference. Assign stable source IDs and map each existing Notion block to one or more source IDs. Record missing, duplicated, split, fused, reordered, or corrupted blocks explicitly.
 6. If official HTML and LaTeX disagree with extracted PDF text, prefer LaTeX for logical structure, paragraph boundaries, formulas, citations, labels, and captions; use official HTML as the rendered semantic cross-check; use the PDF to resolve visual placement and completeness. Never infer a source paragraph boundary from Chinese punctuation or adjacent Notion blocks when HTML/LaTeX is available.
-5. Do not infer identity from a filename alone. If the title cannot be verified, stop before importing.
+7. If neither usable HTML nor LaTeX is available after search, record the searches and use the official PDF as the authority; MinerU may provide a fallback extraction scaffold. Apply this test separately to supplements, checking the arXiv LaTeX package for appendix/supplement content. In that fallback path, derive and visually verify the source map from the official PDF, and use fresh PDF/source-map checks in both repair rounds instead of requiring nonexistent HTML/LaTeX. Missing HTML alone does not justify MinerU.
+8. Do not infer identity from a filename alone. If the title cannot be verified, stop before importing.
 
 ### 2. Run pdf2zh
 

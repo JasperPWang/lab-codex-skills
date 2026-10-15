@@ -17,6 +17,8 @@ Default language is Chinese. Keep method names, dataset names, model names, conf
 
 Keep this skill focused on report writing. Durable experiment records are maintained in **Notion**, not `docs/Experiment.md` / root `Experiment.md` (those files are retired and must not be created or updated unless the user explicitly revives them). Use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) plus [`notion-doc-workflow`](../notion-doc-workflow/SKILL.md) for delivery; switch to Feishu or Obsidian only when the user explicitly names that destination.
 
+For project-level Related Work, Reproduction, Dataset and Evaluation organization, use [`ai-research-workflow/references/project-workflow.md`](../ai-research-workflow/references/project-workflow.md). Keep a single run report in the existing project/method location and link it from reproduction/results indexes. Record the actual dataset-derived version/split and evaluation protocol version in the existing Preprocess/Quantity/Appendix sections; do not create a parallel local experiment narrative or expand the compact Settings metadata into a new questionnaire.
+
 Section headings must use short numbered English labels in this fixed vocabulary: `1. Settings`, `2. Preprocess`, `3. Quantity`, `4. Quality`, `5. Next`, `6. Pause`, `7. Appendix`. Do not use Chinese heading titles for these sections. Body prose stays Chinese by default. If a project has other existing report conventions (table style, caption style), preserve those; do not copy project-specific paths, run names, or one-off implementation details into this general skill.
 
 ## Evidence Intake
