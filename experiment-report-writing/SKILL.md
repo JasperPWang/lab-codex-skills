@@ -19,6 +19,8 @@ Keep this skill focused on report writing. Durable experiment records are mainta
 
 For project-level Related Work, Reproduction, Dataset and Evaluation organization, use [`ai-research-workflow/references/project-workflow.md`](../ai-research-workflow/references/project-workflow.md). Keep a single run report in the existing project/method location and link it from reproduction/results indexes. Record the actual dataset-derived version/split and evaluation protocol version in the existing Preprocess/Quantity/Appendix sections; do not create a parallel local experiment narrative or expand the compact Settings metadata into a new questionnaire.
 
+When an experiment starts from an observed research phenomenon, follow [`observation-to-problem.md`](../ai-research-workflow/references/observation-to-problem.md) before proposing method changes. A plan distinguishes diagnosing a cause from validating an improvement and links the relevant literature/existing solutions and inspected evidence. If those checks are missing, keep the next action diagnostic; do not fabricate a mechanism or claim a literature gap to justify the planned module.
+
 Section headings must use short numbered English labels in this fixed vocabulary: `1. Settings`, `2. Preprocess`, `3. Quantity`, `4. Quality`, `5. Next`, `6. Pause`, `7. Appendix`. Do not use Chinese heading titles for these sections. Body prose stays Chinese by default. If a project has other existing report conventions (table style, caption style), preserve those; do not copy project-specific paths, run names, or one-off implementation details into this general skill.
 
 ## Evidence Intake

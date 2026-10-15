@@ -1,6 +1,6 @@
 ---
 name: ai-research-workflow
-description: Orchestrates project-centered AI research workflows, including Related Work, baseline reproduction, dataset documentation, evaluation, experiment handoff, paper reading, and surveys, with durable delivery to Notion, Feishu/Lark, or Obsidian/Markdown. Use when organizing or improving a research project/workflow, adding related work/reproduction/dataset sections, or coordinating literature, experiments, and reproducibility artifacts.
+description: Orchestrates project-centered research, including observed-phenomenon diagnosis, research problem discovery, required related-work checks before method design, baseline reproduction, datasets, evaluation, and experiment handoff. Use when a user observes a research failure/phenomenon and wants to understand or improve it, explores a research problem, organizes a project, or coordinates literature and experiments.
 ---
 
 # AI Research Workflow
@@ -9,6 +9,12 @@ description: Orchestrates project-centered AI research workflows, including Rela
 <FEISHU_OR_LARK_URL>
 
 All durable document writes must also use [`research-doc-workflow`](../research-doc-workflow/SKILL.md) plus the matching platform adapter (`feishu-doc-workflow`, `notion-doc-workflow`, or `obsidian-doc-workflow`). The source of a workflow may be Feishu, but the destination is selected from Feishu, Notion, or Obsidian according to the user's current URL or explicit instruction.
+
+## Observation Before Method Design
+
+When a user reports a research phenomenon, failure case, unexpected result, or desired method improvement, first follow [`references/observation-to-problem.md`](references/observation-to-problem.md). Verify the observation, inspect related work and existing explanations/solutions, and distinguish competing causes before selecting a method change. Related-work investigation is required before recommending a concrete improvement as the next implementation step; use relevant previously verified sources or perform a targeted search and inspect primary evidence. A list of titles, an uninspected repository, or a generic citation does not satisfy this step.
+
+If the cause remains uncertain, proceed with a diagnostic check/experiment that separates explanations. Do not substitute an architectural proposal or an improvement MVE for cause analysis and literature investigation. A short evidence-based diagnosis is sufficient; no full survey, paper translation, or repeated user approval is required. Explicit requests to defer investigation may be handled as provisional brainstorming, with assumptions and unresolved literature clearly identified rather than treated as established findings.
 
 ## Project-Centered Workflow
 
@@ -86,6 +92,7 @@ workflows.
 
 | 用户意图 | Skill |
 |----------|-------|
+| 发现现象/失败案例，想分析原因、寻找问题或改进方法 | 本 skill 的 [`observation-to-problem`](references/observation-to-problem.md)，完成相关工作核查后再衔接诊断/改进实验 |
 | 以 project 组织科研、补 Related Work / Reproduction / Dataset、交接与固定测评协议 | 本 skill 的 [`project-workflow`](references/project-workflow.md)，再按任务叠加下列 skill |
 | 中文科研文档、Notion/Obsidian/飞书页面、wiki 笔记、中文技术说明的语言规范 | [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md) plus the task-specific skill below |
 | 选择、迁移或写入 Feishu / Notion / Obsidian | [`research-doc-workflow`](../research-doc-workflow/SKILL.md) + matching `*-doc-workflow` + the task-specific content skill |
@@ -103,10 +110,10 @@ Deep-dive gate: this router only selects and composes skills. The binding contra
 ## 推荐主线（不要孤立使用）
 
 ```
-项目问题 → Related Work ↔ baseline 复现 → 假设/MVE → 固定协议实验 → 判断更新 → 写作
+观察/问题线索 → 现象核验 + Related Work → 原因分析/诊断 → 改进假设/MVE → 固定协议实验 → 判断更新
 ```
 
-Datasets 和 Evaluation 为复现及实验提供共同的数据/评价契约；Handoff 将本轮证据与下一步动作接回项目入口。论文阅读、完整 survey、复现包和写作按上表调用对应 skill。
+baseline 复现为现象核验和诊断提供证据；Datasets 和 Evaluation 提供共同的数据/评价契约。Handoff 将本轮证据与下一步动作接回项目入口，足够成熟的发现再进入写作。
 
 ## 优先级（来自调研报告）
 
