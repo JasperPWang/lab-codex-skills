@@ -125,7 +125,8 @@ related_work/
 
 原始文件保留与目录级 `README.md` / `manifest.json` 的权威规则在 [`dataset-storage.md`](../../research-dev-standards/references/dataset-storage.md)；无需配置只读权限。项目 `dataset.md` 用 [`dataset.md` 模板](../assets/templates/dataset.md) 记录使用契约：
 
-- 名称/版本/来源标识；原始库位置与 manifest；本项目副本/独立解压目录和派生版本。
+- 原始数据位置为已核验数据盘的 `datasets/<dataset>/<version-or-snapshot>/`，不增设 `raw/` 层；`projects/<project>/data/<dataset>/<derived-version>/` 放该项目处理好的训练/验证/测试数据。预处理暂存使用项目工作区，不混用这两类目录。
+- 名称/版本/来源标识；原始 datasets 位置与 manifest；项目 data 路径、准备暂存目录和派生版本。
 - 原始及派生目录结构、样本单位、字段/格式、图像分辨率、坐标系/单位、相机/标注/GT 的含义和可用性（按任务填写）。
 - 下载/验证、独立复制或解压、预处理、样本索引生成的实际命令；脚本 commit、配置、过滤/去重、前后样本数、已知损坏/缺失。
 - 官方 train/val/test 划分及固定样本列表/哈希；自建 split 时说明要泛化的维度并按对应被试/序列/场景/来源等分组，不能把相邻帧泄漏至测试集。官方 benchmark 协议优先；不笼统禁止所有随机样本划分。

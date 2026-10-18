@@ -1,23 +1,26 @@
-# 数据集原始来源、项目副本与元数据
+# 原始 datasets、项目 data 与元数据
 
 ## 存放与保留
 
 先按主 skill 核验数据盘挂载、空间和缓存位置，再下载。原始库按数据集/版本区分：上游提供什么格式就保留什么格式，包括压缩包、分片、原图、标注、相机和 split 文件。`.part` 及未校验下载保持未就绪状态；完整性检查后才标为可用。保留原始下载件，不因已解压、缓存整理、另一方法需要新格式或磁盘紧张删除、覆盖或修改它们。替换上游版本使用新版本目录；源数据删除/替换须用户另行明确授权。
 
+目录职责按用户确认的约定区分：**`datasets/` 放上游原始数据集，不增设 `raw/` 层；`projects/<project>/data/` 放该项目已处理、可用于训练/验证/测试的数据集。** 不把项目生成的 mask、裁剪图、转换标注等写入 `datasets/`，也不将项目 `data/` 当作共享原始库。预处理所需的独立复制/解压暂存放项目工作区，与原始库及已就绪的 `data/` 版本分开。
+
 ```text
-<verified-data-mount>/datasets/raw/<dataset>/<version-or-snapshot>/
+<verified-data-mount>/datasets/<dataset>/<version-or-snapshot>/
   README.md
   manifest.json
   archives-or-original-files/
 <verified-data-mount>/projects/<project>/data/<dataset>/<derived-version>/
   README.md
   manifest.json
-  inputs/       # 独立复制或独立解压
-  processed/
-  splits/
+  <项目所需的训练/验证/测试数据及标注结构>
+  splits/       # 如需独立保存划分清单
 ```
 
 示例路径中的 data mount 必须实际核验；不凭名称判断。上游无版本号时，用访问日期与文件哈希定义本地 snapshot，说明“上游未提供版本”，不捏造 release。
+
+`data/` 内保持项目实际读取的格式，不强制再套一层 `processed/` 或固定的 train/val/test 目录；划分也可由清单表达。不同方法的预处理不兼容时采用不同派生版本，不能互相覆盖。未完成处理或验证的版本保持未就绪状态，不能作为已处理可用数据供训练/评测读取。
 
 原始目录只作为校验、独立复制/解压和生成派生数据的读取来源，不能直接作为项目训练、评测或原地预处理的工作目录。禁止用软链接、硬链接或把原始目录直接挂成项目工作目录来代替副本；不同方法会原地写入 mask、resize、缓存或标注，必须隔离。无需设置只读权限或强制只读挂载。复制完成后核对文件数/大小/清单和必要校验，所有变换及临时产物写项目副本，保留预处理版本；不允许路径参数出错时写回原始库。
 
@@ -48,7 +51,7 @@ README 至少写明数据集名、上游来源/下载途径、版本或快照、
     "tool": "<tool-and-version>",
     "command_or_script": "<reproducible-command-without-credentials>"
   },
-  "raw_root": "<actual-verified-path>",
+  "raw_root": "<verified-data-mount>/datasets/<dataset>/<version-or-snapshot>",
   "files": [
     {
       "path": "<relative-original-file>",

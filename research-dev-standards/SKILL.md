@@ -125,8 +125,8 @@ description: Enforces minimum-viable experimental design, evidence-based reasoni
 
 ### 数据集原始库与项目派生副本
 
-- 下载/接入数据集或编写预处理脚本前，读取 [`references/dataset-storage.md`](references/dataset-storage.md)。在数据盘按数据集及版本保存上游原始文件（包括压缩包、分片、标注），校验后保留，不因解压、缓存清理、换项目或空间不足而删除、覆盖或原地修改；删除/替换源数据需用户另行明确授权。
-- 项目从原始库独立复制或解压到自己的目录，再预处理、训练和评测；原始库只用于校验及派生数据的读取。禁止以软链接或硬链接代替项目副本。各方法/预处理版本使用独立目录并记录来源链路；不配置只读权限或强制只读挂载。
+- 下载/接入数据集或编写预处理脚本前，读取 [`references/dataset-storage.md`](references/dataset-storage.md)。原始数据统一位于已核验数据盘的 `datasets/<dataset>/<version-or-snapshot>/`，不增设 `raw/` 层。保存上游原始文件（包括压缩包、分片、标注），校验后保留，不因解压、缓存清理、换项目或空间不足而删除、覆盖或原地修改；删除/替换源数据需用户另行明确授权。
+- `projects/<project>/data/<dataset>/<derived-version>/` 存该项目处理好的训练/验证/测试数据；预处理的独立复制/解压暂存放项目工作区，不与原始库或已就绪版本混用。原始库只用于校验及派生数据的读取。禁止以软链接或硬链接代替项目副本。各方法/预处理版本使用独立目录并记录来源链路；不配置只读权限或强制只读挂载。
 - 每个已下载的数据集版本目录必须同时有 `README.md` 和 `manifest.json`，说明来源、版本、许可证/访问条件、下载与校验状态、文件大小及 SHA256。项目 `dataset.md` 记录实际使用范围、目录/格式、预处理脚本与配置、样本数及 split；原始/派生目录布局及 JSON 示例见上述参考。
 
 ### 完成前审查
