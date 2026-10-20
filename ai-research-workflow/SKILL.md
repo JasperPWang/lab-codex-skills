@@ -30,6 +30,12 @@ For every paper intake, actively search official paper/project pages, submission
 
 Also verify official implementation availability and release scope. When actual code is available, download it under the paper's `code/<repository-name>/` (or link an existing matching snapshot), separately from LaTeX `source/`. Record the official URL, license status, actual commit/tag, local path, and acquisition status. Preserve the canonical `w.o. code` / empty repository / implemented repository distinction, noting partial releases and access failures separately. Collection does not authorize installation, execution, or automatic weight/dataset downloads; see the code-acquisition rules in the same reference.
 
+## 实验可视化入口
+
+继续重要研究项目并开始检查基线、方法迭代或关键实验结果时，使用 [`research-viewer`](../research-viewer/SKILL.md) 检查已有网页并按需建立或更新实验可视化入口。按研究目标划分项目；多个方法仓库可属于同一项目，服务器只表示执行/存储位置。默认统一导航、各项目独立空间、共享查看器，资产留在对应服务器。随当前项目推进接入，不批量启动其他项目，也不为纯文献或代码问答强制建站。
+
+首次接入按该 skill 的 onboarding 流程完成一个真实案例的闭环，后续关键实验链接 run/索引版本、覆盖范围和实际检查过的典型/失败案例。网页承担可检查证据，既有实验报告承担结论；观察到现象后仍走原因分析与相关工作核查。
+
 ## Canonical Paper Card Gate
 
 Whenever a workflow will create, normalize, audit, or sync paper cards, first use [`paper-card-delivery`](../paper-card-delivery/SKILL.md). That skill is the canonical source for paper-card verification, fixed format, image/caption rules, and validation. This router must not finalize a paper card from its local summary rules alone.

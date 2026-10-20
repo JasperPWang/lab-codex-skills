@@ -171,6 +171,7 @@ Use short daily prompts. The agent should select the skill stack and only ask wh
 | Figures and plots | `帮我把这张图做成论文级图表` | `nature-figure` |
 | Statistics sanity check | `帮我检查这些实验表格和 p 值是否一致` | `stats-sanity` |
 | Experiment report / log | `帮我把这次运行整理成实验报告` | `experiment-report-writing`, `research-dev-standards` |
+| Experiment visualization | `继续当前项目，接入规范的实验可视化网页` | `research-viewer`, `ai-research-workflow`, `research-dev-standards` |
 | Reproducibility / release | `帮我整理这个项目的复现包` | `repro-pack` |
 | Mock review / rebuttal | `帮我从审稿人角度审一下/回审稿意见` | `academic-paper-reviewer`, `nature-reviewer`, `nature-response` |
 | Grant / proposal | `帮我搭这个基金/博士课题 proposal` | `grant-writer` |

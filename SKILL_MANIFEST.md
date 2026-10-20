@@ -42,6 +42,7 @@ Content skills are Markdown-first. Route durable writes with `research-doc-workf
 - `paper-to-slides-skill`
 - `pdf`
 - `research-doc-workflow`
+- `research-viewer`: project-level experiment viewers, server-local assets, evidence contracts, and reusable onboarding.
 - `survey-builder`
 
 ## Vendored Or Downloaded Skills

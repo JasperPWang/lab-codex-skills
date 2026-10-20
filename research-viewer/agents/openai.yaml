@@ -1,0 +1,3 @@
+interface:
+  display_name: "科研实验可视化"
+  short_description: "构建和改进可复用的实验结果查看器，检查对齐、GT、指标及失败案例"
