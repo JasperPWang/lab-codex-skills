@@ -1,0 +1,78 @@
+{
+  "source": {
+    "url": "https://github.com/lijiaman/omomo_release/blob/e9d8c52f41866ed0c07ac574cb8f7f9424b6d1e7/manip/vis/floor_colorful_mat.blend",
+    "commit": "e9d8c52f41866ed0c07ac574cb8f7f9424b6d1e7",
+    "bytes": 13482160,
+    "sha256": "bc7e2d7de5fe2129c9808c21a00629fd294d97ee52d8d1ca543bb3d748312f1f",
+    "blender_version": 293
+  },
+  "extraction": "Read-only blender-asset-tracer 1.20 DNA parser; no scene/script execution",
+  "preview_transform": "Linear RGB to sRGB transfer, round nearest 8-bit; flat parameter preview only, not Filmic/shaded output or paper pixels",
+  "materials": [
+    {
+      "material": "blue",
+      "linear_rgba": [
+        0.019754698500037193,
+        0.05669531226158142,
+        0.8352941274642944,
+        1.0
+      ],
+      "preview_srgb_hex": "#2643EC",
+      "base_color_linked": false
+    },
+    {
+      "material": "green",
+      "linear_rgba": [
+        0.061328817158937454,
+        0.27383121848106384,
+        0.09230853617191315,
+        1.0
+      ],
+      "preview_srgb_hex": "#468F56",
+      "base_color_linked": false
+    },
+    {
+      "material": "Material.001",
+      "linear_rgba": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "preview_srgb_hex": "#E7E7E7",
+      "base_color_linked": false
+    },
+    {
+      "material": "orange",
+      "linear_rgba": [
+        0.8352941274642944,
+        0.03164397552609444,
+        0.0068428837694227695,
+        1.0
+      ],
+      "preview_srgb_hex": "#EC3214",
+      "base_color_linked": false
+    },
+    {
+      "material": "purple",
+      "linear_rgba": [
+        0.6061233282089233,
+        0.09826813638210297,
+        1.0,
+        1.0
+      ],
+      "preview_srgb_hex": "#CC58FF",
+      "base_color_linked": false
+    }
+  ],
+  "stored_scene_color_management": {
+    "view_transform": "Filmic",
+    "look": "None",
+    "exposure": 0.0,
+    "gamma": 1.0,
+    "flag": 0,
+    "engine": "CYCLES",
+    "display_device": "sRGB"
+  },
+  "boundary": "Materials stored in this OMOMO scene; availability is not proof of use in a paper panel or in CHOIS external scenes. Active renderer scripts may override these colors."
+}

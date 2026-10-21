@@ -1,5 +1,5 @@
 {
-  "version": "2.0.1",
+  "version": "2.1.3",
   "approved_on": "2026-10-21",
   "default_scheme": "chois-v1",
   "selection_model": "reference family plus representation-specific encoding; no universal LUT for every modality",
@@ -54,7 +54,12 @@
         "condition_fill": {"hex": "#D9F2D0", "alpha": 0.4},
         "generation_fill": {"hex": "#F2CFEE", "alpha": 0.4},
         "flow_arrow": {"hex": "#78206E", "alpha": 1},
-        "outer_structure": {"hex": "#042433", "alpha": 1}
+        "outer_structure": {"hex": "#042433", "alpha": 1},
+        "vae_outline": {"hex": "#80350E", "alpha": 1},
+        "condition_outline": {"hex": "#275317", "alpha": 1},
+        "generation_outline": {"hex": "#50164A", "alpha": 1},
+        "scene_frame_fill": {"hex": "#DCEAF7", "alpha": 1},
+        "scene_frame_outline": {"hex": "#163E64", "alpha": 1}
       }
     },
     "any4d-v1": {
@@ -73,44 +78,156 @@
         "module_fill": {"hex": "#E2DCFF", "alpha": 0.623529},
         "module_outline": {"hex": "#165044", "alpha": 1},
         "output_token": {"hex": "#00AAD4", "alpha": 0.623529},
-        "input_token": {"hex": "#93AC9D", "alpha": 0.623529}
+        "input_token": {"hex": "#93AC9D", "alpha": 0.623529},
+        "output_token_outline": {"hex": "#004455", "alpha": 1},
+        "scale_token": {"hex": "#DD55FF", "alpha": 0.623529},
+        "reference_token": {"hex": "#FFEEAA", "alpha": 0.623529},
+        "patch_group_fill": {"hex": "#D7F4EE", "alpha": 0.623529},
+        "input_outline": {"hex": "#D5D5FF", "alpha": 1}
       }
     },
     "gaussian-garments-v1": {
       "name": "Gaussian Garments",
-      "kind": "rendering-reference-family",
-      "status": "partial-source-evidence; no fabricated universal flat palette",
+      "kind": "diagram-role",
+      "status": "selected-raster-colors-confirmed; author-editable-palette-unverified",
+      "user_preference": "Figures 2, 3 and 4 method diagrams: purple, pink and yellow; separately also likes the paper's normal visualization, not mesh identity/viewer colors or garment textures",
+      "normal_reference": "gaussian-garments-normal-reference-v1",
       "source": {
-        "type": "official-viewer-code",
-        "url": "https://github.com/eth-ait/Gaussian-Garments/blob/ceb66fc36598da05b3b3391f4562cdc54d2a2ed2/inference.py#L77",
-        "commit": "ceb66fc36598da05b3b3391f4562cdc54d2a2ed2",
-        "symbol": "adjust_color",
-        "scope": "viewer mesh colors only; exact paper illustration/material palette unverified"
+        "type": "tex-bundled-raster-png",
+        "url": "https://arxiv.org/src/2409.08189v1",
+        "figures": [2, 3, 4],
+        "files": ["figures/method2.png", "figures/registration_3dv.png", "figures/appearance.png"],
+        "scope": "selected flat module/arrow/parameter pixels in source PNGs; not vector RGB/alpha, author code variables, a universal LUT or material colors"
       },
+      "colors": {
+        "network_purple": {"hex": "#6B3E7F", "alpha": 1, "figure": 4, "role": "Conv module"},
+        "network_pink": {"hex": "#BD809D", "alpha": 1, "figure": 4, "role": "StyleUNet blocks"},
+        "parameter_yellow": {"hex": "#FFD966", "alpha": 1, "figure": 4, "role": "translation offset top/front fill"},
+        "forward_pink": {"hex": "#FF9BCF", "alpha": 1, "figure": 3, "role": "forward arrows"},
+        "gradient_purple": {"hex": "#7030A0", "alpha": 1, "figure": 3, "role": "reverse gradient arrows"},
+        "geometry_accent": {"hex": "#AF50E4", "alpha": 1, "figure": 2, "role": "geometry-stage arrows"},
+        "geometry_stage_fill": {"hex": "#EBE0F4", "alpha": 0.819608, "figure": 2, "role": "geometry stage background", "evidence": "embedded PNG RGBA, alpha 209/255"},
+        "observation_stage_fill": {"hex": "#FDF6DB", "alpha": 0.819608, "figure": 2, "role": "segmented observations background", "evidence": "embedded PNG RGBA, alpha 209/255"},
+        "appearance_stage_fill": {"hex": "#DAE1F1", "alpha": 0.819608, "figure": 2, "role": "appearance stage background", "evidence": "embedded PNG RGBA, alpha 209/255"},
+        "behavior_stage_fill": {"hex": "#E0F0D9", "alpha": 0.819608, "figure": 2, "role": "behavior stage background", "evidence": "embedded PNG RGBA, alpha 209/255"},
+        "data_flow_blue": {"hex": "#4472C4", "alpha": 1, "figure": 4, "role": "data flow arrows"},
+        "scale_green": {"hex": "#A9D18E", "alpha": 1, "figure": 4, "role": "scale parameter fill"},
+        "rotation_peach": {"hex": "#F8CBAD", "alpha": 1, "figure": 4, "role": "rotation parameter fill"},
+        "sh_blue": {"hex": "#B4C7E7", "alpha": 1, "figure": 4, "role": "spherical harmonics parameter fill"},
+        "translation_gold": {"hex": "#FFC000", "alpha": 1, "figure": 4, "role": "translation parameter fill"},
+        "initialization_gray": {"hex": "#F2F2F2", "alpha": 1, "figure": 2, "role": "initialization stage background"}
+      },
+      "reuse_policy": "use selected source-PNG RGBA as an attributed diagram palette; opaque samples use alpha=1, Figure 2 flat backgrounds retain embedded alpha 209/255; do not infer pre-raster author drawing parameters or recolor empirical geometry",
       "mesh_viewer_encoding": "gaussian-garments-viewer-v1",
-      "paper_figure_palette_status": "reference-required-before-exact-match"
+      "mesh_viewer_preferred": false,
+      "paper_figure_palette_status": "selected-source-png-pixels-confirmed; original-editable-generation-chain-unverified"
     }
   },
   "representation_defaults": {
     "diagram": {"family": "chois-v1", "encoding": "stable-role-map"},
     "chart_categorical": {"family": "chois-v1", "variant": "contrast", "encoding": "stable-method-map"},
-    "mesh_identity": {"family": "chois-v1", "variant": "soft", "encoding": "stable-entity-map"},
+    "mesh_identity": {"family": "chois-v1", "variant": "soft", "encoding": "stable-entity-map", "candidate_set": "chois-omomo-entities-v1", "policy": "CHOIS is a starting default, not a three-color limit; select and freeze a project-specific entity map"},
     "rgb_texture_gaussian": {"encoding": "preserve-original-appearance"},
-    "depth": {"encoding": "seeclear-depth-v1", "purpose": "qualitative; shared physical range for direct comparisons"},
-    "normal": {"encoding": "normal-rgb-v1", "condition": "confirm frame/axes and convert normals first"},
+    "depth": {"encoding": "seeclear-depth-v1", "visual_candidate_set": "depth-screenshot-candidates-v1", "purpose": "qualitative; shared physical range for direct comparisons; screenshot candidates do not override this encoding"},
+    "normal": {"encoding": "normal-rgb-v1", "preferred_reference": "gaussian-garments-v1", "reference_encoding": "gaussian-garments-normal-reference-v1", "condition": "Gaussian Garments normal appearance is preferred, but exact paper visualization is unverified; retain explicit project mapping, confirm frame/axes, never label the generic normal sphere an exact paper reproduction"},
     "point_cloud": {"encoding": "preserve-rgb-or-explicit-physical-attribute", "family_for_ids": "chois-v1"},
     "pointmap": {"encoding": "pointmap-xyz-v1", "condition": "shared frame, transform and coordinate bounds"},
     "segmentation": {"family": "chois-v1", "encoding": "stable-class-or-instance-map"},
     "optical_flow_2d": {"preferred_reference": null, "encoding_status": "project-renderer-required; any4d-uv-colorwheel-unverified", "policy": "use and attribute a verified project UV renderer; the user's Any4D teaser reference is 3D point tracks, not UV flow; never label RAFT, 3D XZ arrows or rainbow tracks as Any4D 2D reproduction"},
-    "scene_flow_3d": {"preferred_reference": "any4d-v1", "encoding": "any4d-scene-flow-xz-v1"},
-    "point_tracks": {"preferred_reference": "any4d-v1", "encoding": "any4d-track-x-v1", "evidence_scope": "official demo function confirmed; exact teaser export pipeline unverified"},
-    "scalar_error": {"encoding": "viridis-or-cividis", "range": "shared physical range"},
-    "signed_residual": {"encoding": "zero-centered-diverging", "range": "shared physical range"}
+    "scene_flow_3d": {"preferred_reference": "any4d-v1", "encoding": "any4d-motion-identity-v1", "optional_diagnostic_encoding": "any4d-scene-flow-xz-v1", "evidence_scope": "local shared track/arrow identity colors; not the official demo's direction/magnitude HSV encoding"},
+    "point_tracks": {"preferred_reference": "any4d-v1", "encoding": "any4d-motion-identity-v1", "evidence_scope": "based on confirmed official track function; shared arrow use is local adaptation; exact teaser export pipeline unverified"},
+    "scalar_error": {"encoding": "approved-project-selected-lut", "range": "shared physical range", "selection_status": "approved multi-option bank; select and record one LUT per project, no exclusive user selection", "recommended_lut": "matter", "approved_luts": ["matter", "dense"], "legacy_encoding": "viridis-or-cividis", "candidate_set": "quantitative-cmocean-v1"},
+    "confidence": {"encoding": "approved-project-selected-lut", "range": "shared score range; [0,1] only for an actual bounded score/probability", "candidate_set": "quantitative-cmocean-v1", "selection_status": "approved multi-option bank; separate from error and uncertainty", "recommended_lut": "ice_r", "approved_luts": ["ice_r", "tempo"], "legacy_encoding": "project-explicit-sequential"},
+    "signed_residual": {"encoding": "approved-project-selected-lut", "range": "shared physical range, zero at color midpoint", "candidate_set": "quantitative-cmocean-v1", "selection_status": "approved multi-option bank; select and record one LUT per project, no exclusive user selection", "recommended_lut": "curl", "approved_luts": ["curl", "balance"], "legacy_encoding": "zero-centered-diverging"}
   },
   "encoding_aliases": {
     "seeclear-depth-v1": "encodings.seeclear-depth-v1"
   },
   "migration_from_v1": "seeclear-depth-v1 moved from schemes to encodings without changing its ID or LUT; four reference families now include Gaussian Garments",
+  "migration_from_v2_0": "v2.1 unifies new point-track and scene-flow displays under any4d-motion-identity-v1; do not silently recolor existing results; original XZ HSV remains an explicit diagnostic option",
+  "visual_candidate_sets": {
+    "chois-omomo-entities-v1": {
+      "kind": "categorical-entity-candidates",
+      "scope": "Entity identity for untextured mesh/point-cloud diagnostics and local 2D labels; not physical attribute maps, normal encodings or replacement textured appearance",
+      "all_paper_entity_colors_catalogued": false,
+      "scene_evidence": "omomo-material-evidence.json",
+      "sources": {
+        "chois_labels": "https://arxiv.org/src/2312.03913v1 (figures/Figure_teaser.pdf vector fills)",
+        "chois_renderer": "https://github.com/lijiaman/chois_release/blob/8ec585aa0200fd2a890ffb12897bcf69ae719463/manip/vis/blender_vis_utils.py#L89-L123",
+        "omomo_scene": "https://github.com/lijiaman/omomo_release/blob/e9d8c52f41866ed0c07ac574cb8f7f9424b6d1e7/manip/vis/floor_colorful_mat.blend",
+        "omomo_renderer": "https://github.com/lijiaman/omomo_release/blob/e9d8c52f41866ed0c07ac574cb8f7f9424b6d1e7/manip/vis/blender_vis_utils.py#L89-L123"
+      },
+      "preview_policy": "2D vector HEX is used directly. Blender Principled Base Color is stored as linear RGBA; preview_srgb_hex applies only the standard sRGB transfer and 8-bit rounding, not lighting/Filmic or paper reproduction. Never paste that preview HEX back as a linear shader input.",
+      "entries": {
+        "chois-label-blue": {"label": "CHOIS 柔和蓝", "hex": "#879BD9", "alpha": 1, "evidence": "confirmed-teaser-vector-label; local mesh adaptation"},
+        "chois-label-green": {"label": "CHOIS 柔和绿", "hex": "#A9CEA9", "alpha": 1, "evidence": "confirmed-teaser-vector-label; local mesh adaptation"},
+        "chois-label-purple": {"label": "CHOIS 柔和紫", "hex": "#B991D2", "alpha": 1, "evidence": "confirmed-teaser-vector-label; local mesh adaptation"},
+        "omomo-scene-blue": {"label": "OMOMO 场景蓝", "linear_rgba": [0.019754698500037193, 0.05669531226158142, 0.8352941274642944, 1], "preview_srgb_hex": "#2643EC", "evidence": "confirmed-stored-scene-material", "final_render_color_confirmed": false},
+        "omomo-scene-green": {"label": "OMOMO 场景绿", "linear_rgba": [0.061328817158937454, 0.27383121848106384, 0.09230853617191315, 1], "preview_srgb_hex": "#468F56", "evidence": "confirmed-stored-scene-material", "final_render_color_confirmed": false},
+        "omomo-scene-orange": {"label": "OMOMO 橙红（材质名 orange）", "linear_rgba": [0.8352941274642944, 0.03164397552609444, 0.0068428837694227695, 1], "preview_srgb_hex": "#EC3214", "evidence": "confirmed-stored-scene-material", "final_render_color_confirmed": false},
+        "omomo-scene-purple": {"label": "OMOMO 场景紫", "linear_rgba": [0.6061233282089233, 0.09826813638210297, 1, 1], "preview_srgb_hex": "#CC58FF", "evidence": "confirmed-stored-scene-material", "final_render_color_confirmed": false},
+        "chois-omomo-code-blue": {"label": "CHOIS / OMOMO 脚本蓝", "linear_rgba": [0.0392156862745098, 0.11764705882352941, 0.8823529411764706, 1], "preview_srgb_hex": "#3860F1", "evidence": "confirmed-active-renderer-BSDF-assignment", "final_render_color_confirmed": false},
+        "chois-omomo-code-purple": {"label": "CHOIS / OMOMO 脚本紫", "linear_rgba": [0.6, 0.2, 1, 1], "preview_srgb_hex": "#CB7CFF", "evidence": "confirmed-active-renderer-BSDF-assignment", "final_render_color_confirmed": false}
+      },
+      "pairings": [
+        {"label": "柔和三实体", "entities": ["chois-label-blue", "chois-label-green", "chois-label-purple"], "evidence": "local-pairing-not-author-prescription"},
+        {"label": "冷暖双实体", "entities": ["omomo-scene-blue", "omomo-scene-orange"], "evidence": "local-pairing-not-author-prescription"},
+        {"label": "绿紫双实体", "entities": ["omomo-scene-green", "omomo-scene-purple"], "evidence": "local-pairing-not-author-prescription"},
+        {"label": "绿橙双实体", "entities": ["omomo-scene-green", "omomo-scene-orange"], "evidence": "local-pairing-not-author-prescription"},
+        {"label": "脚本蓝紫", "entities": ["chois-omomo-code-blue", "chois-omomo-code-purple"], "evidence": "local-pairing-not-author-prescription"},
+        {"label": "四实体候选", "entities": ["omomo-scene-blue", "omomo-scene-green", "omomo-scene-orange", "omomo-scene-purple"], "evidence": "local-pairing-not-author-prescription"}
+      ],
+      "selection_policy": "An extensible bank, not an exhaustive author palette or a requirement to use every color. Choose per project, preserve identities across frames/methods, use direct labels and check white/actual-gray backgrounds and color-vision deficiencies. Similar blue/purple variants are alternatives, not automatically distinct simultaneous categories.",
+      "unverified": ["Exact mapping from scene/code materials to all CHOIS/OMOMO paper panels", "CHOIS external .blend scenes and their full material banks", "Final appearance under all lights, shaders and color management", "All additional colors visible in papers; do not count garment/object textures as identity swatches", "Current OMOMO human-only script has commented named-material branches; CLI material-color is not proof of active arbitrary palette selection"]
+    },
+    "quantitative-cmocean-v1": {
+      "kind": "source-confirmed-quantitative-lut-candidates",
+      "approval": {"status": "user-approved-current-version", "confirmed_on": "2026-10-21", "scope": "Six LUTs retained as recommended/alternative pairs, with ramp-only previews and numeric endpoint/zero labels; no exclusive per-category choice inferred, no change to unrelated pending references or historical results"},
+      "preview_display": "ramps-and-numeric-labels-only; no synthetic scalar-field images",
+      "source": {
+        "repository": "https://github.com/matplotlib/cmocean",
+        "commit": "59c35002c3aa5296b65d9646e52604c627441eb6",
+        "documentation": "https://matplotlib.org/cmocean/",
+        "provenance": "../assets/color-references/cmocean/provenance.json",
+        "license": "../assets/color-references/cmocean/LICENSE.txt",
+        "scope": "Official RGB arrays confirmed and preserved; CV use, suggested pairings and normalization are local adaptations, not choices from the user's reference papers"
+      },
+      "groups": {
+        "nonnegative_error": {"candidates": ["matter", "dense"], "suggested": "matter", "selected": null, "semantics": "low-to-high error; darker color means larger error"},
+        "confidence": {"candidates": ["ice_r", "tempo"], "suggested": "ice_r", "selected": null, "semantics": "low-to-high confidence; darker color means higher confidence, not larger error; do not call uncalibrated scores probabilities"},
+        "signed_residual": {"candidates": ["curl", "balance"], "suggested": "curl", "selected": null, "semantics": "negative-to-neutral-zero-to-positive; define residual as e.g. prediction minus GT and share signed bounds"}
+      },
+      "maps": {
+        "matter": {"lut": "../assets/color-references/cmocean/matter-rgb.txt", "kind": "sequential", "reverse": false, "label": "浅黄—珊瑚粉—深紫"},
+        "dense": {"lut": "../assets/color-references/cmocean/dense-rgb.txt", "kind": "sequential", "reverse": false, "label": "浅青—蓝紫—深紫"},
+        "ice_r": {"lut": "../assets/color-references/cmocean/ice-rgb.txt", "kind": "sequential", "reverse": true, "label": "浅青—蓝—深蓝"},
+        "tempo": {"lut": "../assets/color-references/cmocean/tempo-rgb.txt", "kind": "sequential", "reverse": false, "label": "浅色—青绿—深蓝"},
+        "curl": {"lut": "../assets/color-references/cmocean/curl-rgb.txt", "kind": "diverging", "reverse": false, "label": "青绿—浅色—紫粉"},
+        "balance": {"lut": "../assets/color-references/cmocean/balance-rgb.txt", "kind": "diverging", "reverse": false, "label": "蓝青—浅色—珊瑚红"}
+      },
+      "preview_sampling": "Use all stored RGB rows, reverse only where declared, linear interpolation in encoded RGB; ramp uses 257 values including exact middle. This local sampling is not a claim of byte identity with every Matplotlib/cmocean renderer/version.",
+      "background_contract": {"preferred": ["#FFFFFF", "#E5E5E5"], "gray_note": "representative light gray preview, not a verified project-wide gray value", "zero": "neutral colormap midpoint; not the background and never an invalid sentinel", "invalid": "separate alpha/validity mask, with an explicit valid-region contour when zero can blend into the background", "comparison": "same LUT, values, zero and range on white/gray; do not shift the neutral value or normalize by background; contour is an annotation, not residual data"},
+      "policy": "User approved this multi-option reference version; preserve recommended/alternative pairs without inventing an exclusive selection. Select and record a concrete approved LUT per project; existing explicit configurations stay unchanged. Keep complete LUTs, shared units/ranges and invalid masks. Do not per-method boost saturation, crop or gamma-tune colors. Confidence is not error, uncertainty or automatically 1-error. Signed zero must map to the neutral midpoint; use a common symmetric range unless an asymmetric zero-centered mapping is explicitly declared. Real-output readability, grayscale and CVD still require project-specific validation; user approval is not evidence of those checks."
+    },
+    "depth-screenshot-candidates-v1": {
+      "kind": "depth-visual-reference-collection",
+      "status": "user-provided-image; candidate LUTs and method attributions unverified",
+      "source": {"type": "user-provided-image", "received_on": "2026-10-21", "asset": "../assets/color-references/depth-palette-candidates.png", "sha256": "042b5944b15e8e3e6ac70650297efd3887eca6053ef281c571dab462766e6167"},
+      "selected_candidate": null,
+      "reference_rows": [
+        {"index": "original", "label": "原始灰度", "role": "baseline", "encoding": null},
+        {"index": "0", "label": "反转灰度", "role": "candidate", "encoding": null},
+        {"index": "1", "label": "青蓝黑", "role": "candidate", "encoding": null},
+        {"index": "2", "label": "白粉蓝", "role": "candidate", "encoding": null},
+        {"index": "3", "label": "diffusion know transformer", "role": "candidate", "label_note": "verbatim screenshot label; method attribution unverified", "encoding": null},
+        {"index": "4", "label": "蓝粉黄", "role": "candidate", "encoding": null},
+        {"index": "5", "label": "黄红蓝", "role": "candidate", "encoding": null},
+        {"index": "6", "label": "Depth Anything v3", "role": "candidate", "label_note": "screenshot label only; exact official LUT/normalization and equivalence to SeeClear not established", "encoding": null},
+        {"index": "7", "label": "红蓝", "role": "candidate", "encoding": null}
+      ],
+      "policy": "Preserve all numbered alternatives and original image; do not infer LUT stops, near/far direction, normalization or official authorship from a screenshot. The zoom highlight does not select a user default. Compare confirmed implementations on the same depth data and shared range before adoption; grayscale remains a useful diagnostic."
+    }
+  },
   "encodings": {
     "seeclear-depth-v1": {
       "name": "SeeClear Depth",
@@ -138,6 +255,25 @@
       },
       "quantitative_error_default": false
     },
+    "gaussian-garments-normal-reference-v1": {
+      "kind": "normal-visual-reference",
+      "user_preferred": true,
+      "source": {
+        "type": "official-code-plus-paper-source",
+        "url": "https://github.com/eth-ait/Gaussian-Garments/blob/ceb66fc36598da05b3b3391f4562cdc54d2a2ed2/inference.py#L150-L227",
+        "commit": "ceb66fc36598da05b3b3391f4562cdc54d2a2ed2",
+        "symbol": "bake_texture",
+        "paper_source": "https://arxiv.org/src/2409.08189v1",
+        "tex": "sections/92_appearance_details.tex",
+        "scope": "Blender NORMAL bake in OBJECT space confirmed; not proof of the exact paper surface-normal display shader"
+      },
+      "confirmed_bake": {"type": "NORMAL", "normal_space": "OBJECT", "default_resolution": [512, 512], "default_margin": 5, "png_output": "np.uint8(normal * 255), no extra S/V remapping in this function"},
+      "paper_training_note": "Paper source says normal directions are converted to camera coordinates before StyleUNet; this is not evidence of the paper figure display coordinate system",
+      "exact_axis_to_rgb": null,
+      "exact_paper_visualization_confirmed": false,
+      "pending": ["exact paper normal-axis/channel signs", "paper mesh normal-display shader", "view transform, gamma and export settings", "mapping from bake output to each figure"],
+      "policy": "Keep this visual preference separate from categorical diagram colors and gist_rainbow mesh identity colors; do not recolor measured normals with a purple/pink/yellow LUT or present a generic (n+1)/2 sphere as verified paper reproduction"
+    },
     "normal-rgb-v1": {
       "kind": "normal-vector",
       "source": "local explicit convention; not a paper-specific pastel palette",
@@ -159,8 +295,21 @@
       "formula": "rgb = clip((xyz_in_declared_frame - shared_min_xyz) / (shared_max_xyz - shared_min_xyz), 0, 1)",
       "policy": "reject zero-span axes or record a common fixed display value; never auto-center/normalize each method independently; this is not surface normal or optical flow"
     },
+    "any4d-motion-identity-v1": {
+      "kind": "shared-motion-point-identity",
+      "source": "local user-requested adaptation based on the confirmed any4d-track-x-v1 demo encoding, not an official shared scene-flow recipe",
+      "base_encoding": "any4d-track-x-v1",
+      "colormap": "Matplotlib rainbow, pinned library/LUT version",
+      "assignment": "freeze common reference point IDs and their 3D x positions; normalize with one shared reference x_min/x_max; same RGB for each point's track and scene-flow arrows",
+      "temporal_policy": "reuse the ID-to-RGB mapping across frames and views; common reference mapping across compared methods; explicitly mark unmatched IDs",
+      "saturation_value": "direct rainbow RGB, no additional HSV S/V adjustment or magnitude-based color changes",
+      "vector_semantics": "color identifies the reference point, not direction, speed or time; direction comes from arrow geometry, magnitude from length with a declared shared physical scale",
+      "degenerate_policy": "local convention: equal finite reference x uses q=0.5; invalid positions/IDs marked separately",
+      "evidence_scope": "base track mechanism source-confirmed; extending it to arrows is local adaptation; exact paper teaser export unverified"
+    },
     "any4d-scene-flow-xz-v1": {
       "kind": "3d-direction-and-magnitude",
+      "default_usage": "optional direction/magnitude diagnostic only; not the default shared motion palette",
       "source": {
         "type": "official-demo-code",
         "url": "https://github.com/Any-4D/Any4D/blob/aa9f1b0d7ecdf44a6ef8cef93387be0093bdd497/scripts/demo_inference.py#L103",
@@ -223,6 +372,7 @@
     },
     "gaussian-garments-viewer-v1": {
       "kind": "mesh-category-display",
+      "user_preferred": false,
       "source": {
         "url": "https://github.com/eth-ait/Gaussian-Garments/blob/ceb66fc36598da05b3b3391f4562cdc54d2a2ed2/inference.py#L77",
         "symbol": "adjust_color"

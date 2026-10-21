@@ -129,6 +129,7 @@ description: Enforces minimum-viable experimental design, evidence-based reasoni
 - 新建或调整科研图、定性渲染与实验网页配色时，读取 [`references/research-color-standard.md`](references/research-color-standard.md) 与其中的 JSON。四套参考家族为 CHOIS（默认）、Terra、Any4D、Gaussian Garments；SeeClear Depth 是独立数值编码，CHOIS 深色适配仍属同一家族。项目已有配置或用户本次选择优先，不批量改历史结果。
 - 深度、法线、点图/点云、网格、分割、二维光流/三维场景流/轨迹及图表，按 [`references/research-representation-colors.md`](references/research-representation-colors.md) 选择编码。用户指定的 Any4D teaser 是三维点轨迹，不是二维 UV 流；公开轨迹函数已确认，teaser 完整生成链路与专用 UV 色轮未确认，不用 RAFT 代替。方法图浅色不约束运动图饱和度，颜色/饱和度携带数值时不得逐方法美化。
 - 分类颜色、连续数值与界面状态分别编码；跨样本/方法保持角色色，直接比较共享数值范围。色表记录源码/矢量依据和透明度；不把材质参数、截图像素和本地改编混为论文原色。
+- 实体颜色可从 CHOIS / OMOMO 候选库按项目选择，不限于 CHOIS 蓝绿紫三个标签色；多个相近蓝/紫是备选，不因条目多就全部用于同图。实体库不等于流程图家族，不覆盖原纹理或物理属性编码。
 
 ### 三维重建结果渲染与对照
 

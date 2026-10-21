@@ -11,34 +11,47 @@
 | `chois-v1` | 交互组、人体/物体、轨迹、通用分类、图表与网页辅助色 | 未指定时选此方案；面积用 `soft`，细线/小字/控件用本地 `contrast` 适配 |
 | `terra-v1` | 多阶段方法表达，以及有明确证据的渲染表示参考 | 当前确认的是方法图矢量色；其他表示不能据此推断 |
 | `any4d-v1` | 方法图、三维流箭头、点轨迹及其他 CV 表示参考 | 用户指定的 teaser 是三维运动点轨迹，不是二维 UV 光流；公开轨迹函数已确认，teaser 完整生成链路待核实 |
-| `gaussian-garments-v1` | 服装/人体、网格、Gaussian 外观与论文插图参考 | 已确认 viewer 网格着色机制；论文整套精确色板仍为部分证据，不虚构 HEX |
+| `gaussian-garments-v1` | Figure 2/3/4 紫粉黄方法图，以及独立的法线视觉参考 | 两项偏好分别登记；不是 viewer 身份色或服装纹理。流程图 PNG 色已确认，法线完整论文展示链路仍待核实 |
 
 四套是参考家族，不是四组覆盖所有物理量的通用 HEX。CHOIS 的 soft/contrast 是同一方案适配；SeeClear Depth 独立放在 `encodings` 中，不占家族名额；数值误差色图也属于编码选择。v2 保留 `seeclear-depth-v1` ID 与 LUT，但从 `schemes` 移至 `encodings`，读取旧 JSON 结构的项目应显式迁移。Vid2World 等仍可作附加参考。
 
+流程图参考不限定三个色块。按用途展示填充、分区背景、箭头、边框与强调色，并逐色标明角色、HEX、透明度与来源；展示更多候选不意味着一张图全部用上。当前注册 CHOIS 三个原始主色及独立标注的本地深色/中性色、Terra 十个角色色、Any4D 十个角色色、Gaussian Garments 十六个角色色。不得为了凑数量杜撰作者原色；本地适配与原图参数分开。
+
 颜色饱和度按表示目的设定，不按论文名一刀切：流程图的浅色填充承托结构与文字；流场的方向/幅值可用更鲜艳的色轮。Any4D 的三维箭头 demo 明确令饱和度随幅值从 0.3 升至 1、亮度从 0.5 升至 1；点轨迹函数则直接取 Matplotlib `rainbow` RGB，没有额外 HSV 调整。前者不适用于 teaser 轨迹，二者均不能证明二维 UV 色轮。直接对照时共享编码、范围和饱和度/亮度传递函数，不能逐方法调鲜艳程度。
+
+用户已指定点轨迹与三维场景流只用一套默认运动配色：`any4d-motion-identity-v1`。两者沿用轨迹 `rainbow`，共享参考点 ID→RGB，颜色跨帧固定；箭头方向与长度表达运动，不以颜色暗示速度/方向。把该轨迹机制用于场景流箭头是本地适配，不改写官方箭头函数的 HSV 来源事实；后者保留为显式可选诊断，不再列为另一套默认。既有项目不自动重涂。
 
 ## CHOIS 的语义与使用
 
 - 原始 teaser 标签的蓝/绿/紫分别为 `#879BD9`、`#A9CEA9`、`#B991D2`，由 TeX 包 `figures/Figure_teaser.pdf` 的不透明矢量填充确认，与先前 PNG 标签取样相符。辅助灰、画布及 contrast 变体是本地约定，不冒充作者原色。
-- 交互组可让人和其交互物同色，用标签/轮廓区分两者；单人体默认蓝，多组按蓝/绿/紫稳定分配。需要实体分色时可用人体蓝、物体紫，但必须给图例。这是本地角色约定，不是作者统一规则。
+- 交互组可让人和其交互物同色，用标签/轮廓区分两者；蓝/绿/紫只是起始示例，不是实体只能三色或必须按顺序循环的限制。需要人/物分色、多人物、多物体或方法对照时，从 `visual_candidate_sets.chois-omomo-entities-v1` 选择项目级组合并冻结身份映射，不把人体永远蓝、物体永远紫当作作者规则。可扩展实体色库与四套流程图参考家族独立，不因收录 OMOMO 就新增一套默认方法图家族。
 - 定量曲线可用 contrast 蓝表示 Ours、灰表示主要对照，其余按注册表分配。绿色不是“最好”的通用标志。GT/预测/优化前后优先用栏位、标签、线型和标记区别，保持同一实体身份色。
 - 网页保持中性界面，交互色与实验类别色分开。成功、失败、缺失采用独立状态语义并配文字/图标，不与方法图例混用。浅色块不直接当白底小字颜色。
 
 ## 原始依据与复现边界
 
 - **CHOIS**：`2312.03913v1` 的矢量 teaser 确认标签三色。[官方 Blender 代码](https://github.com/lijiaman/chois_release/blob/8ec585aa0200fd2a890ffb12897bcf69ae719463/manip/vis/blender_vis_utils.py)中的人体/物体 BSDF base color 则是 `(10/255,30/255,225/255,1)` / `(153/255,51/255,1)`，不是上述标签色或最终受光像素，不能混为一个官方色板。
+- **CHOIS / OMOMO 实体候选**：除 CHOIS 三个标签色外，[OMOMO 官方场景](https://github.com/lijiaman/omomo_release/blob/e9d8c52f41866ed0c07ac574cb8f7f9424b6d1e7/manip/vis/floor_colorful_mat.blend) 已只读解析出 blue、green、orange、purple 四个 Principled Base Color；另有中性材质，不默认当作可区分类别。精确线性 RGBA、场景哈希及存储的 Filmic/Cycles 设置见 [提取记录](omomo-material-evidence.json)。[OMOMO 脚本](https://github.com/lijiaman/omomo_release/blob/e9d8c52f41866ed0c07ac574cb8f7f9424b6d1e7/manip/vis/blender_vis_utils.py#L89-L123) 另明确写入与上述 CHOIS 脚本相同的蓝/紫参数。色库登记九个有不同证据的条目，不等于九种适合同图同时使用的颜色；相近蓝/紫为备选。六组搭配是本地建议，不冒称作者指定。材质平面预览只做 linear→sRGB 转换，不包含光照/Filmic，不是最终论文像素；CHOIS 引用的外部场景、两篇论文所有面板的具体配色链路仍待核实，尚非完整色库。
 - **Terra**：`2510.14977v1` 的 `figures/pipeline.pdf` 矢量参数，包含不透明浅桃、主箭头与外框，及约 0.4 透明度的条件/生成填充。TeX 引入现成 PDF，没有证据表明它由公开 TikZ 色表生成。选定色值与 alpha 见 JSON；原图还有其他局部颜色，不全量迁移。
 - **Any4D**：`2512.10935v1` 的 `figures/any4d_architecture_v3.pdf` 矢量参数。模块/token 的 alpha 约 0.623529，输入区域约 0.992157；基础 RGB 不等于合成后的 PNG 色值。TeX 中的作者/网页蓝紫色也不能冒充模块颜色。
 - **Any4D 运动/几何表示**：[论文 Figure 1](https://arxiv.org/html/2512.10935v1#S0.F1) 明确 teaser 为三维运动点轨迹。[官方 demo 固定提交](https://github.com/Any-4D/Any4D/blob/aa9f1b0d7ecdf44a6ef8cef93387be0093bdd497/scripts/demo_inference.py) 确认三维箭头与轨迹采用不同着色机制；轨迹按传入数组第 0 时刻的三维 x 做 min–max 后查 `rainbow`。TeX 只引入成图 `figures/cvpr_teaser.pdf`，尚未找到完整导出脚本，不能宣称 teaser 参数已逐项复现。专用二维 UV 色轮仍未确认，禁止用 RAFT 通用实现冒充。仓库内 MoGe helper 另定义法线、深度等编码；函数存在不等于论文图调用证据。详见分表示规范。
-- **Gaussian Garments**：[官方 viewer 固定提交](https://github.com/eth-ait/Gaussian-Garments/blob/ceb66fc36598da05b3b3391f4562cdc54d2a2ed2/inference.py#L77) 确认网格用 `gist_rainbow` 后归一化并缩放/偏移 RGB；不把 viewer 节点插入顺序带到正式身份色映射，不声称该公式就是所有论文插图的配色。
+- **Gaussian Garments**：用户于 2026-10-21 澄清偏好是 [Figure 2/3/4 方法图](https://arxiv.org/html/2409.08189v1) 的紫、粉、黄搭配，不是网格/人体/服装的 viewer 着色。[TeX 包](https://arxiv.org/src/2409.08189v1) 引入 `method2.png`、`registration_3dv.png`、`appearance.png`。平色像素确认：Figure 4 网络紫 `#6B3E7F`、豆沙粉 `#BD809D`、参数黄 `#FFD966`，及蓝色箭头、绿/桃/浅蓝/金黄参数块；Figure 3 亮粉箭头 `#FF9BCF`、紫箭头 `#7030A0`；Figure 2 几何阶段紫色强调 `#AF50E4`、灰色初始化区，以及淡紫/浅黄/浅蓝/浅绿四个分区底色。四个底色的 PNG alpha 为 `209/255`，JSON 保留 RGBA，不误标为不透明或直接复用白底合成色。其余选定平色为不透明取样。源码包 PNG 的 RGBA 不是已确认的矢量参数或作者绘图变量；完整可编辑生成链路仍未确认。`gist_rainbow` viewer 函数仅作为另一个已核实实现保留，不代表用户偏好，也不替代方法图色板。
 - **SeeClear**：[固定提交的官方 demo](https://github.com/YumengHe/SeeClear/blob/f7508f28ace7d0219b365b2274ff3e6f47c9bc05/demo/visualization.py#L8) 明确给出五色数组、均匀锚点和逐 RGB 通道线性插值。只确认该 demo 的实现，不保证原论文 teaser 每幅图都使用此脚本。TeX 表格的 OursColor/Palette5 是行/最佳结果强调色，不是深度 LUT，不自动混入本标准。
 
 JSON 中 PDF HEX 是提取 RGB 四舍五入到 8-bit 的复用表示，以 sRGB 作为本地 2D 约定，不声称验证了作者完整 ICC/打印流程。透明填充同时保存 alpha 与白底；画面像素还受合成、色彩管理与抗锯齿影响。不同用途的原始代码值、矢量参数、屏幕取样和本地适配必须分别标注。模板超链接色、未使用的 TeX 宏、相机随机色都不是论文方法图的配色证据。
 
+### Gaussian Garments 法线参考
+
+用户于 2026-10-21 补充喜欢该论文的法线配色/展示，作为独立的法线视觉优先参考，不撤销流程图偏好，也不等于认可 viewer 的 `gist_rainbow` 网格身份色。记录在 JSON 的 `gaussian-garments-normal-reference-v1`。
+
+[官方 `bake_texture`](https://github.com/eth-ait/Gaussian-Garments/blob/ceb66fc36598da05b3b3391f4562cdc54d2a2ed2/inference.py#L150-L227) 确认 `bpy.ops.object.bake(type='NORMAL', normal_space='OBJECT')`，读取 RGB 后用 `np.uint8(normal*255)` 存 PNG，函数本身未额外重映射 S/V。论文源码 `sections/92_appearance_details.tex` 说明使用 Blender 法线贴图，并在网络输入前转换为相机坐标；该训练转换不证明论文图片的展示坐标系。精确轴/通道符号、表面显示 shader、gamma/view transform 与每幅图的生成链路尚未确认。保留原始法线与既有项目映射；不得用紫粉黄分类色表重着色，也不把通用 `(n+1)/2` 示意球标为已复现。
+
 ## 连续量与证据完整性
 
+- 深度另有 [整组视觉候选](research-representation-colors.md)：保留原始灰度和截图 0–7 全部方案，编号/名称见 JSON `visual_candidate_sets.depth-screenshot-candidates-v1`。它们尚非经代码核实的 LUT，没有用户最终选择；截图方法标签、圈选与颜色相似性都不能替代生成链路证据，不自动替换现有编码。
 - SeeClear LUT 从红经浅黄、绿、蓝到紫；原 demo 默认每图有限值 p2/p98 归一化，退化时回退 min/max。复用颜色不意味着复用其逐图范围策略。直接比较必须共享单位、vmin/vmax、裁剪、无效值和方向，范围由 GT、评测协议或明确的共同参考确定，不能各方法独立拉伸。
-- 正深度与逆深度的近远方向不同，须说明量定义；逐图/逐实例归一化只作明确标注的定性检查，不根据颜色比较绝对深度。LUT 不保证感知亮度单调，定量非负误差优先 viridis/cividis，有符号残差用零中心发散色图。
+- 正深度与逆深度的近远方向不同，须说明量定义；逐图/逐实例归一化只作明确标注的定性检查，不根据颜色比较绝对深度。深度 LUT 不保证感知亮度单调，不自动挪作定量误差色图。
+- 用户于 2026-10-21 确认当前 [量化配色参考版](research-representation-colors.md)：非负误差 `matter` / `dense`、置信度 `ice_r` / `tempo`、有符号残差 `curl` / `balance`，每组前者主推、后者备选，保留多选项，不推断单一排他选择。总览只展示色带和数值标注。完整 cmocean RGB 数组与许可已归档；数组来源已确认，CV 用途/映射是本地适配，实际出图仍须验收。viridis/cividis 等只保留为历史配置，不再作为新项目的审美默认。三类量分别固定单位/范围/零点，不为美观逐方法调色，不修改历史结果。
 - 同一项目的角色映射跨帧、样本、方法和视频稳定；一张分类图通常只用一套风格的少量主色。类别过多时先分组/分面，补充直接标签、线型与标记，不把多套色板拼成无语义彩虹。
 - 原始 RGB、纹理、3DGS 外观、WorldModel 帧和归档资产保持不变。展示性重着色只改独立派生输出或浏览器显示状态，明确标注；不以换色暗示精度提升。
 - 三维另记录 shader 输入空间、材质、灯光、曝光、view transform 和输出空间。按引擎要求从 sRGB 转换，不重复转换；同一 HEX 不保证 Blender/Three.js 像素一致。已有 `#6EA8FE` 是项目历史选择，不标为 CHOIS 原色，不自动覆盖。

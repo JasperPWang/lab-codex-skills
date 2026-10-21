@@ -1,0 +1,170 @@
+{
+  "repository": "matplotlib/cmocean",
+  "commit": "59c35002c3aa5296b65d9646e52604c627441eb6",
+  "maps": {
+    "matter": {
+      "url": "https://raw.githubusercontent.com/matplotlib/cmocean/59c35002c3aa5296b65d9646e52604c627441eb6/cmocean/rgb/matter-rgb.txt",
+      "sha256": "861277311ea8f5410935d06cc1f27d49a90ad6802f9fa8e16f32b10dcc9c9dde",
+      "rows": 256,
+      "relative_luminance_start_mid_end": [
+        0.8483247993167865,
+        0.17869294152929446,
+        0.013009713155589743
+      ],
+      "rgb_start_mid_end": [
+        [
+          0.9942936149611202,
+          0.930327795323208,
+          0.6910969022498408
+        ],
+        [
+          0.8085246874446361,
+          0.26372603126828165,
+          0.33885361881305626
+        ],
+        [
+          0.18517171283533682,
+          0.05913348735199072,
+          0.2430426744218359
+        ]
+      ]
+    },
+    "dense": {
+      "url": "https://raw.githubusercontent.com/matplotlib/cmocean/59c35002c3aa5296b65d9646e52604c627441eb6/cmocean/rgb/dense-rgb.txt",
+      "sha256": "d022c7cf7c3f5ba4823fe352868b92c16051a55b0c4cc0f18ab37507fb5d735b",
+      "rows": 256,
+      "relative_luminance_start_mid_end": [
+        0.8593638582771439,
+        0.20587289456731225,
+        0.012427975908896074
+      ],
+      "rgb_start_mid_end": [
+        [
+          0.9022021640633742,
+          0.9441797977915001,
+          0.9438027309131503
+        ],
+        [
+          0.468693834428531,
+          0.4433537569692766,
+          0.8354485830591045
+        ],
+        [
+          0.21298394220008482,
+          0.05589168645699472,
+          0.14220950682407338
+        ]
+      ]
+    },
+    "ice": {
+      "url": "https://raw.githubusercontent.com/matplotlib/cmocean/59c35002c3aa5296b65d9646e52604c627441eb6/cmocean/rgb/ice-rgb.txt",
+      "sha256": "84829748c86ec0d607fa12adbc809a283b5e1ed557d788f7a527a274313440d3",
+      "rows": 256,
+      "relative_luminance_start_mid_end": [
+        0.0019534097831335803,
+        0.18735829881087554,
+        0.94808358650671
+      ],
+      "rgb_start_mid_end": [
+        [
+          0.015311674355437298,
+          0.02252059388699532,
+          0.07272873735907764
+        ],
+        [
+          0.26009231500605867,
+          0.4817604241612176,
+          0.7194288695343958
+        ],
+        [
+          0.9180592960081255,
+          0.991813535883849,
+          0.9928328638314804
+        ]
+      ]
+    },
+    "tempo": {
+      "url": "https://raw.githubusercontent.com/matplotlib/cmocean/59c35002c3aa5296b65d9646e52604c627441eb6/cmocean/rgb/tempo-rgb.txt",
+      "sha256": "800235f3d45f945843f90994a885245435a2da1f293b85220e04c4389da9c744",
+      "rows": 256,
+      "relative_luminance_start_mid_end": [
+        0.934303449180458,
+        0.23064558461298906,
+        0.014644840134497678
+      ],
+      "rgb_start_mid_end": [
+        [
+          0.9985763296811462,
+          0.9632965417140263,
+          0.9577895036430327
+        ],
+        [
+          0.1665133003434038,
+          0.5784169089899582,
+          0.49925614551453285
+        ],
+        [
+          0.08225559928700268,
+          0.11492440797272951,
+          0.26479016778008574
+        ]
+      ]
+    },
+    "curl": {
+      "url": "https://raw.githubusercontent.com/matplotlib/cmocean/59c35002c3aa5296b65d9646e52604c627441eb6/cmocean/rgb/curl-rgb.txt",
+      "sha256": "6267de01c3995a94889a95d07c97d3d796ef25b1daa2db8a5d110f3224a9e770",
+      "rows": 512,
+      "relative_luminance_start_mid_end": [
+        0.014644840134497678,
+        0.9349668281827546,
+        0.012748700432200413
+      ],
+      "rgb_start_mid_end": [
+        [
+          0.08225559928700268,
+          0.11492440797272951,
+          0.26479016778008574
+        ],
+        [
+          0.994211472148974,
+          0.9649414783718816,
+          0.9591713509300946
+        ],
+        [
+          0.20340024633740028,
+          0.051257152851788605,
+          0.20853720637712653
+        ]
+      ]
+    },
+    "balance": {
+      "url": "https://raw.githubusercontent.com/matplotlib/cmocean/59c35002c3aa5296b65d9646e52604c627441eb6/cmocean/rgb/balance-rgb.txt",
+      "sha256": "8abbfe7ac4753be904b0c15534882da94ca22b63e25a468c0654637977b7c1cd",
+      "rows": 256,
+      "relative_luminance_start_mid_end": [
+        0.014399121801655305,
+        0.8489245626409908,
+        0.012048349259308073
+      ],
+      "rgb_start_mid_end": [
+        [
+          0.09317630180115785,
+          0.11117332947760272,
+          0.26151238855305475
+        ],
+        [
+          0.9450241336950317,
+          0.9267273985243988,
+          0.9232017297254779
+        ],
+        [
+          0.23605636466461405,
+          0.03529747994604029,
+          0.06943744239412558
+        ]
+      ]
+    }
+  },
+  "license_sha256": "ca2993ffcd19156051e2ff594e934976bffc4d71b56a59dfc998e236eb0ce7f7",
+  "note": "Official RGB arrays preserved; CV use, normalization and recommendations are local adaptations, not paper-specific author choices."
+}
