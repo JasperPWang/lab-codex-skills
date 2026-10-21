@@ -30,8 +30,12 @@ not evidence or the current method's topology.
 
 For new or revised research colors, read the shared
 [four-scheme color standard](../research-dev-standards/references/research-color-standard.md)
-and its JSON palette. Default to CHOIS; Terra and Any4D are explicit method-diagram
-alternatives, while SeeClear Depth is for qualitative continuous depth. CHOIS
+and its JSON palette. The reference families are CHOIS (default), Terra, Any4D
+and Gaussian Garments. For empirical panels use the shared
+[representation-specific rules](../research-dev-standards/references/research-representation-colors.md):
+depth, normals, points, meshes, segmentation, flow/tracks and charts have
+separate encodings. SeeClear Depth is an independent LUT; Any4D flow can be
+more saturated than its diagram fills. Do not recolor evidence to match a diagram. CHOIS
 contrast is a local sub-profile, not a fifth scheme. Preserve explicit project
 styles and record provenance/opacity; do not replace empirical image colors.
 

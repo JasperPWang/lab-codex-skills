@@ -1,19 +1,21 @@
-# 科研配色：四套方案，默认 CHOIS
+# 科研配色与渲染表示：四套参考，默认 CHOIS
 
 用户于 2026-10-21 确认。适用于新科研图、定性渲染与实验网页的配色选择，不自动改写已确认项目或历史结果。项目明确配置、本次指定风格与期刊硬性要求优先；保留已有映射，迁移需作为明确变更记录。
 
 ## 选择与单一权威源
 
-精确色值、透明度、变体与固定来源保存在同目录 [research-color-palettes.json](research-color-palettes.json)。不要在各 Skill 另建默认色表；项目从此表读取或复制所需配置，并记录方案 ID/版本与角色映射。没有代码读取器时，直接读取 JSON，不凭记忆填色。
+精确色值、透明度、变体、数据编码与固定来源保存在同目录 [research-color-palettes.json](research-color-palettes.json)。不要在各 Skill 另建默认色表；项目从此表读取或复制所需配置，并记录参考家族、表示类型、编码 ID/版本与角色映射。没有代码读取器时，直接读取 JSON，不凭记忆填色。深度、法线、点图/点云、网格、分割、光流/场景流/轨迹及图表，按 [分表示规范](research-representation-colors.md) 选择；不是只有流程图需要配色规范。
 
 | 方案 ID | 用途 | 默认行为 |
 | --- | --- | --- |
 | `chois-v1` | 交互组、人体/物体、轨迹、通用分类、图表与网页辅助色 | 未指定时选此方案；面积用 `soft`，细线/小字/控件用本地 `contrast` 适配 |
-| `terra-v1` | 多阶段生成/重建流程、条件与生成分区 | 按需求显式选择，不因研究 3D 就自动切换 |
-| `any4d-v1` | 多模态输入、编码器、主干、预测头与 token | 按需求显式选择，不照搬原论文网络结构 |
-| `seeclear-depth-v1` | 定性深度图 | 连续数值专用，不当分类色板或默认误差热图 |
+| `terra-v1` | 多阶段方法表达，以及有明确证据的渲染表示参考 | 当前确认的是方法图矢量色；其他表示不能据此推断 |
+| `any4d-v1` | 方法图、三维流箭头、点轨迹及其他 CV 表示参考 | 用户同时偏好二维光流和三维运动展示；各编码独立核实，不照搬方法图浅色 |
+| `gaussian-garments-v1` | 服装/人体、网格、Gaussian 外观与论文插图参考 | 已确认 viewer 网格着色机制；论文整套精确色板仍为部分证据，不虚构 HEX |
 
-CHOIS 的 soft/contrast 是同一方案的适配，不算第五套。数值误差使用 viridis/cividis 或零中心发散色图属于编码选择，也不另算风格方案。Gaussian Garments、Vid2World 等仍可作参考，但不增加默认方案。
+四套是参考家族，不是四组覆盖所有物理量的通用 HEX。CHOIS 的 soft/contrast 是同一方案适配；SeeClear Depth 独立放在 `encodings` 中，不占家族名额；数值误差色图也属于编码选择。v2 保留 `seeclear-depth-v1` ID 与 LUT，但从 `schemes` 移至 `encodings`，读取旧 JSON 结构的项目应显式迁移。Vid2World 等仍可作附加参考。
+
+颜色饱和度按表示目的设定，不按论文名一刀切：流程图的浅色填充承托结构与文字；流场的方向/幅值可用更鲜艳的色轮。Any4D 的三维流 demo 明确令饱和度随幅值从 0.3 升至 1、亮度从 0.5 升至 1；这不能被解释为其所有图都应降低饱和度，亦不证明二维光流使用同一公式。直接对照时共享编码、范围和饱和度/亮度传递函数，不能逐方法调鲜艳程度。
 
 ## CHOIS 的语义与使用
 
@@ -27,6 +29,8 @@ CHOIS 的 soft/contrast 是同一方案的适配，不算第五套。数值误�
 - **CHOIS**：`2312.03913v1` 的矢量 teaser 确认标签三色。[官方 Blender 代码](https://github.com/lijiaman/chois_release/blob/8ec585aa0200fd2a890ffb12897bcf69ae719463/manip/vis/blender_vis_utils.py)中的人体/物体 BSDF base color 则是 `(10/255,30/255,225/255,1)` / `(153/255,51/255,1)`，不是上述标签色或最终受光像素，不能混为一个官方色板。
 - **Terra**：`2510.14977v1` 的 `figures/pipeline.pdf` 矢量参数，包含不透明浅桃、主箭头与外框，及约 0.4 透明度的条件/生成填充。TeX 引入现成 PDF，没有证据表明它由公开 TikZ 色表生成。选定色值与 alpha 见 JSON；原图还有其他局部颜色，不全量迁移。
 - **Any4D**：`2512.10935v1` 的 `figures/any4d_architecture_v3.pdf` 矢量参数。模块/token 的 alpha 约 0.623529，输入区域约 0.992157；基础 RGB 不等于合成后的 PNG 色值。TeX 中的作者/网页蓝紫色也不能冒充模块颜色。
+- **Any4D 运动/几何表示**：[官方 demo 固定提交](https://github.com/Any-4D/Any4D/blob/aa9f1b0d7ecdf44a6ef8cef93387be0093bdd497/scripts/demo_inference.py) 确认三维流与轨迹采用不同着色机制；仓库内 MoGe helper 另定义法线、深度等编码。这些函数定义不是每张论文图调用了它们的证明。详见分表示规范。
+- **Gaussian Garments**：[官方 viewer 固定提交](https://github.com/eth-ait/Gaussian-Garments/blob/ceb66fc36598da05b3b3391f4562cdc54d2a2ed2/inference.py#L77) 确认网格用 `gist_rainbow` 后归一化并缩放/偏移 RGB；不把 viewer 节点插入顺序带到正式身份色映射，不声称该公式就是所有论文插图的配色。
 - **SeeClear**：[固定提交的官方 demo](https://github.com/YumengHe/SeeClear/blob/f7508f28ace7d0219b365b2274ff3e6f47c9bc05/demo/visualization.py#L8) 明确给出五色数组、均匀锚点和逐 RGB 通道线性插值。只确认该 demo 的实现，不保证原论文 teaser 每幅图都使用此脚本。TeX 表格的 OursColor/Palette5 是行/最佳结果强调色，不是深度 LUT，不自动混入本标准。
 
 JSON 中 PDF HEX 是提取 RGB 四舍五入到 8-bit 的复用表示，以 sRGB 作为本地 2D 约定，不声称验证了作者完整 ICC/打印流程。透明填充同时保存 alpha 与白底；画面像素还受合成、色彩管理与抗锯齿影响。不同用途的原始代码值、矢量参数、屏幕取样和本地适配必须分别标注。模板超链接色、未使用的 TeX 宏、相机随机色都不是论文方法图的配色证据。
@@ -41,7 +45,7 @@ JSON 中 PDF HEX 是提取 RGB 四舍五入到 8-bit 的复用表示，以 sRGB 
 
 ## 验证与项目记录
 
-记录 `palette_id`、`palette_version`、`variant`、角色映射与颜色空间；连续量另记 LUT、单位、方向、共享范围、归一化/裁剪和无效值；3D 另记渲染配置与源资产版本。新风格使用独立输出/缓存键，保留历史可回放性。
+记录 `palette_id`、`palette_version`、`variant`、`representation`、`encoding_id`、角色映射与颜色空间；连续量另记 LUT/色轮、单位、方向、共享范围、归一化/裁剪和无效值；向量另记坐标系、投影平面、时间间隔、饱和度/亮度函数；3D 另记渲染配置与源资产版本。新风格使用独立输出/缓存键，保留历史可回放性。
 
 按实际论文版宽/网页尺寸检查，类别配标签、线型、形状或轮廓，检查灰度与色觉缺陷模拟；尚未检查的组合不宣称色盲安全。普通网页文字对比度目标至少 4.5:1，逐个实际前景/背景组合验证，不能因采用 contrast 变体就免检。真实结果验收同时检查身份、范围与源数据未变。
 

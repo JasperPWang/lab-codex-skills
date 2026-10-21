@@ -54,8 +54,12 @@ The chart serves the scientific logic; aesthetic polish is subordinate to making
 For new or revised color choices, read the shared
 [four-scheme research color standard](../research-dev-standards/references/research-color-standard.md)
 and its JSON palette. CHOIS is the default categorical scheme; its contrast
-variant is for thin lines and UI, Terra/Any4D are diagram alternatives, and
-SeeClear Depth is a qualitative depth LUT, not a general quantitative heatmap.
+variant is for thin lines and UI. The reference families are CHOIS, Terra,
+Any4D and Gaussian Garments; SeeClear Depth is a separate qualitative LUT.
+For depth, normals, pointmaps/clouds, meshes, segmentation, optical/scene flow,
+tracks and charts, load the [representation-specific rules](../research-dev-standards/references/research-representation-colors.md).
+The user likes both Any4D 2D flow and 3D motion; do not impose diagram-pastel
+saturation on flow or confuse a direction wheel with a categorical palette.
 Explicit project/journal requirements take priority; do not recolor archived
 results or independently normalize directly compared panels.
 

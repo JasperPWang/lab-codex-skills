@@ -1,7 +1,8 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "approved_on": "2026-10-21",
   "default_scheme": "chois-v1",
+  "selection_model": "reference family plus representation-specific encoding; no universal LUT for every modality",
   "reuse_color_space": "sRGB",
   "pdf_rgb_policy": "8-bit rounded extraction; local sRGB reuse convention, not verification of author ICC workflow",
   "schemes": {
@@ -57,8 +58,9 @@
       }
     },
     "any4d-v1": {
-      "name": "Any4D Modules",
+      "name": "Any4D",
       "kind": "diagram-role",
+      "color_scope": "colors below are method-diagram roles only; flow/geometry encodings are registered separately",
       "background": "#FFFFFF",
       "source": {
         "type": "tex-bundled-vector-pdf",
@@ -74,6 +76,42 @@
         "input_token": {"hex": "#93AC9D", "alpha": 0.623529}
       }
     },
+    "gaussian-garments-v1": {
+      "name": "Gaussian Garments",
+      "kind": "rendering-reference-family",
+      "status": "partial-source-evidence; no fabricated universal flat palette",
+      "source": {
+        "type": "official-viewer-code",
+        "url": "https://github.com/eth-ait/Gaussian-Garments/blob/ceb66fc36598da05b3b3391f4562cdc54d2a2ed2/inference.py#L77",
+        "commit": "ceb66fc36598da05b3b3391f4562cdc54d2a2ed2",
+        "symbol": "adjust_color",
+        "scope": "viewer mesh colors only; exact paper illustration/material palette unverified"
+      },
+      "mesh_viewer_encoding": "gaussian-garments-viewer-v1",
+      "paper_figure_palette_status": "reference-required-before-exact-match"
+    }
+  },
+  "representation_defaults": {
+    "diagram": {"family": "chois-v1", "encoding": "stable-role-map"},
+    "chart_categorical": {"family": "chois-v1", "variant": "contrast", "encoding": "stable-method-map"},
+    "mesh_identity": {"family": "chois-v1", "variant": "soft", "encoding": "stable-entity-map"},
+    "rgb_texture_gaussian": {"encoding": "preserve-original-appearance"},
+    "depth": {"encoding": "seeclear-depth-v1", "purpose": "qualitative; shared physical range for direct comparisons"},
+    "normal": {"encoding": "normal-rgb-v1", "condition": "confirm frame/axes and convert normals first"},
+    "point_cloud": {"encoding": "preserve-rgb-or-explicit-physical-attribute", "family_for_ids": "chois-v1"},
+    "pointmap": {"encoding": "pointmap-xyz-v1", "condition": "shared frame, transform and coordinate bounds"},
+    "segmentation": {"family": "chois-v1", "encoding": "stable-class-or-instance-map"},
+    "optical_flow_2d": {"preferred_reference": "any4d-v1", "encoding_status": "exact-2d-paper-mapping-unverified", "policy": "use verified project flow colorwheel; never relabel 3D XZ encoding as 2D Any4D reproduction"},
+    "scene_flow_3d": {"preferred_reference": "any4d-v1", "encoding": "any4d-scene-flow-xz-v1"},
+    "point_tracks": {"preferred_reference": "any4d-v1", "encoding": "any4d-track-x-v1"},
+    "scalar_error": {"encoding": "viridis-or-cividis", "range": "shared physical range"},
+    "signed_residual": {"encoding": "zero-centered-diverging", "range": "shared physical range"}
+  },
+  "encoding_aliases": {
+    "seeclear-depth-v1": "encodings.seeclear-depth-v1"
+  },
+  "migration_from_v1": "seeclear-depth-v1 moved from schemes to encodings without changing its ID or LUT; four reference families now include Gaussian Garments",
+  "encodings": {
     "seeclear-depth-v1": {
       "name": "SeeClear Depth",
       "kind": "continuous-qualitative-depth",
@@ -99,6 +137,75 @@
         "invalid_values": "mask separately; do not encode as valid zero depth"
       },
       "quantitative_error_default": false
+    },
+    "normal-rgb-v1": {
+      "kind": "normal-vector",
+      "source": "local explicit convention; not a paper-specific pastel palette",
+      "formula": "rgb = 0.5 * unit_normal_in_declared_frame + 0.5",
+      "channel_order": ["nx", "ny", "nz"],
+      "requires": ["coordinate_frame", "axis_directions", "handedness", "normal_orientation", "valid_mask"],
+      "alternative_source": {
+        "url": "https://github.com/Any-4D/Any4D/blob/aa9f1b0d7ecdf44a6ef8cef93387be0093bdd497/any4d/external/MoGe/moge/utils/vis.py#L48",
+        "symbol": "colorize_normal",
+        "axis_scale": [0.5, -0.5, -0.5],
+        "offset": 0.5,
+        "formula": "rgb = normal * [0.5, -0.5, -0.5] + 0.5",
+        "scope": "vendored helper definition confirmed; paper figure call path unverified"
+      }
+    },
+    "pointmap-xyz-v1": {
+      "kind": "coordinate-map",
+      "source": "local explicit convention",
+      "formula": "rgb = clip((xyz_in_declared_frame - shared_min_xyz) / (shared_max_xyz - shared_min_xyz), 0, 1)",
+      "policy": "reject zero-span axes or record a common fixed display value; never auto-center/normalize each method independently; this is not surface normal or optical flow"
+    },
+    "any4d-scene-flow-xz-v1": {
+      "kind": "3d-direction-and-magnitude",
+      "source": {
+        "type": "official-demo-code",
+        "url": "https://github.com/Any-4D/Any4D/blob/aa9f1b0d7ecdf44a6ef8cef93387be0093bdd497/scripts/demo_inference.py#L103",
+        "commit": "aa9f1b0d7ecdf44a6ef8cef93387be0093bdd497",
+        "symbol": "log_scene_flow_to_rerun",
+        "scope": "3D arrow encoding confirmed, not proof of every paper image or 2D optical flow"
+      },
+      "direction_plane": "XZ in declared frame",
+      "saturation_range": [0.3, 1.0],
+      "value_range": [0.5, 1.0],
+      "formula": {
+        "norm": "m = norm(v_xyz)",
+        "unit_direction": "d = v_xyz / (m + 1e-8)",
+        "hue": "(atan2(d_z, d_x) + pi) / (2*pi)",
+        "magnitude": "q = clip((m - mag_min) / (mag_max - mag_min + 1e-8), 0, 1)",
+        "saturation": "0.3 + 0.7*q",
+        "value": "0.5 + 0.5*q",
+        "rgb": "HSV_to_RGB(hue, saturation, value)"
+      },
+      "upstream_bounds": "min/max of selected arrows unless scene_bounds supplied",
+      "upstream_sampling": "up to 10000 arrows, magnitude-weighted random selection",
+      "comparison_adaptation": "supply shared mag_min/max before sampling; same arrow locations/seed across methods; preserve complete outputs; fix coordinate frame, projection and time interval",
+      "degenerate_policy": "local adaptation: separately mark invalid, near-zero magnitude and near-zero XZ projection; do not present undefined hue as meaningful direction",
+      "known_limit": "XZ hue discards vertical direction; full 3D arrows or extra y-component display required when that component matters"
+    },
+    "any4d-track-x-v1": {
+      "kind": "track-identity-from-reference-position",
+      "source": {
+        "url": "https://github.com/Any-4D/Any4D/blob/aa9f1b0d7ecdf44a6ef8cef93387be0093bdd497/scripts/demo_inference.py#L208",
+        "symbol": "log_point_tracks"
+      },
+      "formula": "rainbow((initial_x - reference_x_min) / (reference_x_max - reference_x_min))",
+      "comparison_adaptation": "use common reference positions/IDs and frozen bounds; pin colormap/library version; handle equal bounds explicitly",
+      "scope": "track identity/location, not velocity magnitude or flow direction"
+    },
+    "gaussian-garments-viewer-v1": {
+      "kind": "mesh-category-display",
+      "source": {
+        "url": "https://github.com/eth-ait/Gaussian-Garments/blob/ceb66fc36598da05b3b3391f4562cdc54d2a2ed2/inference.py#L77",
+        "symbol": "adjust_color"
+      },
+      "formula": "c = gist_rainbow(t).rgb; rgb = 0.3 * c / max(c) + 0.3",
+      "upstream_assignment": "t = len(viewer.scene.nodes) * 0.1",
+      "comparison_adaptation": "freeze explicit entity-to-t or entity-to-RGBA mapping; do not rely on viewer node insertion order; pin colormap/library version",
+      "scope": "viewer mesh category display; not original textured Gaussian appearance or a verified all-figure paper palette"
     }
   }
 }

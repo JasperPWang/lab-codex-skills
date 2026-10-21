@@ -6,6 +6,13 @@ figure contract and apply regardless of plotting backend. Source outputs may
 come from model-specific renderers; never regenerate experimental evidence
 with an image-generation model.
 
+For color and rendering representation, load the shared
+[representation-specific rules](../../research-dev-standards/references/research-representation-colors.md)
+and JSON registry. CHOIS is the default reference family, not a universal
+depth/normal/flow LUT. Any4D optical/scene flow and tracks are preferred motion
+references; their saturation and meaning differ from its pastel method diagram.
+Keep 2D UV, 3D scene flow, track identity, pointmap XYZ and normals distinct.
+
 ## Comparison Contract
 
 - Record the task, datasets/splits, method names, checkpoints, and sampling
