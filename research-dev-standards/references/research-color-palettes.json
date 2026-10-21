@@ -1,5 +1,5 @@
 {
-  "version": "2.1.3",
+  "version": "2.1.4",
   "approved_on": "2026-10-21",
   "default_scheme": "chois-v1",
   "selection_model": "reference family plus representation-specific encoding; no universal LUT for every modality",
@@ -213,6 +213,20 @@
       "kind": "depth-visual-reference-collection",
       "status": "user-provided-image; candidate LUTs and method attributions unverified",
       "source": {"type": "user-provided-image", "received_on": "2026-10-21", "asset": "../assets/color-references/depth-palette-candidates.png", "sha256": "042b5944b15e8e3e6ac70650297efd3887eca6053ef281c571dab462766e6167"},
+      "preview": {
+        "asset": "../assets/color-references/depth-palette-candidates-preview.png",
+        "sha256": "a1d02fe3ba555e8474d76ae2d1025449ffeb156b414c166fe15ad84eb7b98dcc",
+        "confirmed_on": "2026-10-21",
+        "preferred_for_display": true,
+        "derived_from": "source.asset; original file preserved unchanged",
+        "source_size": {"width": 1080, "height": 1350},
+        "crop": {"x": 0, "y": 320, "width": 1080, "height": 1030},
+        "crop_units": "source pixels, top-left origin",
+        "method": "user-requested native-resolution browser screenshot clip; no recoloring, resampling or generated content",
+        "removed_captions": ["挑选颜色...", "只用黑白会导致肉眼无法观察深度图细节"],
+        "retained_rgb_identical_to_source_crop": true,
+        "scope": "Display crop only; preserves baseline, candidates 0-7, their original labels and zoom detail. Does not confirm exact LUTs, method attribution or normalization."
+      },
       "selected_candidate": null,
       "reference_rows": [
         {"index": "original", "label": "原始灰度", "role": "baseline", "encoding": null},

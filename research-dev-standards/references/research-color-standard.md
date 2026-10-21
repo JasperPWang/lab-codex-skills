@@ -48,7 +48,7 @@ JSON 中 PDF HEX 是提取 RGB 四舍五入到 8-bit 的复用表示，以 sRGB 
 
 ## 连续量与证据完整性
 
-- 深度另有 [整组视觉候选](research-representation-colors.md)：保留原始灰度和截图 0–7 全部方案，编号/名称见 JSON `visual_candidate_sets.depth-screenshot-candidates-v1`。它们尚非经代码核实的 LUT，没有用户最终选择；截图方法标签、圈选与颜色相似性都不能替代生成链路证据，不自动替换现有编码。
+- 深度另有 [整组视觉候选](research-representation-colors.md)：保留原始灰度和截图 0–7 全部方案，编号/名称见 JSON `visual_candidate_sets.depth-screenshot-candidates-v1`。默认展示其中 `preview` 指定的裁剪图，去掉顶部两行说明，保留全部小图、标签和放大细节；完整原图保留作来源。它们尚非经代码核实的 LUT，没有用户最终选择；截图方法标签、圈选与颜色相似性都不能替代生成链路证据，不自动替换现有编码。
 - SeeClear LUT 从红经浅黄、绿、蓝到紫；原 demo 默认每图有限值 p2/p98 归一化，退化时回退 min/max。复用颜色不意味着复用其逐图范围策略。直接比较必须共享单位、vmin/vmax、裁剪、无效值和方向，范围由 GT、评测协议或明确的共同参考确定，不能各方法独立拉伸。
 - 正深度与逆深度的近远方向不同，须说明量定义；逐图/逐实例归一化只作明确标注的定性检查，不根据颜色比较绝对深度。深度 LUT 不保证感知亮度单调，不自动挪作定量误差色图。
 - 用户于 2026-10-21 确认当前 [量化配色参考版](research-representation-colors.md)：非负误差 `matter` / `dense`、置信度 `ice_r` / `tempo`、有符号残差 `curl` / `balance`，每组前者主推、后者备选，保留多选项，不推断单一排他选择。总览只展示色带和数值标注。完整 cmocean RGB 数组与许可已归档；数组来源已确认，CV 用途/映射是本地适配，实际出图仍须验收。viridis/cividis 等只保留为历史配置，不再作为新项目的审美默认。三类量分别固定单位/范围/零点，不为美观逐方法调色，不修改历史结果。

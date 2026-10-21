@@ -42,6 +42,8 @@
 
 用户于 2026-10-21 提供的 [原始拼图](../assets/color-references/depth-palette-candidates.png) 同时给出原始灰度和八个备选，作为 `depth-screenshot-candidates-v1` 收录。按截图原编号/名称保留：0 反转灰度、1 青蓝黑、2 白粉蓝、3 `diffusion know transformer`、4 蓝粉黄、5 黄红蓝、6 `Depth Anything v3`、7 红蓝。方法名称仅为截图标注，未确认官方归属；不依据截图自动纠错或宣称论文源码一致。
 
+总览/配色参考默认展示用户确认的 [裁剪预览](../assets/color-references/depth-palette-candidates-preview.png)：去掉顶部“挑选颜色...”和“只用黑白会导致肉眼无法观察深度图细节”两行，保留原始灰度、0–7 号全部小图、编号/名称和放大细节。裁剪范围为原图左上角像素坐标 `x=0, y=320, width=1080, height=1030`，未缩放或调色，保留区域 RGB 已逐像素核对一致。原图仍用于来源追溯，不覆盖或删除；两图 SHA256 和裁剪元数据统一记录在 JSON 的 `visual_candidate_sets.depth-screenshot-candidates-v1`。裁剪只是展示偏好，不改变候选和待核实状态。
+
 所有选项目前为视觉候选，尚无用户最终选择，不因图中的圈选/放大就把第 6 项定为默认。准确 LUT、插值、深度/逆深度定义、近远方向与归一化仍须分别核实；也不将第 6 项自动等同现有 SeeClear demo LUT。先保留原图，不从着色后的场景取少量像素拼成“精确色表”。确认实现后，在同一真实深度数据、共同范围/无效掩码下比较，再定稿。灰度仍可用于原值与细节检查，截图中的观感文字不作为“黑白一律不可用”的规则。
 
 ## 点云、网格、Gaussian 与分割
