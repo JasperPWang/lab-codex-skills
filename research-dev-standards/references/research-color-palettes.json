@@ -1,0 +1,104 @@
+{
+  "version": "1.0.0",
+  "approved_on": "2026-10-21",
+  "default_scheme": "chois-v1",
+  "reuse_color_space": "sRGB",
+  "pdf_rgb_policy": "8-bit rounded extraction; local sRGB reuse convention, not verification of author ICC workflow",
+  "schemes": {
+    "chois-v1": {
+      "name": "CHOIS",
+      "kind": "categorical",
+      "default_variant": "soft",
+      "source": {
+        "type": "tex-bundled-vector-pdf",
+        "url": "https://arxiv.org/src/2312.03913v1",
+        "file": "figures/Figure_teaser.pdf",
+        "scope": "three opaque label fills, not rendered surface pixels"
+      },
+      "variants": {
+        "soft": {
+          "colors": {
+            "blue": {"hex": "#879BD9", "alpha": 1},
+            "green": {"hex": "#A9CEA9", "alpha": 1},
+            "purple": {"hex": "#B991D2", "alpha": 1},
+            "neutral": {"hex": "#D8DADD", "alpha": 1},
+            "background": {"hex": "#FFFFFF", "alpha": 1}
+          },
+          "local_additions": ["neutral", "background"]
+        },
+        "contrast": {
+          "source": "local adaptation; not official CHOIS colors",
+          "colors": {
+            "blue": {"hex": "#4F64A1", "alpha": 1},
+            "green": {"hex": "#397552", "alpha": 1},
+            "purple": {"hex": "#805299", "alpha": 1},
+            "neutral": {"hex": "#68717B", "alpha": 1},
+            "background": {"hex": "#F5F6FA", "alpha": 1}
+          }
+        }
+      }
+    },
+    "terra-v1": {
+      "name": "Terra Layers",
+      "kind": "diagram-role",
+      "background": "#FFFFFF",
+      "source": {
+        "type": "tex-bundled-vector-pdf",
+        "url": "https://arxiv.org/src/2510.14977v1",
+        "file": "figures/pipeline.pdf",
+        "scope": "selected roles; generation fill alpha standardized to 0.4 from approximately 0.4039/0.4"
+      },
+      "colors": {
+        "vae_supervision_fill": {"hex": "#FBE3D6", "alpha": 1},
+        "condition_fill": {"hex": "#D9F2D0", "alpha": 0.4},
+        "generation_fill": {"hex": "#F2CFEE", "alpha": 0.4},
+        "flow_arrow": {"hex": "#78206E", "alpha": 1},
+        "outer_structure": {"hex": "#042433", "alpha": 1}
+      }
+    },
+    "any4d-v1": {
+      "name": "Any4D Modules",
+      "kind": "diagram-role",
+      "background": "#FFFFFF",
+      "source": {
+        "type": "tex-bundled-vector-pdf",
+        "url": "https://arxiv.org/src/2512.10935v1",
+        "file": "figures/any4d_architecture_v3.pdf",
+        "scope": "selected module/token roles, includes source opacity; not flattened PNG samples"
+      },
+      "colors": {
+        "input_fill": {"hex": "#FEEDDA", "alpha": 0.992157},
+        "module_fill": {"hex": "#E2DCFF", "alpha": 0.623529},
+        "module_outline": {"hex": "#165044", "alpha": 1},
+        "output_token": {"hex": "#00AAD4", "alpha": 0.623529},
+        "input_token": {"hex": "#93AC9D", "alpha": 0.623529}
+      }
+    },
+    "seeclear-depth-v1": {
+      "name": "SeeClear Depth",
+      "kind": "continuous-qualitative-depth",
+      "source": {
+        "type": "official-demo-code",
+        "url": "https://github.com/YumengHe/SeeClear/blob/f7508f28ace7d0219b365b2274ff3e6f47c9bc05/demo/visualization.py#L8",
+        "commit": "f7508f28ace7d0219b365b2274ff3e6f47c9bc05",
+        "symbol": "DEPTH_COLORMAP_COLORS",
+        "scope": "demo LUT confirmed; identity with every paper figure unverified"
+      },
+      "stops": [
+        {"position": 0, "hex": "#DB4F55"},
+        {"position": 0.25, "hex": "#FAFCBB"},
+        {"position": 0.5, "hex": "#A3DAA7"},
+        {"position": 0.75, "hex": "#3E89BE"},
+        {"position": 1, "hex": "#6459A6"}
+      ],
+      "interpolation": "linear per RGB channel in encoded values; numpy.interp; round via +0.5 then uint8",
+      "normalization": {
+        "upstream_demo": "per-image finite-value p2/p98; fallback min/max",
+        "direct_comparison": "shared physical range from GT/protocol/common reference; record units, direction, clipping and invalid-value policy",
+        "near_far": "must be explicitly defined for physical depth or inverse depth",
+        "invalid_values": "mask separately; do not encode as valid zero depth"
+      },
+      "quantitative_error_default": false
+    }
+  }
+}

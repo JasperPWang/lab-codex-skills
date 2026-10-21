@@ -23,6 +23,8 @@ If Playwright reports a missing bundled browser, first try an installed browser 
 
 ## Core Principle
 
+For research palette selection, read the shared [four-scheme color standard](../research-dev-standards/references/research-color-standard.md) and its JSON. Default to CHOIS; Terra/Any4D are explicit method-diagram alternatives, and SeeClear Depth is only for qualitative depth. Honor explicit reference replication and existing project styles. Prefer documented code/TeX/vector colors with opacity over screenshot sampling when available; keep typography, geometry and connector extraction requirements. Do not force pixel sampling to replace already verified source color parameters.
+
 Produce an editable draw.io diagram first, especially for research and technical figures. Do not use an embedded screenshot as the final answer when the user asks for redraw, replica, vector, editable, or 100% reproduction. Raster images may be used only as references, temporary overlays, or explicitly approved assets.
 
 Prefer direct `.drawio` XML authoring plus browser screenshot feedback for complex or high-fidelity diagrams. Use local draw.io UI control only when it materially improves inspection or user handoff.

@@ -11,6 +11,8 @@ metadata: {"openclaw":{"requires":{"anyBins":["draw.io","drawio"]},"emoji":"📐
 
 # Draw.io Diagrams
 
+For research diagrams without an explicit style/preset, use the [shared four-scheme color standard](../research-dev-standards/references/research-color-standard.md) and its JSON: CHOIS default, Terra/Any4D method-diagram alternatives, SeeClear Depth for qualitative depth only. Preserve explicit project/reference styles and source opacity. Apply this before generic built-in palette fallback; unrelated UML/cloud/business conventions remain unchanged.
+
 ## Overview
 
 Generate `.drawio` XML files and export to PNG/SVG/PDF/JPG locally using the native draw.io desktop app CLI.

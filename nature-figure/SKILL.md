@@ -51,6 +51,14 @@ The chart serves the scientific logic; aesthetic polish is subordinate to making
 
 ### 5. Reach for references only when needed
 
+For new or revised color choices, read the shared
+[four-scheme research color standard](../research-dev-standards/references/research-color-standard.md)
+and its JSON palette. CHOIS is the default categorical scheme; its contrast
+variant is for thin lines and UI, Terra/Any4D are diagram alternatives, and
+SeeClear Depth is a qualitative depth LUT, not a general quantitative heatmap.
+Explicit project/journal requirements take priority; do not recolor archived
+results or independently normalize directly compared panels.
+
 For computer-vision qualitative comparisons, video/world-model rollouts, depth,
 segmentation, attention, or 3D reconstruction, load
 [references/cv-qualitative.md](references/cv-qualitative.md). It specifies sample

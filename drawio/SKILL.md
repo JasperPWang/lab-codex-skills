@@ -5,6 +5,8 @@ description: Always use when user asks to create, generate, draw, or design a di
 
 # Draw.io Diagram Skill
 
+For research diagrams, use the [shared four-scheme color standard](../research-dev-standards/references/research-color-standard.md) and its JSON: default CHOIS; Terra/Any4D are method-diagram alternatives, SeeClear Depth is a qualitative depth LUT. Preserve explicit reference/project styles, source opacity and semantic role mapping. This research preference does not override domain conventions for unrelated UML/cloud/business diagrams.
+
 Generate draw.io diagrams as native `.drawio` files. Author each diagram either as **Mermaid** (concise text that the draw.io desktop CLI converts and lays out for you) or as **draw.io XML** directly. Optionally auto-layout XML-authored diagrams with **ELK**, export to PNG/SVG/PDF with the diagram XML embedded (so the exported file stays editable in draw.io), or generate a browser URL that opens the diagram directly in the draw.io editor.
 
 ## Authoring: Mermaid or XML?

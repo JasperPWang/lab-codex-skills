@@ -4,7 +4,7 @@ The older Python/matplotlib rules in this skill remain valid. The skill also sup
 
 ## Color policy
 
-Prefer **unified method families across all panels** over maximal hue separation. For dense Nature Machine Intelligence-style figure pages, use the low-saturation `NMI pastel` family described in `references/api.md` and reserve green/red mainly for gains, drops, and other directional cues.
+Prefer **unified method families across all panels** over maximal hue separation. For new or revised color choices, use the shared [four-scheme standard](../../../research-dev-standards/references/research-color-standard.md): CHOIS is the default categorical scheme, with its local contrast variant for thin lines and small labels. Explicit project/journal requirements take priority. The older `NMI pastel` family in `references/api.md` is an optional legacy example, not the default. Category identity and success/failure or gain/drop semantics must remain separate; green is not inherently the best method.
 
 ## Stance
 

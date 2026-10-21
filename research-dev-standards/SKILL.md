@@ -124,6 +124,11 @@ description: Enforces minimum-viable experimental design, evidence-based reasoni
 - 实验源结果保持不变，导出、索引和缓存使用独立位置；大文件按上述规则核验数据盘，资产默认留服务器，网页服务依赖不污染训练环境。登记只处理本轮指定结果，不隐含推理/训练/GPU 作业权限。
 - 关键实验交付记录网页/案例链接、run/索引版本、覆盖范围和实际检查的典型/失败案例；登记、可加载、有效评测与可比较状态分别说明。未检查的结果不能因网页已上线就视为科学结论已验证。
 
+### 科研配色
+
+- 新建或调整科研图、定性渲染与实验网页配色时，读取 [`references/research-color-standard.md`](references/research-color-standard.md) 与其中的 JSON 色表。四套方案为 CHOIS（默认）、Terra、Any4D、SeeClear Depth；CHOIS 深色适配属于同一方案。项目已有明确配置或用户本次选择优先，不批量改历史结果。
+- 分类颜色、连续数值与界面状态分别编码；跨样本/方法保持角色色，直接比较共享数值范围。色表记录源码/矢量依据和透明度；不把材质参数、截图像素和本地改编混为论文原色。
+
 ### 三维重建结果渲染与对照
 
 - 为人体与场景三维重建制作定性图、旋转视频或优化前后对照时，读取 [`references/3d-reconstruction-rendering.md`](references/3d-reconstruction-rendering.md)。其中记录共享的几何/相机真实性约束，以及 GRAFT/PhySIC 项目的 Three.js 快捷路径和 Blender 高质量路径。

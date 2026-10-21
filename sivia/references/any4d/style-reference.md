@@ -42,6 +42,8 @@
 
 ## 可复用配色
 
+2026-10-21 配色约定更新：新图默认 CHOIS；仅在明确选择 Any4D 时采用本案例风格。复用颜色以 [统一色表](../../../research-dev-standards/references/research-color-palettes.json) 的 `any4d-v1` 及其 alpha 为准，依据是 TeX 包内矢量 PDF。下面保留历史 PNG 像素取样，用于解释原图显示效果，不当作基础 RGB/透明度参数，也不另立一份默认色表。
+
 下列 HEX 来自本地 overview.png 的实际 RGB 像素统计；不是凭印象估计。它们是这个案例的色板，不是所有科研图的硬性配色。
 
 | 视觉角色 | HEX | 用法 |

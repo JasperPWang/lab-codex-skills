@@ -2,6 +2,8 @@
 
 Conventions, constants, and reusable code blocks. Implement in your script or adapt as needed.
 
+For new/revised figure colors, the shared [four-scheme standard](../../research-dev-standards/references/research-color-standard.md) and its JSON take priority: default to CHOIS, using its contrast variant for thin quantitative lines. The constants below are legacy examples for explicit reuse, not additional default schemes. When adapting a helper, pass `colors` explicitly from the project's role mapping rather than silently using its old fallback list.
+
 ---
 
 ## Constants
@@ -100,9 +102,7 @@ PALETTE_NATURE_GENOMICS = {
 }
 ```
 
-Use `DEFAULT_COLORS` when color itself carries explicit semantic meaning (`hero`, `baseline`, `positive variant`).
-Use `DEFAULT_COLORS_NMI_PASTEL` when several compared methods belong to one or two related families and the page
-should feel visually unified.
+Only use `DEFAULT_COLORS` or `DEFAULT_COLORS_NMI_PASTEL` when the user or existing project explicitly selects those legacy examples. Otherwise supply CHOIS-derived colors from the shared JSON and the project's stable role mapping.
 
 ---
 

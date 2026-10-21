@@ -4,9 +4,11 @@ Use this guide when the user asks for a figure suitable for a computer-science p
 
 ## Fallback Style References
 
+Palette selection follows the [shared four-scheme standard](../../research-dev-standards/references/research-color-standard.md): CHOIS by default, Terra/Any4D when explicitly selected for the communication task. Source/vector colors with opacity take priority over old screenshot samples. Explicit replication requests and project styles still take priority; reference composition does not automatically select its palette.
+
 For the user's preferred 3D/4D teaser and layered model-overview style, read
 [the Any4D case](../../sivia/references/any4d/style-reference.md) and inspect its
-local original Figure 1 and Figure 3. It includes a pixel-sampled palette and
+local original Figure 1 and Figure 3. It retains historical pixel samples and
 separate guidance for result-led teasers and method diagrams. Select it by
 communication purpose; preserve the current method's topology and real results.
 

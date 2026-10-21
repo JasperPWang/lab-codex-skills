@@ -28,11 +28,18 @@ not evidence or the current method's topology.
 
 ## Local Runtime Adaptation
 
+For new or revised research colors, read the shared
+[four-scheme color standard](../research-dev-standards/references/research-color-standard.md)
+and its JSON palette. Default to CHOIS; Terra and Any4D are explicit method-diagram
+alternatives, while SeeClear Depth is for qualitative continuous depth. CHOIS
+contrast is a local sub-profile, not a fifth scheme. Preserve explicit project
+styles and record provenance/opacity; do not replace empirical image colors.
+
 For teaser and pipeline-overview styling, consult the user-approved
 [Any4D visual reference](references/any4d/style-reference.md) and inspect its
 two local original figures. Use it when its result-led teaser or layered,
 pastel architecture matches the communication task. This is a preferred
-visual example, not a universal topology or palette requirement. The case
+visual example, not a universal topology or default palette requirement. The case
 is maintained outside the upstream snapshot.
 
 This is a vendored skill installation, not activation of Sivia's plugin MCP
