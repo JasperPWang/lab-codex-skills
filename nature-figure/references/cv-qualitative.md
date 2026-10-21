@@ -9,8 +9,10 @@ with an image-generation model.
 For color and rendering representation, load the shared
 [representation-specific rules](../../research-dev-standards/references/research-representation-colors.md)
 and JSON registry. CHOIS is the default reference family, not a universal
-depth/normal/flow LUT. Any4D optical/scene flow and tracks are preferred motion
-references; their saturation and meaning differ from its pastel method diagram.
+depth/normal/flow LUT. The preferred Any4D teaser shows 3D point tracks, not
+2D UV flow. Public track and 3D-arrow encodings are verified separately;
+the exact teaser export pipeline and dedicated UV colorwheel remain unverified.
+Do not use RAFT as an Any4D substitute or transfer arrow S/V formulas to tracks.
 Keep 2D UV, 3D scene flow, track identity, pointmap XYZ and normals distinct.
 
 ## Comparison Contract

@@ -58,8 +58,10 @@ variant is for thin lines and UI. The reference families are CHOIS, Terra,
 Any4D and Gaussian Garments; SeeClear Depth is a separate qualitative LUT.
 For depth, normals, pointmaps/clouds, meshes, segmentation, optical/scene flow,
 tracks and charts, load the [representation-specific rules](../research-dev-standards/references/research-representation-colors.md).
-The user likes both Any4D 2D flow and 3D motion; do not impose diagram-pastel
-saturation on flow or confuse a direction wheel with a categorical palette.
+The user's Any4D teaser reference depicts 3D point tracks, not 2D UV flow.
+Its public track function is verified, but the exact teaser export pipeline
+and dedicated UV colorwheel are not. Do not substitute RAFT or apply the
+3D-arrow S/V formula to tracks. Do not impose diagram-pastel saturation on motion.
 Explicit project/journal requirements take priority; do not recolor archived
 results or independently normalize directly compared panels.
 

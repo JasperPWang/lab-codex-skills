@@ -49,7 +49,7 @@ description: 为重要科研项目建立、接入或维护实验可视化网页�
 
 ## 三维对照与渲染质量（按需）
 
-新建或调整配色时，读取 [统一科研配色](../research-dev-standards/references/research-color-standard.md) 及其 JSON；参考家族为 CHOIS（默认）、Terra、Any4D、Gaussian Garments。按 [分表示规范](../research-dev-standards/references/research-representation-colors.md) 分别配置深度、法线、点图/点云、网格、分割、二维流/三维流/轨迹与图表，SeeClear 是独立深度编码。用户偏好 Any4D 的两种流表达；不把方法图的浅色或低饱和度强加给数据流图。既有项目配置优先，不自动重涂原始 RGB、纹理或 Gaussian 外观；比较共享编码/范围与饱和度传递函数，记录表示类型、编码 ID、角色映射、alpha 和色彩空间。
+新建或调整配色时，读取 [统一科研配色](../research-dev-standards/references/research-color-standard.md) 及其 JSON；参考家族为 CHOIS（默认）、Terra、Any4D、Gaussian Garments。按 [分表示规范](../research-dev-standards/references/research-representation-colors.md) 分别配置深度、法线、点图/点云、网格、分割、二维流/三维流/轨迹与图表，SeeClear 是独立深度编码。用户指定的 Any4D teaser 是三维点轨迹，不是二维 UV 流；公开轨迹函数已确认，完整 teaser 导出链路与专用 UV 色轮仍未确认，不用 RAFT 冒充。三维箭头的 S/V 公式不套到轨迹，不把方法图浅色强加给运动表示。既有项目配置优先，不自动重涂原始 RGB、纹理或 Gaussian 外观；比较共享编码/范围与饱和度传递函数，记录表示类型、编码 ID、角色映射、alpha 和色彩空间。
 
 比较结果共享相机、投影、坐标、尺度与质量条件。禁止各栏独立自动归一化、居中或无依据配准来制造“对齐”；必要变换须有来源并对比较对象一致应用。显示输入图的方向修正不自动意味着再次翻转三维或标定参数。
 

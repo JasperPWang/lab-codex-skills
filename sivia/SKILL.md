@@ -34,8 +34,11 @@ and its JSON palette. The reference families are CHOIS (default), Terra, Any4D
 and Gaussian Garments. For empirical panels use the shared
 [representation-specific rules](../research-dev-standards/references/research-representation-colors.md):
 depth, normals, points, meshes, segmentation, flow/tracks and charts have
-separate encodings. SeeClear Depth is an independent LUT; Any4D flow can be
-more saturated than its diagram fills. Do not recolor evidence to match a diagram. CHOIS
+separate encodings. SeeClear Depth is an independent LUT. The preferred Any4D
+teaser depicts 3D tracks, not 2D UV flow; the public track function is verified,
+but the exact teaser export pipeline and dedicated UV colorwheel are not.
+Do not substitute RAFT or transfer 3D-arrow S/V formulas to tracks.
+Do not recolor evidence to match a diagram. CHOIS
 contrast is a local sub-profile, not a fifth scheme. Preserve explicit project
 styles and record provenance/opacity; do not replace empirical image colors.
 

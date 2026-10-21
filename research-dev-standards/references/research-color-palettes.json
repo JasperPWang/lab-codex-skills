@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0",
+  "version": "2.0.1",
   "approved_on": "2026-10-21",
   "default_scheme": "chois-v1",
   "selection_model": "reference family plus representation-specific encoding; no universal LUT for every modality",
@@ -101,9 +101,9 @@
     "point_cloud": {"encoding": "preserve-rgb-or-explicit-physical-attribute", "family_for_ids": "chois-v1"},
     "pointmap": {"encoding": "pointmap-xyz-v1", "condition": "shared frame, transform and coordinate bounds"},
     "segmentation": {"family": "chois-v1", "encoding": "stable-class-or-instance-map"},
-    "optical_flow_2d": {"preferred_reference": "any4d-v1", "encoding_status": "exact-2d-paper-mapping-unverified", "policy": "use verified project flow colorwheel; never relabel 3D XZ encoding as 2D Any4D reproduction"},
+    "optical_flow_2d": {"preferred_reference": null, "encoding_status": "project-renderer-required; any4d-uv-colorwheel-unverified", "policy": "use and attribute a verified project UV renderer; the user's Any4D teaser reference is 3D point tracks, not UV flow; never label RAFT, 3D XZ arrows or rainbow tracks as Any4D 2D reproduction"},
     "scene_flow_3d": {"preferred_reference": "any4d-v1", "encoding": "any4d-scene-flow-xz-v1"},
-    "point_tracks": {"preferred_reference": "any4d-v1", "encoding": "any4d-track-x-v1"},
+    "point_tracks": {"preferred_reference": "any4d-v1", "encoding": "any4d-track-x-v1", "evidence_scope": "official demo function confirmed; exact teaser export pipeline unverified"},
     "scalar_error": {"encoding": "viridis-or-cividis", "range": "shared physical range"},
     "signed_residual": {"encoding": "zero-centered-diverging", "range": "shared physical range"}
   },
@@ -180,8 +180,10 @@
         "value": "0.5 + 0.5*q",
         "rgb": "HSV_to_RGB(hue, saturation, value)"
       },
-      "upstream_bounds": "min/max of selected arrows unless scene_bounds supplied",
-      "upstream_sampling": "up to 10000 arrows, magnitude-weighted random selection",
+      "upstream_bounds": "min/max after masking and possible arrow subsampling unless scene_bounds supplied; equal bounds: mag_max = mag_min + 1e-6",
+      "upstream_sampling": "up to 10000 arrows; magnitude-weighted random selection, uniform random for near-zero magnitudes",
+      "unused_parameter": "colormap_name='rainbow' is not read by the function body; actual colors come from HSV_to_RGB, not a rainbow lookup",
+      "teaser_track_applicability": false,
       "comparison_adaptation": "supply shared mag_min/max before sampling; same arrow locations/seed across methods; preserve complete outputs; fix coordinate frame, projection and time interval",
       "degenerate_policy": "local adaptation: separately mark invalid, near-zero magnitude and near-zero XZ projection; do not present undefined hue as meaningful direction",
       "known_limit": "XZ hue discards vertical direction; full 3D arrows or extra y-component display required when that component matters"
@@ -189,10 +191,33 @@
     "any4d-track-x-v1": {
       "kind": "track-identity-from-reference-position",
       "source": {
+        "type": "official-demo-code",
         "url": "https://github.com/Any-4D/Any4D/blob/aa9f1b0d7ecdf44a6ef8cef93387be0093bdd497/scripts/demo_inference.py#L208",
-        "symbol": "log_point_tracks"
+        "commit": "aa9f1b0d7ecdf44a6ef8cef93387be0093bdd497",
+        "symbol": "log_point_tracks",
+        "scope": "function confirmed; not proof that every teaser panel used this exact export path"
       },
-      "formula": "rainbow((initial_x - reference_x_min) / (reference_x_max - reference_x_min))",
+      "colormap": "matplotlib.cm.get_cmap('rainbow'); linear scalar-position colormap, not a closed direction wheel",
+      "normalization": "x = point_tracks[0][:, 0]; mpl.colors.Normalize(vmin=x.min(), vmax=x.max())(x)",
+      "formula": "rgb = rainbow(normalized_x)[:, :3]",
+      "reference_frame": "index 0 of the supplied track array; 3D x, not pixel u and not necessarily original video frame 0",
+      "saturation_value": "no extra HSV S/V remapping; do not infer constant saturation or motion-magnitude dependence",
+      "temporal_assignment": "one fixed RGB per track passed to rr.LineStrips3D",
+      "upstream_degenerate_policy": "no custom equal-bounds or invalid-value handling; follows Normalize/colormap behavior",
+      "cross_checks": [
+        "https://github.com/Any-4D/Any4D/blob/aa9f1b0d7ecdf44a6ef8cef93387be0093bdd497/scripts/any4d_gradio.py#L97-L120",
+        "https://huggingface.co/spaces/theairlabcmu/Any4D/blob/ee9a56bacb830fac7e3fe41118e29a699d7c899c/app.py#L99-L122"
+      ],
+      "teaser_evidence": {
+        "paper": "https://arxiv.org/html/2512.10935v1#S0.F1",
+        "semantics": "3D motion point tracks; confirmed by Figure 1 caption",
+        "source_package": "https://arxiv.org/src/2512.10935v1",
+        "tex_asset": "figures/cvpr_teaser.pdf",
+        "exact_export_pipeline_confirmed": false,
+        "boundary": "TeX includes the finished PDF; full drawing/render/export script not found in audited public sources",
+        "any4d_uv_colorwheel_confirmed": false,
+        "raft_substitution_allowed": false
+      },
       "comparison_adaptation": "use common reference positions/IDs and frozen bounds; pin colormap/library version; handle equal bounds explicitly",
       "scope": "track identity/location, not velocity magnitude or flow direction"
     },

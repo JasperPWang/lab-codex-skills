@@ -24,6 +24,12 @@
 
 适用于已有高质量重建、跟踪或动态结果的能力展示。尚无实验结果时，可以画明确标注的概念示意，但不能生成假结果冒充这类 teaser。
 
+### 已确认的运动表示与待核实边界
+
+2026-10-21 用户明确其运动配色参考为 teaser。[Figure 1 图注](https://arxiv.org/html/2512.10935v1#S0.F1) 确认这是三维运动点轨迹，不是二维 UV 光流。公开 `log_point_tracks` 按传入数组第 0 时刻的三维 x 做 min–max，取 Matplotlib `rainbow` RGB，同轨迹全程同色；无额外 HSV 调整，不表示速度/方向/时间。该机制已在 CLI、Gradio 和官方 HF 源码交叉确认。
+
+但 TeX 只引入成图 `figures/cvpr_teaser.pdf`，未找到完整绘制/渲染/导出脚本，不能声称 teaser 全部参数已复现。专用二维 UV 色轮仍未确认，不以 RAFT 通用配色替代；另一条三维箭头函数的 S/V 幅值公式也不适用于点轨迹。固定提交、公式和适配规则统一见 [分表示规范](../../../research-dev-standards/references/research-representation-colors.md)，不在本案例另立参数表。
+
 ## Pipeline Overview：分层、对称、语义配色
 
 ![Any4D 原论文 Figure 3：分层多视图方法总览](overview.png)
