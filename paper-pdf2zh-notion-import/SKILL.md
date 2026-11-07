@@ -58,12 +58,12 @@ Do not use `D4RT.pdf`, `D4RT.zh.mono.pdf`, `paper.pdf`, `translated.pdf`, `Babel
 
 ### 2. Run pdf2zh
 
-1. Run the local `pdf2zh` / `pdf2zh-next` (BabelDOC) toolchain on the downloaded original PDF. Prefer the established local binary; do not invent a second translation tool.
+1. Run the established `pdf2zh` / `pdf2zh-next` (BabelDOC) toolchain on the downloaded original PDF. Resolve the actual execution host, entrypoint, and installed versions; do not assume the Mac and a server share an installation. Before generating a new translation, read [Terminology Workflow](references/terminology-workflow.md), collect and review the paper's terminology, and select its engine-compatible translation path. Reuse an existing draft when the task is repair rather than regeneration.
 2. **Hard policy: do not translate figure interiors or tables.** Lab default matches [`paper-deep-dive`](../paper-deep-dive/SKILL.md): translate body prose; keep **all table content** (headers and body cells) in the original English; keep **in-figure labels/annotations** in English. Figure/table **captions and notes** (图注/表题/表注) may be Chinese in the final Notion manuscript, but `pdf2zh` must not OCR/translate table bodies or figure interiors. Encode this in the CLI every run (do not trust GUI-saved `~/.config/pdf2zh`—defaults often leave `translate_table_text = true`):
    - **Tables off:** always set `PDF2ZH_TRANSLATE_TABLE_TEXT=false`. Installed default is `true` and would translate table text. Never run with table OCR enabled. (CLI quirk: bare `--translate-table-text` is argparse `store_false` when default is true, so passing it also *disables*—prefer the env var for readable intent; do **not** pass the flag thinking it enables translation.)
-   - **Figures/tables protected:** keep `--figure-table-protection-threshold` at `0.9` or higher (default `0.9`; `0.95` is stricter). Official meaning: lines inside detected figures/tables are not processed.
-   - Raster text baked into figure images is never translated. If residual **vector** labels inside a figure or table cells still flip to Chinese, restore English against the original PDF in Round 1 (current BabelDOC has no separate `skip-figure-text` flag).
-3. Canonical invocation (adjust engine only if Bing fails; prefer Bing over SiliconFlowFree/Google for this lab):
+   - **Graphic-line protection:** `--figure-table-protection-threshold 0.9` controls protection of graphic lines/curves during cleanup, not whether figure text is translated. A higher threshold requires more covered area and does not strengthen protection. Preserve figure text through the validated figure-protection entrypoint/layout filtering and inspect the output; the threshold is not a substitute for that check.
+   - Text embedded in raster pixels normally remains part of the image; OCR and vector-text layers require separate checks. If figure labels or table cells change, correct the actual PDF before calling that PDF compliant. Repair of the later Notion manuscript is a separate check.
+3. Bing draft invocation (Bing remains the lab's preferred draft engine; it cannot consume `--glossaries` in the verified 2.9.0 installation). Use the established figure-protection entrypoint in place of the executable below where configured. For a glossary-capable LLM path, follow [Terminology Workflow](references/terminology-workflow.md#translate-with-the-reviewed-glossary); do not pass `--glossaries` to Bing or silently change services just to enable it:
 
 ```bash
 PDF2ZH_TRANSLATE_TABLE_TEXT=false pdf2zh "$ORIGINAL_PDF" \
@@ -77,10 +77,14 @@ PDF2ZH_TRANSLATE_TABLE_TEXT=false pdf2zh "$ORIGINAL_PDF" \
   --output "$OUTDIR"
 ```
 
-   Require a `*.mono.pdf` (or the user-requested variant) under `$OUTDIR` before import. Confirm the run log / settings show table-text translation **disabled**.
+   Require a `*.mono.pdf` (or the user-requested variant) under `$OUTDIR`. Confirm the run log / settings show table-text translation **disabled**. Here `--no-auto-extract-glossary` describes this engine path; it does not waive terminology collection, review, or PDF audit.
 4. Retain the original PDF and the translated Chinese PDF until Notion import and verification are complete.
 5. If both mono and dual outputs exist, choose the variant according to the user's request. Default to the Chinese mono PDF for the Chinese manuscript page. The original English PDF is used for verification and is not imported unless the user explicitly requests it.
 6. Treat all pdf2zh output as draft material. It is not compliant merely because the PDF opens or the translation is readable.
+
+### 2a. Check and correct terminology in the actual Chinese PDF
+
+Complete [Terminology Workflow](references/terminology-workflow.md#audit-and-correct-the-output-pdf) before importing a newly generated PDF as the verified version. Check terminology against the reviewed glossary across the actual translated body, captions, and appendix/supplement prose, and render affected pages after any correction to verify layout, formulas, and protected English figure/table text. Record the PDF version/hash, reviewed glossary, coverage, issues, corrections, and final status. An extracted glossary, a successful translation run, and corrected Notion prose are not evidence that the PDF itself has passed. If a user explicitly wants an uncorrected draft imported, record that state and its unresolved issues; do not label the PDF verified.
 
 ### 3. Import directly into the specified Notion page
 
@@ -181,6 +185,7 @@ Before delivery, verify all of the following in Notion:
 - appendix and supplementary content is present;
 - no raw local paths, temporary filenames, or migration artifacts remain;
 - the page was re-read after the second repair round.
+- for a newly generated PDF, its terminology collection/review, engine-compatible glossary path, and actual PDF audit/correction are recorded; unresolved PDF issues are not concealed by later manuscript repairs;
 - no whole-page replacement or delete-and-recreate operation was used without explicit user authorization;
 - each repair batch had a pre-write recovery snapshot and a post-write block-level re-fetch;
 - untouched sections retained their block types, hierarchy, media, formulas, tables, captions, and links.
@@ -194,7 +199,7 @@ If any item fails, report the package as incomplete and continue repairing. Do n
 
 Only after Notion import and the second repair/read-back pass succeed:
 
-1. Delete pdf2zh intermediate output, MinerU Markdown, page images, and temporary conversion files.
+1. Delete disposable pdf2zh intermediate output, MinerU Markdown, page images, and temporary conversion files. Retain the reviewed glossary and terminology audit with the translation records unless the user requests their removal; they are reusable evidence, not disposable extraction intermediates. Do not create extra Notion pages for them unless requested.
 2. Keep the original source PDF only if the user explicitly wants a local copy; otherwise delete it too.
 3. Never delete the Notion pages or their uploaded content as part of local cleanup.
 4. Report which local artifacts were removed and which, if any, were retained.
