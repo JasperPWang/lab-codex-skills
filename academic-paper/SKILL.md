@@ -450,7 +450,7 @@ Explicit prohibitions to prevent common failure modes:
 
 ## Output Language
 
-Follows the user's language. Academic terminology is kept in English. Bilingual abstracts are always provided regardless of the main text language.
+Follow the user's language. For Chinese manuscripts and Chinese abstracts, use [`chinese-technical-writing`](../chinese-technical-writing/SKILL.md#chinese-academic-manuscripts) for first-use definitions, consistent abbreviations, and Chinese-English typography. Preserve official names and notation. Bilingual abstracts are always provided regardless of the main text language.
 
 ---
 
