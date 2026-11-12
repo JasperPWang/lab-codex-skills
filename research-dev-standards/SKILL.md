@@ -140,7 +140,7 @@ description: Enforces minimum-viable experimental design, evidence-based reasoni
 
 - 下载/接入数据集或编写预处理脚本前，读取 [`references/dataset-storage.md`](references/dataset-storage.md)。原始数据统一位于已核验数据盘的 `datasets/<dataset>/<version-or-snapshot>/`，不增设 `raw/` 层。保存上游原始文件（包括压缩包、分片、标注），校验后保留，不因解压、缓存清理、换项目或空间不足而删除、覆盖或原地修改；删除/替换源数据需用户另行明确授权。
 - `projects/<project>/data/<dataset>/<derived-version>/` 存该项目处理好的训练/验证/测试数据；预处理的独立复制/解压暂存放项目工作区，不与原始库或已就绪版本混用。原始库只用于校验及派生数据的读取。禁止以软链接或硬链接代替项目副本。各方法/预处理版本使用独立目录并记录来源链路；不配置只读权限或强制只读挂载。
-- 每个已下载的数据集版本目录必须同时有 `README.md` 和 `manifest.json`，说明来源、版本、许可证/访问条件、下载与校验状态、文件大小及 SHA256。项目 `dataset.md` 记录实际使用范围、目录/格式、预处理脚本与配置、样本数及 split；原始/派生目录布局及 JSON 示例见上述参考。
+- 每个已下载的数据集版本目录必须同时有 `README.md` 和 `manifest.json`，说明来源、版本、许可证/访问条件、下载与校验状态、文件大小及 SHA256。`README.md` 必须保留原始数据集页面和原始下载链接（多个文件则逐条列出）；没有直链时保留页面并说明获取方式。不写入令牌、cookie 或带签名的临时链接。项目 `dataset.md` 记录实际使用范围、目录/格式、预处理脚本与配置、样本数及 split；原始/派生目录布局及 JSON 示例见上述参考。
 
 ### 完成前审查
 
@@ -206,7 +206,7 @@ description: Enforces minimum-viable experimental design, evidence-based reasoni
 - [ ] 是否使用 `.part` 临时文件，并在校验通过后才改名为最终文件？
 - [ ] 是否记录了固定版本、来源、大小、SHA256、目标路径和下载日志？
 - [ ] 下载后的模型或数据集是否通过了最小读取/推理/batch 验证？
-- [ ] 数据集源文件是否保留完整，项目是否使用独立副本，并有 README、manifest 与预处理/split 的来源记录？
+- [ ] 数据集源文件是否保留完整，项目是否使用独立副本，并有 README、manifest 与预处理/split 的来源记录？README 是否保留了原始页面和原始下载链接？
 - [ ] 三维结果图/视频是否按渲染参考核验了几何不变、相机对齐、真实 GT 标注和完整输出？
 - [ ] 是否检查了原始输出和失败样本，而不只看平均指标？
 - [ ] 是否有单命令运行、画图、config 或小数据验证来缩短发现错误的时间？
