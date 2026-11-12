@@ -76,7 +76,7 @@ Assume Markdown parity first. Convert only what Notion cannot represent the same
 | References | Keep `[n]` plain labels; append `. URL [url](url)` (or ` URL [url](url)` after an existing period) with display text equal to URL; do not turn References into numbered `1.` lists |
 | Body citations | Reader goal: plain outer `[]`, digit-only link text (`6`, not `[6`). Canonical draft: `[[n](pdf-url)]` / `[[n](url), [m](url)]`. **Notion write form:** escape the outer `[` → `\[[n](url)]` / `\[[n](url), [m](url)]` via `scripts/prepare-notion-citation-markdown.py` (single and multi: the first cite is always the one Notion corrupts). After write, still run `scripts/fix-notion-citation-rich-text.py <page>` until `--check-only` exits 0. The fixer splits `text.content` >2000 and sanitizes nested/overlong `link.url`. Rare mangled blobs (`[[[[9](url)](url)…`) may need a one-block manual rewrite. |
 | Editable trees | Nested headings/toggles, linked subpages, or supported embeds; not Feishu whiteboard tokens |
-| Dataset structure | Keep storage paths, sample visualizations, and the train/val/test table visible. Put the directory tree in a collapsed toggle titled `数据集结构`; do not leave `<details>` tags or an expanded tree in the reader-facing page. Sample figures are native images with captions |
+| Dataset structure | Keep storage paths, sample visualizations, and the split section visible. Use a train/val/test table, or a per-method evaluation-protocol table when the dataset has no official split. Put the directory tree in a collapsed toggle titled `数据集结构`; do not leave `<details>` tags or an expanded tree in the reader-facing page. Sample figures are native images with captions |
 
 ## Forbidden Cross-Platform Residue
 
