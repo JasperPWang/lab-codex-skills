@@ -92,7 +92,7 @@ When a translated PDF was manually imported into Feishu, classify the page as a 
 
 ## Dataset Pages
 
-When writing a project dataset page, keep the raw and project data storage paths visible. Put the directory tree in a native Feishu fold/toggle titled `数据集结构` and leave it collapsed. Do not paste the full tree as ordinary expanded paragraphs, and do not leave raw `<details>` tags in the reader-facing page.
+When writing a project dataset page, keep the raw and project data storage paths visible. Put the directory tree in a native Feishu fold/toggle titled `数据集结构` and leave it collapsed. Do not paste the full tree as ordinary expanded paragraphs, and do not leave raw `<details>` tags in the reader-facing page. Keep `数据可视化` and `训练测试划分` expanded: sample figures are native Feishu images with captions that name the sample and its split; the split section is a visible train/val/test table.
 
 ## Paper Card Images
 

@@ -51,7 +51,7 @@ Do not silently redirect an Obsidian target to Feishu or Notion. Preserve the no
 | References | Plain `[n]` labels + original bibliography text + ` \| [url](url)` with display text equal to URL; never `1.` ordered lists for bibliography |
 | Body citations | `[[n](pdf-url)]` with the same URL map as References |
 | Editable trees | Mermaid, Canvas, or linked outline per vault convention—not Feishu whiteboard tokens |
-| Dataset structure | Keep storage paths visible. Put the directory tree in `<details>` without `open`, summary `数据集结构` |
+| Dataset structure | Keep storage paths, sample visualizations, and the train/val/test table visible. Put the directory tree in `<details>` without `open`, summary `数据集结构`. Sample figures use vault image embeds |
 
 ## Forbidden Cross-Platform Residue
 
