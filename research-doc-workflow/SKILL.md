@@ -62,6 +62,7 @@ Assume Markdown parity first. Convert only the features that are not represented
 | Paper-card metadata | One native text block with four hard-break lines | One paragraph with exactly three `<br>` hard breaks | Four physical Markdown lines |
 | References | `[n]` plain text + ` \| [url](url)` (display = URL); no `1.` lists | Same semantic form in rich text; no ordered-list renumbering | Same Markdown form |
 | Body citations | Number links to the same PDF URL as References | Same reader form; **write** `\[[n](pdf-url)]` (escape outer `[`) or run `prepare-notion-citation-markdown.py` then `fix-notion-citation-rich-text.py` | `[[n](pdf-url)]` |
+| Dataset page | Storage paths stay visible. Directory tree goes in a native fold/toggle titled `数据集结构`, left collapsed | Storage paths stay visible. Directory tree is a toggle heading `数据集结构 {toggle="true"}`, left collapsed | Storage paths stay visible. Directory tree is `<details>` without `open`, titled `数据集结构` |
 | Editable tree | Native whiteboard/mind map | Page/database hierarchy or supported embed | Mermaid, Canvas, or linked outline |
 | Cross-platform residue | Strip Notion `<br>` tricks and Obsidian `![[` / frontmatter fences from reader text | Strip Feishu XML/block chrome and Obsidian callout fences | Strip Feishu tokens and Notion `<br>` metadata HTML |
 | Verification | Fetch Docx/wiki blocks | Re-fetch page/properties/blocks | Re-read files and validate links/assets |

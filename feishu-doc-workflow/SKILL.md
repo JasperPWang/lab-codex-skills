@@ -90,6 +90,10 @@ When a translated PDF was manually imported into Feishu, classify the page as a 
 - If an artifact should be kept for audit or reuse, store it under an explicit non-root location such as `.tools/outputs/<task-slug>/` and mention it to the user. Do not leave opaque files like `sovd_current.md`, `*_after.json`, or ad-hoc Python scripts in the root of `WorldModelVault`.
 - Before finishing a Feishu editing task, check for task-local scratch files and clean them up unless the user asked to keep them.
 
+## Dataset Pages
+
+When writing a project dataset page, keep the raw and project data storage paths visible. Put the directory tree in a native Feishu fold/toggle titled `数据集结构` and leave it collapsed. Do not paste the full tree as ordinary expanded paragraphs, and do not leave raw `<details>` tags in the reader-facing page.
+
 ## Paper Card Images
 
 When syncing paper cards to Feishu, use only reliable paper figures as card images:
